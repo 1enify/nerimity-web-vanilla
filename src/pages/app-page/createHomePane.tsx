@@ -16,6 +16,7 @@ import {
 import { userStore } from "../../store/userStore";
 import type { RawUserActivity } from "../../Types";
 import { storeEmitter } from "../../utils/EventEmitter";
+import { getFont } from "../../utils/font";
 import { throttle } from "../../utils/throttle";
 
 import style from "./createHomePane.module.css";
@@ -132,11 +133,15 @@ const DashboardUserActivity = (props: {
     return `${cdnUrl}proxy/${encodeURIComponent(activity.imgSrc!)}/a`;
   })();
 
+  const font = getFont(user?.profile?.font);
+
   return (
     <div class={style.userActivityContainer}>
       <Link href={`/app/profile/${user?.id}`} class={style.activityHeader}>
         <Avatar user={user} size={24} />
-        <div class={style.username}>{user?.username}</div>
+        <div class={[style.username, font?.class, "font"]}>
+          {user?.username}
+        </div>
       </Link>
       <div class={style.activityContent} data-has-media={!!imgSrc}>
         {imgSrc && !isVideo && <img src={imgSrc} class={style.activityImage} />}
@@ -147,7 +152,7 @@ const DashboardUserActivity = (props: {
           <div class={style.activityInfo}>
             <div
               class={style.activityName}
-              style={{ "--color": `var(--status-${status.id})` }}
+              style={{ "--color": `var(--status-${status.id.toLowerCase()})` }}
             >
               <Icon name={type.icon} class={style.icon} />
               {props.activity.name}

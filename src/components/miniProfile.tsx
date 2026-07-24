@@ -24,6 +24,7 @@ import { resolveGradient } from "../utils/color";
 import { friendlyTimestamp } from "../utils/date";
 import { storeEmitter } from "../utils/EventEmitter";
 import { FocusAnimator } from "../utils/FocusAnimator";
+import { getFont } from "../utils/font";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { buildImageUrl } from "../utils/image";
 import { portalElement } from "../utils/portal";
@@ -201,6 +202,8 @@ export const MiniProfile = (props: {
       .get(server?.id!)
       ?.get(props.userId);
 
+    const font = getFont(localUser?.profile?.font);
+
     return (
       <>
         <Banner
@@ -215,7 +218,7 @@ export const MiniProfile = (props: {
         <div class={[style.section, style.info]}>
           <span class={style.name}>
             <span>
-              {user?.username}
+              <span class={[font?.class, "font"]}>{user?.username}</span>
               <span class={style.tag}>:{user?.tag}</span>
             </span>
             {details?.profile?.clan && (

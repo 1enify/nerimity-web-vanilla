@@ -11,6 +11,7 @@ import { hasBit } from "../utils/bitwise";
 import { ChannelPermissionFlag } from "../utils/channelPermissionFlag";
 import { resolveGradient } from "../utils/color";
 import { storeEmitter } from "../utils/EventEmitter";
+import { getFont } from "../utils/font";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { ManualMemo } from "../utils/memo";
 import { RolePermissionFlag } from "../utils/RolePermissionFlag";
@@ -410,6 +411,8 @@ const memberItem = (cat: Categorized) => {
 
     const color = resolveGradient(topRoleColor) ?? "";
 
+    const font = getFont(user?.profile?.font);
+
     return (
       <Link
         href={`/app/profile/${cat.member.userId}`}
@@ -420,7 +423,10 @@ const memberItem = (cat: Categorized) => {
         <Avatar size={32} user={user!} imgClass="avatar" />
         <div class={style.info}>
           <span class={style.memberInfo}>
-            <GradientText color={color} class={style.memberName}>
+            <GradientText
+              color={color}
+              class={[style.memberName, font?.class, "font"]}
+            >
               {cat.member.nickname || user?.username}
             </GradientText>
             {user?.profile?.clan && <ServerClanItem clan={user.profile.clan} />}

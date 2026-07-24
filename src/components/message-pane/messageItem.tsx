@@ -154,7 +154,7 @@ export const MessageItem = (props: {
                         tag={Link}
                         decoration
                         href={`/app/profile/${creator.id}`}
-                        class={[style.username, font?.class]}
+                        class={[style.username, font?.class, "font"]}
                         color={color}
                       >
                         {name}
@@ -299,13 +299,15 @@ const ReplyMessage = (props: { message: RawReplyMessage }) => {
 
   const color = resolveGradient(topRoleColor) ?? "";
 
+  const font = getFont(member?.user?.profile?.font);
+
   return (
     <div class={style.replyMessage}>
       {message ? (
         <>
           <Avatar user={creator} size={14} />
           <GradientText
-            class={style.username}
+            class={[style.username, font?.class, "font"]}
             data-user-id={creator.id}
             tag={Link}
             decoration

@@ -97,3 +97,10 @@ Remove mobile blue highlight on tap
 * {
   -webkit-tap-highlight-color: transparent;
 }
+
+.font {
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+  font-size: calc(14px * var(--scale, 1));
+  font-family: var(--font);
+}

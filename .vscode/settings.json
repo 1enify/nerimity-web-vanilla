@@ -31,5 +31,8 @@
     "Unhovered",
     "urlpattern",
     "zoomist"
-  ]
+  ],
+  "[css]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }

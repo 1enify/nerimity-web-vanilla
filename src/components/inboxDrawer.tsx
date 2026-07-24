@@ -12,6 +12,7 @@ import { userPresenceStore } from "../store/userPresenceStore";
 import { User, userStore } from "../store/userStore";
 import { FriendStatus } from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
+import { getFont } from "../utils/font";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { reconcile } from "../utils/html";
 import { ManualMemo } from "../utils/memo";
@@ -46,6 +47,8 @@ const UserItem = (props: {
 
   const count = props.inbox?.count ?? props.friendItem?.count;
 
+  const font = getFont(props.user?.profile?.font);
+
   return (
     <Item.Base
       selected={channelStore.currentChannelId === channelId}
@@ -57,7 +60,9 @@ const UserItem = (props: {
     >
       <Avatar user={props.user} size={28} />
       <div class={style.info}>
-        <div class={style.username}>{props.user?.username}</div>
+        <div class={[style.username, font?.class, "font"]}>
+          {props.user?.username}
+        </div>
         <UserPresenceItem userId={props.user.id} />
       </div>
       <div class={style.right}>
