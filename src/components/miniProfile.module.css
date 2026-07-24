@@ -165,3 +165,29 @@
     }
   }
 }
+
+
+.section.presenceOption {
+  flex-direction: row;
+  padding: 12px;
+  padding-left: 16px;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background-color: var(--gray-800);
+  }
+  .userPresence {
+    flex: 1;
+    gap: 4px;
+    :global(.text)  {
+      font-size: 14px;
+    }
+  }
+}
+.presenceDot {
+  width: 10px;
+  height: 10px;
+  margin: 10px;
+  border-radius: var(--radius-max);
+  background-color: var(--color);
+}

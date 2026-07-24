@@ -25,11 +25,17 @@ const ItemLabel = (props: { children: any }) => {
   return <div class={style.label}>{props.children}</div>;
 };
 
-const Item = (props: { children: any; alert?: boolean; id?: string }) => {
+const Item = (props: {
+  children: any;
+  alert?: boolean;
+  id?: string;
+  selected?: boolean;
+}) => {
   return (
     <div
       class={[style.item, "ctx-item"]}
       data-alert={props.alert}
+      data-selected={props.selected}
       id={props.id}
     >
       {props.children}

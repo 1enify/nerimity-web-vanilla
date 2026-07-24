@@ -1,4 +1,5 @@
 import { t } from "@lingui/core/macro";
+
 import type { RawUserActivity, RawUserPresence } from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
 
@@ -11,25 +12,25 @@ export const UserPresenceType = {
 } as const;
 
 export const UserPresenceDetails = {
-  [UserPresenceType.OFFLINE]: {
-    id: "offline",
-    text: t`Offline`,
-  },
   [UserPresenceType.ONLINE]: {
-    id: "online",
+    id: "ONLINE",
     text: t`Online`,
   },
   [UserPresenceType.LOOKING_TO_PLAY]: {
-    id: "looking-to-play",
-    text: t`Looking to play`,
+    id: "LOOKING_TO_PLAY",
+    text: t`Looking to Play`,
   },
   [UserPresenceType.AWAY_FROM_KEYBOARD]: {
-    id: "away-from-keyboard",
-    text: t`Away from keyboard`,
+    id: "AWAY_FROM_KEYBOARD",
+    text: t`Away From Keyboard`,
   },
   [UserPresenceType.DO_NOT_DISTURB]: {
-    id: "do-not-disturb",
-    text: t`Do not disturb`,
+    id: "DO_NOT_DISTURB",
+    text: t`Do Not Disturb`,
+  },
+  [UserPresenceType.OFFLINE]: {
+    id: "OFFLINE",
+    text: t`Offline`,
   },
 } as const;
 

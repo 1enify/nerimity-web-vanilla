@@ -2,7 +2,11 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@trans";
 
 import { h, Fragment } from "../h";
-import { getUserDetails, type UserDetails } from "../services/userService";
+import {
+  getUserDetails,
+  updatePresence,
+  type UserDetails,
+} from "../services/userService";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { inboxStore } from "../store/inboxStore";
@@ -10,7 +14,11 @@ import { messageStore } from "../store/messageStore";
 import { serverMemberStore } from "../store/serverMemberStore";
 import type { ServerRole } from "../store/serverRoleStore";
 import { serverStore } from "../store/serverStore";
-import { userPresenceStore } from "../store/userPresenceStore";
+import {
+  UserPresenceDetails,
+  userPresenceStore,
+  UserPresenceType,
+} from "../store/userPresenceStore";
 import { userStore } from "../store/userStore";
 import { resolveGradient } from "../utils/color";
 import { friendlyTimestamp } from "../utils/date";
@@ -18,12 +26,15 @@ import { storeEmitter } from "../utils/EventEmitter";
 import { FocusAnimator } from "../utils/FocusAnimator";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { buildImageUrl } from "../utils/image";
+import { portalElement } from "../utils/portal";
 import { router } from "../utils/router";
 import { Avatar } from "./avatar";
 import { Button } from "./button";
 import { CdnIcon } from "./cdnIcon";
+import { ContextMenu } from "./ContextMenu";
 import { createEditServerRolesModal } from "./EditServerRolesModal";
 import { GradientText } from "./gradientText";
+import { Icon } from "./icon";
 import { createLogoutModal } from "./LogoutModal";
 import { Markup } from "./markup/markup";
 import { createModal, Modal } from "./modal";
@@ -163,6 +174,22 @@ export const MiniProfile = (props: {
 
     const server = serverStore.servers.get(serverStore.currentServerId!);
     const presence = userPresenceStore.presences.get(props.userId);
+    const userPresenceContainer = (<div></div>) as HTMLDivElement;
+
+    const renderUserPresence = () => {
+      userPresenceContainer.replaceChildren(
+        <UserPresence showOffline userId={props.userId} hideActivity />,
+      );
+    };
+    renderUserPresence();
+    storeEmitter.on(
+      "user:presence_update",
+      (event) => {
+        if (event.userId !== props.userId) return;
+        renderUserPresence();
+      },
+      contentAbort.signal,
+    );
 
     let rolesEl = createRolesSection({
       userId: props.userId,
@@ -195,7 +222,7 @@ export const MiniProfile = (props: {
               <ServerClanItem clan={details.profile.clan} />
             )}
           </span>
-          <UserPresence showOffline userId={props.userId} hideActivity />
+          {userPresenceContainer}
           {showStats && (
             <div class={style.stats}>
               {!hideFollowers && (
@@ -234,23 +261,27 @@ export const MiniProfile = (props: {
         </div>
 
         {props.options && (
-          <div class={[style.section, style.options]}>
-            <Button hoverBorder label={t`Profile`} icon="article_person" />
-            <Button
-              data-action="message"
-              hoverBorder
-              label={t`Notes`}
-              icon="book"
-            />
-            <Button hoverBorder label={t`Settings`} icon="settings" />
-            <Button
-              data-action="logout"
-              hoverBorder
-              label={t`Logout`}
-              alert
-              icon="logout"
-            />
-          </div>
+          <>
+            <PresenceOption signal={contentAbort.signal} />
+
+            <div class={[style.section, style.options]}>
+              <Button hoverBorder label={t`Profile`} icon="article_person" />
+              <Button
+                data-action="message"
+                hoverBorder
+                label={t`Notes`}
+                icon="book"
+              />
+              <Button hoverBorder label={t`Settings`} icon="settings" />
+              <Button
+                data-action="logout"
+                hoverBorder
+                label={t`Logout`}
+                alert
+                icon="logout"
+              />
+            </div>
+          </>
         )}
 
         {!props.options && (
@@ -531,4 +562,104 @@ const createRolesSection = (opts: {
     opts.signal,
   );
   return rolesEl;
+};
+
+const PresenceOption = (props: { signal: AbortSignal }) => {
+  let el = (
+    <div class={[style.section, style.presenceOption]}></div>
+  ) as HTMLDivElement;
+
+  const PresenceContextMenu = (props: { x: string; y: string }) => {
+    const userId = accountStore.currentUser?.id;
+    const presence = userPresenceStore.presences.get(userId!);
+    return (
+      <ContextMenu.Root pos={{ x: props.x, y: props.y }}>
+        {Object.values(UserPresenceDetails)
+          .sort((a, b) => {
+            if (a.id === "OFFLINE") return 1;
+            if (b.id === "OFFLINE") return -1;
+            return 0;
+          })
+          .map((p) => {
+            const id = p.id as keyof typeof UserPresenceType;
+            const apiId = UserPresenceType[id];
+
+            return (
+              <ContextMenu.Item id={p.id} selected={presence?.status === apiId}>
+                <div
+                  class={style.presenceDot}
+                  style={{ "--color": `var(--status-${p.id.toLowerCase()})` }}
+                />
+
+                <ContextMenu.Label>
+                  {p.id === "OFFLINE" ? t`Appear As Offline` : p.text}
+                </ContextMenu.Label>
+              </ContextMenu.Item>
+            );
+          })}
+      </ContextMenu.Root>
+    );
+  };
+  const rerender = () => {
+    el.replaceChildren(
+      <>
+        <UserPresence
+          class={style.userPresence}
+          hideActivity
+          userId={accountStore.currentUser?.id!}
+        />
+        <Icon name="chevron_forward" />
+      </>,
+    );
+  };
+
+  storeEmitter.on(
+    "user:presence_update",
+    (event) => {
+      if (event.userId !== accountStore.currentUser?.id) return;
+      rerender();
+    },
+    props.signal,
+  );
+
+  el.addEventListener(
+    "click",
+    (event) => {
+      const abortController = new AbortController();
+
+      const rect = (
+        event.currentTarget as HTMLDivElement
+      ).getBoundingClientRect();
+
+      createModal(
+        () => (
+          <PresenceContextMenu
+            x={`${rect.x + rect.width}px`}
+            y={`${rect.y}px`}
+          />
+        ),
+        abortController,
+      );
+
+      portalElement().addEventListener(
+        "click",
+        (event) => {
+          const target = event.target as HTMLElement;
+          const item = target.closest(".ctx-item");
+          if (!item) return;
+          abortController.abort();
+          const id = item.id as keyof typeof UserPresenceType;
+          const apiId = UserPresenceType[id];
+          if (apiId >= 0) {
+            updatePresence({ status: apiId });
+          }
+        },
+        { signal: abortController.signal },
+      );
+    },
+    { signal: props.signal },
+  );
+
+  rerender();
+  return el;
 };

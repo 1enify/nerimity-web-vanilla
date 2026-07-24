@@ -69,7 +69,10 @@ export const UserPresence = (props: {
   return (
     <span
       class={[style.userPresence, props.class]}
-      style={{ "--color": props.iconColor || `var(--status-${status.id})` }}
+      style={{
+        "--color":
+          props.iconColor || `var(--status-${status.id.toLowerCase()})`,
+      }}
     >
       {activityLabel ? (
         <>

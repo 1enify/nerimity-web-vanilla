@@ -51,6 +51,7 @@ export default defineConfig({
         "mail",
         "keyboard_arrow_down",
         "check",
+        "chevron_forward",
         "reply",
         "wrap_text",
         "content_copy",

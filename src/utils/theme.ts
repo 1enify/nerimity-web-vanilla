@@ -42,9 +42,9 @@ const DefaultTheme = {
 
   "status-offline": "#adadad",
   "status-online": "#78e380",
-  "status-looking-to-play": "#3b82f6",
-  "status-away-from-keyboard": "#ff8f2c",
-  "status-do-not-disturb": "#eb6e6e",
+  "status-looking_to_play": "#3b82f6",
+  "status-away_from_keyboard": "#ff8f2c",
+  "status-do_not_disturb": "#eb6e6e",
 
   "font-mono": `"SF Mono", "Cascadia Code", "Consolas", "Roboto Mono", "Menlo", "Monaco", "Courier New", monospace`,
 };
