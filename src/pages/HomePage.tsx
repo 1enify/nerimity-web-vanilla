@@ -6,8 +6,8 @@ const createHomePage = () => {
   const app = document.getElementById("app")!;
   const content = (
     <div class={style.homeContainer}>
-      <Button label="App" primary href="/app" />
-      <Button href="/login" label="Login" />
+      <Button label="App" component="a" primary href="/app" />
+      <Button component="a" href="/login" label="Login" />
     </div>
   ) as HTMLFormElement;
 

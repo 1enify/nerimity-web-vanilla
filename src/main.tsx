@@ -72,7 +72,7 @@ import { userAgent } from "./utils/userAgent";
       "/login",
       handleEnter(() => {
         if (getLocalItem("userToken")) {
-          return router.navigate("/app", { replace: true });
+          return location.replace("/app/");
         }
         navigate(LoginPage);
       }),

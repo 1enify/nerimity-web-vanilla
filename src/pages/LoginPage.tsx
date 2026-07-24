@@ -5,7 +5,6 @@ import { Input } from "../components/input";
 import { h } from "../h";
 import { postLogin } from "../services/authService";
 import { setLocalItem } from "../utils/localStorage";
-import { router } from "../utils/router";
 
 import style from "./LoginPage.module.css";
 
@@ -75,7 +74,7 @@ const createLoginPage = () => {
       return;
     }
     setLocalItem("userToken", res.token);
-    router.navigate("/app/", { replace: true });
+    location.replace("/app/");
   };
 
   form.addEventListener(
