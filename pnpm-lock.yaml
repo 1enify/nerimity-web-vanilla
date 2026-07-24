@@ -8,12 +8,39 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/dancing-script':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@fontsource/finger-paint':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@fontsource/grandstander':
+        specifier: ^5.2.7
+        version: 5.3.0
+      '@fontsource/ibm-plex-mono':
+        specifier: ^5.2.7
+        version: 5.3.0
+      '@fontsource/indie-flower':
+        specifier: ^5.2.7
+        version: 5.3.0
+      '@fontsource/mochiy-pop-one':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@fontsource/pixelify-sans':
+        specifier: ^5.2.7
+        version: 5.3.0
+      '@fontsource/roboto-slab':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@fontsource/sora':
+        specifier: ^5.2.8
+        version: 5.3.0
       '@formatjs/intl-durationformat':
         specifier: ^0.10.17
         version: 0.10.17
       '@lingui/core':
         specifier: ^6.5.0
-        version: 6.5.0
+        version: 6.5.0(supports-color@7.2.0)
       '@nerimity/nevula':
         specifier: ^0.15.1
         version: 0.15.1
@@ -50,19 +77,19 @@ importers:
     devDependencies:
       '@lingui/cli':
         specifier: ^6.5.0
-        version: 6.5.0(rolldown@1.1.5)
+        version: 6.5.0(rolldown@1.1.5)(supports-color@7.2.0)
       '@lingui/conf':
         specifier: ^6.5.0
         version: 6.5.0
       '@lingui/react':
         specifier: ^6.5.0
-        version: 6.5.0(react@19.2.7)
+        version: 6.5.0(react@19.2.7)(supports-color@7.2.0)
       '@lingui/vite-plugin':
         specifier: ^6.5.0
-        version: 6.5.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.5.0)(@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0)))(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
+        version: 6.5.0(@babel/core@7.29.7(supports-color@7.2.0))(@lingui/babel-plugin-lingui-macro@6.5.0(supports-color@7.2.0))(@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7(supports-color@7.2.0))(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0)))(rolldown@1.1.5)(supports-color@7.2.0)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
-        version: 0.2.3(@babel/core@7.29.7)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
+        version: 0.2.3(@babel/core@7.29.7(supports-color@7.2.0))(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
       oxfmt:
         specifier: ^0.59.0
         version: 0.59.0
@@ -161,6 +188,33 @@ packages:
 
   '@emnapi/wasi-threads@1.2.2':
     resolution: {integrity: sha512-c95qOXkHdydNKhscBTebqEC1CVAZpyqOfVfBzQ1qgzyl3gfeldUjIggDbIZgDKsHLgnsM+igH7TJ/eAasaVuMA==}
+
+  '@fontsource/dancing-script@5.3.0':
+    resolution: {integrity: sha512-/FFbz4ZCNN+eG2a6phkZB41iKmyCC6rq2blA/kG9OFeI3/tpzLNazND1bBdEnogLhpfg7o4NfauTbEEYSpSUGg==}
+
+  '@fontsource/finger-paint@5.3.0':
+    resolution: {integrity: sha512-Y6XRgOOdxX6Enjqal3a7lqWt2soQad746HsmBdzujHDjnPAk9EDpsskmFxULi1d29q3Tmt2ADOISPmAgvYH99Q==}
+
+  '@fontsource/grandstander@5.3.0':
+    resolution: {integrity: sha512-H5JYRYKhDYrIJWYcLMzoiTSiokIKzD0/Ndi5CB5wQzeeoRokigLuS6EPwlgNjhUypaIsoA0Xa9gZMA8EGLlSdQ==}
+
+  '@fontsource/ibm-plex-mono@5.3.0':
+    resolution: {integrity: sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==}
+
+  '@fontsource/indie-flower@5.3.0':
+    resolution: {integrity: sha512-Wo5eN/ruEQcyC3+ArzhlpqWQgph3VuCNbJlEkVw17LUd0uyTHOb9bTec4g9njQzjiL/ijACF27sSwy90L6kZBg==}
+
+  '@fontsource/mochiy-pop-one@5.3.0':
+    resolution: {integrity: sha512-WBI8UEfHsARWhPod0OJ+kswlR68KRhmV8uciQhb4m0bxmt4qpeq9yOh0MM9S9QzwQxjbQNRIjHEXh2yk5xldTw==}
+
+  '@fontsource/pixelify-sans@5.3.0':
+    resolution: {integrity: sha512-4RCe9nXbi7wUu5+H0FNX1sgPZ2kJ1MmY1uTkEfvQIzzqhoS8zGKJaJfdK8oreE0OU+5gM+NdurFi3H3FJRBvyw==}
+
+  '@fontsource/roboto-slab@5.3.0':
+    resolution: {integrity: sha512-nrl4sOt5OIoMV3VecGVOnNAADU/8vz6+CLtLr4cCAf106hVtSLCTObPN8Z2KdZ03U01UDvgIp3hsu2TX3jen6w==}
+
+  '@fontsource/sora@5.3.0':
+    resolution: {integrity: sha512-SqW3OpKxxfKvxDLPlbdrWf2KooPfbd+W3jaYn483o+Y/JrmU87vjFPNptDqwP428c3vY+gnranLhjcbRaXB0Jw==}
 
   '@formatjs/bigdecimal@0.2.7':
     resolution: {integrity: sha512-B4+XY/e4u5v261r3a37Kq2ax91gPZSKGyVpx8X5dygAggLlUz+6MeBpmAhaBFGB8WQ4JB1qD+QtKHk9aJkEb9Q==}
@@ -1467,20 +1521,20 @@ snapshots:
 
   '@babel/compat-data@7.29.7': {}
 
-  '@babel/core@7.29.7':
+  '@babel/core@7.29.7(supports-color@7.2.0)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
       '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
       '@babel/helpers': 7.29.7
       '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@7.2.0)
       '@babel/types': 7.29.7
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -1505,19 +1559,19 @@ snapshots:
 
   '@babel/helper-globals@7.29.7': {}
 
-  '@babel/helper-module-imports@7.29.7':
+  '@babel/helper-module-imports@7.29.7(supports-color@7.2.0)':
     dependencies:
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@7.2.0)
       '@babel/types': 7.29.7
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7)':
+  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7
+      '@babel/core': 7.29.7(supports-color@7.2.0)
+      '@babel/helper-module-imports': 7.29.7(supports-color@7.2.0)
       '@babel/helper-validator-identifier': 7.29.7
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -1544,7 +1598,7 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/types': 7.29.7
 
-  '@babel/traverse@7.29.7':
+  '@babel/traverse@7.29.7(supports-color@7.2.0)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
@@ -1552,7 +1606,7 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
       '@babel/types': 7.29.7
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -1579,6 +1633,24 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@fontsource/dancing-script@5.3.0': {}
+
+  '@fontsource/finger-paint@5.3.0': {}
+
+  '@fontsource/grandstander@5.3.0': {}
+
+  '@fontsource/ibm-plex-mono@5.3.0': {}
+
+  '@fontsource/indie-flower@5.3.0': {}
+
+  '@fontsource/mochiy-pop-one@5.3.0': {}
+
+  '@fontsource/pixelify-sans@5.3.0': {}
+
+  '@fontsource/roboto-slab@5.3.0': {}
+
+  '@fontsource/sora@5.3.0': {}
 
   '@formatjs/bigdecimal@0.2.7': {}
 
@@ -1629,25 +1701,25 @@ snapshots:
     dependencies:
       '@lingui/conf': 6.5.0
 
-  '@lingui/babel-plugin-lingui-macro@6.5.0':
+  '@lingui/babel-plugin-lingui-macro@6.5.0(supports-color@7.2.0)':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/types': 7.29.7
       '@lingui/conf': 6.5.0
       '@lingui/message-utils': 6.5.0
     transitivePeerDependencies:
       - supports-color
 
-  '@lingui/cli@6.5.0(rolldown@1.1.5)':
+  '@lingui/cli@6.5.0(rolldown@1.1.5)(supports-color@7.2.0)':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/generator': 7.29.7
       '@babel/parser': 7.29.7
       '@babel/types': 7.29.7
       '@lingui/babel-plugin-extract-messages': 6.5.0
-      '@lingui/babel-plugin-lingui-macro': 6.5.0
+      '@lingui/babel-plugin-lingui-macro': 6.5.0(supports-color@7.2.0)
       '@lingui/conf': 6.5.0
-      '@lingui/core': 6.5.0
+      '@lingui/core': 6.5.0(supports-color@7.2.0)
       '@lingui/format-po': 6.5.0
       '@lingui/message-utils': 6.5.0
       chokidar: 5.0.0
@@ -1674,9 +1746,9 @@ snapshots:
       lilconfig: 3.1.3
       normalize-path: 3.0.0
 
-  '@lingui/core@6.5.0':
+  '@lingui/core@6.5.0(supports-color@7.2.0)':
     dependencies:
-      '@lingui/babel-plugin-lingui-macro': 6.5.0
+      '@lingui/babel-plugin-lingui-macro': 6.5.0(supports-color@7.2.0)
       '@lingui/message-utils': 6.5.0
     transitivePeerDependencies:
       - supports-color
@@ -1693,23 +1765,23 @@ snapshots:
       '@messageformat/parser': 5.1.1
       js-sha256: 0.10.1
 
-  '@lingui/react@6.5.0(react@19.2.7)':
+  '@lingui/react@6.5.0(react@19.2.7)(supports-color@7.2.0)':
     dependencies:
-      '@lingui/babel-plugin-lingui-macro': 6.5.0
-      '@lingui/core': 6.5.0
+      '@lingui/babel-plugin-lingui-macro': 6.5.0(supports-color@7.2.0)
+      '@lingui/core': 6.5.0(supports-color@7.2.0)
       react: 19.2.7
     transitivePeerDependencies:
       - supports-color
 
-  '@lingui/vite-plugin@6.5.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.5.0)(@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0)))(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))':
+  '@lingui/vite-plugin@6.5.0(@babel/core@7.29.7(supports-color@7.2.0))(@lingui/babel-plugin-lingui-macro@6.5.0(supports-color@7.2.0))(@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7(supports-color@7.2.0))(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0)))(rolldown@1.1.5)(supports-color@7.2.0)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))':
     dependencies:
-      '@lingui/cli': 6.5.0(rolldown@1.1.5)
+      '@lingui/cli': 6.5.0(rolldown@1.1.5)(supports-color@7.2.0)
       '@lingui/conf': 6.5.0
       vite: 8.1.4(@types/node@26.1.1)(jiti@2.7.0)
     optionalDependencies:
-      '@babel/core': 7.29.7
-      '@lingui/babel-plugin-lingui-macro': 6.5.0
-      '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
+      '@babel/core': 7.29.7(supports-color@7.2.0)
+      '@lingui/babel-plugin-lingui-macro': 6.5.0(supports-color@7.2.0)
+      '@rolldown/plugin-babel': 0.2.3(@babel/core@7.29.7(supports-color@7.2.0))(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))
       rolldown: 1.1.5
     transitivePeerDependencies:
       - babel-plugin-macros
@@ -1896,9 +1968,9 @@ snapshots:
   '@rolldown/binding-win32-x64-msvc@1.1.5':
     optional: true
 
-  '@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))':
+  '@rolldown/plugin-babel@0.2.3(@babel/core@7.29.7(supports-color@7.2.0))(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(jiti@2.7.0))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@7.2.0)
       picomatch: 4.0.5
       rolldown: 1.1.5
     optionalDependencies:
@@ -2117,9 +2189,11 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  debug@4.4.3:
+  debug@4.4.3(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   dequal@2.0.3: {}
 

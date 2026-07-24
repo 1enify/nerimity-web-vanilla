@@ -15,6 +15,15 @@
     "lingui:compile": "lingui compile"
   },
   "dependencies": {
+    "@fontsource/dancing-script": "^5.2.8",
+    "@fontsource/finger-paint": "^5.2.8",
+    "@fontsource/grandstander": "^5.2.7",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/indie-flower": "^5.2.7",
+    "@fontsource/mochiy-pop-one": "^5.2.8",
+    "@fontsource/pixelify-sans": "^5.2.7",
+    "@fontsource/roboto-slab": "^5.2.8",
+    "@fontsource/sora": "^5.2.8",
     "@formatjs/intl-durationformat": "^0.10.17",
     "@lingui/core": "^6.5.0",
     "@nerimity/nevula": "^0.15.1",

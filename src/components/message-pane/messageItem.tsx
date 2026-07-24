@@ -10,6 +10,7 @@ import { userStore } from "../../store/userStore";
 import { MessageType, type RawReplyMessage } from "../../Types";
 import { resolveGradient } from "../../utils/color";
 import { formatTimestamp, friendlyTimestamp, fullDate } from "../../utils/date";
+import { getFont } from "../../utils/font";
 import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
 import { GradientText } from "../gradientText";
@@ -97,6 +98,8 @@ export const MessageItem = (props: {
 
   const isServerCreator = props.message.createdBy.id === server?.createdById;
 
+  const font = getFont(creator.profile?.font);
+
   return (
     <div data-message-id={props.message.id} data-grouped={group}>
       {newDay && <Marker label={fullDate(props.message.createdAt)} />}
@@ -151,7 +154,7 @@ export const MessageItem = (props: {
                         tag={Link}
                         decoration
                         href={`/app/profile/${creator.id}`}
-                        class={style.username}
+                        class={[style.username, font?.class]}
                         color={color}
                       >
                         {name}

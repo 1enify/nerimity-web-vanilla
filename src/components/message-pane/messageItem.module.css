@@ -111,9 +111,12 @@
     overflow: hidden;
     flex-shrink: 1;
     min-width: 0;
-    line-height: 1.25;
+    line-height: var(--lh);
     text-overflow: ellipsis;
+    letter-spacing: var(--ls);
     white-space: nowrap;
+    font-family: var(--font);
+    font-size: calc(14px * var(--scale, 1));
     font-weight: 500;
   }
   .avatarPlaceholder {
