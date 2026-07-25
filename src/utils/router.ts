@@ -41,6 +41,52 @@ const createRouter = () => {
       Object.entries(groups).filter(([k]) => isNaN(Number(k))),
     );
 
+  const getQueryParams = (search = location.search) => {
+    return new URLSearchParams(search);
+  };
+
+  const parseQuery = <
+    T extends Record<string, unknown> = Record<string, string | null>,
+  >(
+    searchParams: URLSearchParams = getQueryParams(),
+  ) => {
+    const entries = Array.from(searchParams.entries());
+    return Object.fromEntries(entries) as T;
+  };
+
+  const query = <
+    T extends Record<string, unknown> = Record<string, string | null>,
+  >() => {
+    return () => parseQuery<T>(getQueryParams());
+  };
+
+  type QueryListenerOptions<T> = {
+    signal?: AbortSignal;
+    defer?: boolean;
+    parse?: (searchParams: URLSearchParams) => T | null;
+  };
+
+  const createQueryListener = <
+    T extends Record<string, unknown> = Record<string, string | null>,
+  >(
+    callback: (value: T | null) => void,
+    opts: QueryListenerOptions<T> = {},
+  ) => {
+    const parse = opts.parse ?? ((searchParams) => parseQuery<T>(searchParams));
+    let previousValue = parse(getQueryParams());
+
+    const check = () => {
+      const nextValue = parse(getQueryParams());
+      if (nextValue !== previousValue) {
+        previousValue = nextValue;
+        callback(nextValue);
+      }
+    };
+
+    if (!opts.defer) check();
+    window.addEventListener("navigate", check, { signal: opts.signal });
+  };
+
   const createMatchListener = <P = {}>(
     pattern: string | string[],
     callback: (res: MatchResult<P> | null) => void,
@@ -98,7 +144,13 @@ const createRouter = () => {
     window.dispatchEvent(new Event("navigate"));
   });
 
-  return { navigate, match, createMatchListener };
+  return {
+    navigate,
+    match,
+    createMatchListener,
+    createQueryListener,
+    query,
+  };
 };
 
 export const router = createRouter();

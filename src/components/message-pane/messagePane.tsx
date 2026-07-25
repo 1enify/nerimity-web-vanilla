@@ -176,7 +176,7 @@ const createMessagePane = () => {
     if (!channelId) return;
     if (!accountStore.authenticated) return;
     const messages = messageStore.messages.get(channelId);
-    if (!messages) return;
+    if (!messages) return logs.replaceChildren();
 
     const lastLastSeenMessage = lastSeenMessage;
     let markerChanged = false;

@@ -101,7 +101,12 @@ function createMessageStore() {
 
   const loadMessages = async (
     channelId: string,
-    opts?: { before?: string; after?: string; force?: boolean },
+    opts?: {
+      before?: string;
+      after?: string;
+      around?: string;
+      force?: boolean;
+    },
   ) => {
     const existing = messages.get(channelId);
     if (!opts?.force && !opts?.before && !opts?.after && existing)
@@ -110,6 +115,7 @@ function createMessageStore() {
     const [rawMessages, error] = await fetchMessages(channelId, {
       before: opts?.before,
       after: opts?.after,
+      around: opts?.around,
     });
     if (error) {
       alert(error.message);

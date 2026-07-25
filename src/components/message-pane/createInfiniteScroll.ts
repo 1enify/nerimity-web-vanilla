@@ -3,6 +3,7 @@ import { channelStore } from "../../store/channelStore";
 import { messageStore } from "../../store/messageStore";
 import { debounce } from "../../utils/debounce";
 import { createIntersectionObserver } from "../../utils/observer";
+import { router } from "../../utils/router";
 
 interface InfiniteScrollParams {
   el: HTMLDivElement;
@@ -14,12 +15,14 @@ interface InfiniteScrollParams {
     preventScrollDown?: boolean;
     useSavedTop?: boolean;
     forceScrollDown?: boolean;
-  }) => void;
+  }) => Promise<void>;
   scrollToBottom: (force?: boolean) => void;
   shouldShowBottomSkel: () => boolean;
 }
 
 export const createInfiniteScroll = (params: InfiniteScrollParams) => {
+  const query = router.query<{ messageId: string }>();
+
   const {
     el,
     logs,
@@ -107,6 +110,9 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
       if (!accountStore.authenticated) {
         return setLoadingFalse();
       }
+      if (query().messageId) {
+        return scrollToMessage();
+      }
 
       const newMessages = await messageStore.loadMessages(channelId, { force });
       if (!newMessages) {
@@ -166,6 +172,64 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
     onTopSkeletonIntersect,
     { signal },
   );
+
+  const scrollToMessage = async () => {
+    const messageId = query().messageId;
+    const channelId = channelStore.currentChannelId!;
+    if (!messageId) return;
+    let animate = true;
+    router.navigate(location.pathname, { replace: true });
+
+    let messageItemEl = document.querySelector(
+      `[data-message-id="${messageId}"] .messageItem`,
+    ) as HTMLDivElement;
+
+    if (!messageItemEl) {
+      animate = false;
+
+      const property = channelStore.getProperty(channelId);
+      if (property) {
+        property.canLoadBottom = true;
+        property.canLoadTop = true;
+        property.loading = true;
+      }
+
+      messageStore.messages.delete(channelId);
+      await rerender();
+
+      await messageStore.loadMessages(channelId, {
+        around: messageId,
+        force: true,
+      });
+      await rerender();
+      if (property) {
+        property.loading = false;
+      }
+    }
+
+    setTimeout(() => {
+      messageItemEl = document.querySelector(
+        `[data-message-id="${messageId}"] .messageItem`,
+      ) as HTMLDivElement;
+
+      setTimeout(() => {
+        handleStillObserving();
+      }, 1000);
+      if (messageItemEl) {
+        messageItemEl?.scrollIntoView({
+          behavior: animate ? "smooth" : "instant",
+          inline: "nearest",
+          block: "center",
+        });
+
+        messageItemEl.style.background = "var(--primary-dark)";
+        setTimeout(() => {
+          messageItemEl.style.background = "";
+        }, 3000);
+      }
+    }, 100);
+  };
+  router.createQueryListener(scrollToMessage, { signal, defer: true });
 
   return { onBottomSkeletonIntersect };
 };

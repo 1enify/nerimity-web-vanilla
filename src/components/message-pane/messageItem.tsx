@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
 
+import { Dynamic } from "../../dynamic";
 import { h, Fragment } from "../../h";
 import { channelStore } from "../../store/channelStore";
 import { friendStore } from "../../store/friendStore";
@@ -303,7 +304,13 @@ const ReplyMessage = (props: { message: RawReplyMessage }) => {
   const font = getFont(member?.user?.profile?.font);
 
   return (
-    <div class={style.replyMessage}>
+    <Dynamic
+      component={message ? Link : "div"}
+      href={
+        message ? location.pathname + "?messageId=" + message?.id : undefined
+      }
+      class={style.replyMessage}
+    >
       {message ? (
         <>
           <Avatar user={creator} size={14} />
@@ -330,6 +337,6 @@ const ReplyMessage = (props: { message: RawReplyMessage }) => {
           class={`${style.replyMessage} ${style.deleted}`}
         >{t`Message was deleted.`}</span>
       )}
-    </div>
+    </Dynamic>
   );
 };

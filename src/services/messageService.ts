@@ -6,7 +6,7 @@ const fetchMessagesQueue = newQueue();
 
 export const fetchMessages = async (
   channelId: string,
-  opts?: { before?: string; after?: string },
+  opts?: { before?: string; after?: string; around?: string },
 ) => {
   return fetchMessagesQueue.add(() => {
     return request<RawMessage[]>(`/channels/${channelId}/messages`, {
