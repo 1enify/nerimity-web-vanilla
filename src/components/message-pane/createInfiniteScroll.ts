@@ -111,7 +111,7 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
         return setLoadingFalse();
       }
       if (query().messageId) {
-        return scrollToMessage();
+        return scrollToMessage(true);
       }
 
       const newMessages = await messageStore.loadMessages(channelId, { force });
@@ -173,12 +173,24 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
     { signal },
   );
 
-  const scrollToMessage = async () => {
+  window.addEventListener(
+    "focus",
+    () => {
+      setTimeout(() => {
+        scrollToMessage();
+      }, 100);
+    },
+    { signal },
+  );
+
+  const scrollToMessage = async (force = false) => {
     const messageId = query().messageId;
     const channelId = channelStore.currentChannelId!;
     if (!messageId) return;
     let animate = true;
-    router.navigate(location.pathname, { replace: true });
+    if (document.hasFocus()) {
+      router.navigate(location.pathname, { replace: true });
+    }
 
     let messageItemEl = document.querySelector(
       `[data-message-id="${messageId}"] .messageItem`,
@@ -188,6 +200,10 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
       animate = false;
 
       const property = channelStore.getProperty(channelId);
+      if (!force) {
+        if (property?.loading) return;
+      }
+
       if (property) {
         property.canLoadBottom = true;
         property.canLoadTop = true;
@@ -216,6 +232,7 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
         handleStillObserving();
       }, 1000);
       if (messageItemEl) {
+        console.log("fuck you mate");
         messageItemEl?.scrollIntoView({
           behavior: animate ? "smooth" : "instant",
           inline: "nearest",
@@ -229,7 +246,7 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
       }
     }, 100);
   };
-  router.createQueryListener(scrollToMessage, { signal, defer: true });
+  router.createQueryListener(() => scrollToMessage(), { signal, defer: true });
 
   return { onBottomSkeletonIntersect };
 };
