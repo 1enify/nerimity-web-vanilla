@@ -18,6 +18,11 @@ import { CodeBlock } from "./CodeBlock";
 import { Emoji } from "./Emoji";
 import { MarkupLink } from "./MarkupLink";
 import { Mention } from "./Mention";
+import {
+  QuoteMessage,
+  QuoteMessageHidden,
+  QuoteMessageInvalid,
+} from "./QuoteMessage";
 
 import style from "./markup.module.css";
 
@@ -30,6 +35,8 @@ export interface Props {
   class?: string | (string | boolean | undefined)[];
   serverId?: string | null;
   replaceCommandBotId?: boolean;
+  isQuote?: boolean;
+  container?: HTMLDivElement;
 }
 
 type RenderContext = {
@@ -114,7 +121,32 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
       break;
     }
     case "q": {
-      return <span>#quote-mention</span>;
+      const props = ctx.props();
+      const message = props.message;
+
+      if (ctx.quoteCount >= 10) {
+        break;
+      }
+
+      if (props.isQuote || props.inline) {
+        return <QuoteMessageHidden />;
+      }
+
+      const quote = message?.quotedMessages.find((m) => m.id === expr);
+
+      if (!quote) {
+        return <QuoteMessageInvalid />;
+      }
+
+      ctx.quoteCount += 1;
+
+      return (
+        <QuoteMessage
+          container={props.container!}
+          message={message!}
+          quote={quote}
+        />
+      );
     }
     case "ace": // legacy animated custom emoji gif
     case "wace": // animated custom emoji webp

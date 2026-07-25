@@ -212,6 +212,7 @@ export const MessageItem = (props: {
                         animateInitialOnFocus
                         text={props.message.content || ""}
                         message={props.message}
+                        container={props.container}
                         class={["focusAnimate", style.messageContent]}
                       />
                     )}
@@ -259,6 +260,9 @@ const MessageEmbeds = (props: {
       />
     );
 
+  if (embed && embed?.type !== "image") {
+    return <OGEmbed embed={embed} container={props.container} />;
+  }
   if (imageAttachment || imageEmbed || attachmentProperty?.image) {
     return (
       <ImageEmbed
@@ -268,9 +272,6 @@ const MessageEmbeds = (props: {
         container={props.container}
       />
     );
-  }
-  if (embed && embed?.type !== "image") {
-    return <OGEmbed embed={embed} container={props.container} />;
   }
   return null;
 };
