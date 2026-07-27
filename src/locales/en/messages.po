@@ -113,7 +113,7 @@ msgstr "Clear local settings"
 
 #: src/components/LogoutModal.tsx:40
 #: src/components/LogoutModal.tsx:53
-#: src/components/miniProfile.tsx:257
+#: src/components/miniProfile.tsx:255
 msgid "Logout"
 msgstr "Logout"
 
@@ -152,29 +152,37 @@ msgid "Home"
 msgstr "Home"
 
 #. placeholder {0}: online.length
-#: src/components/inboxDrawer.tsx:266
+#: src/components/inboxDrawer.tsx:271
 msgid "Online - {0}"
 msgstr "Online - {0}"
 
 #. placeholder {0}: offline.length
-#: src/components/inboxDrawer.tsx:267
+#: src/components/inboxDrawer.tsx:272
 msgid "Offline - {0}"
 msgstr "Offline - {0}"
 
-#: src/components/inboxDrawer.tsx:326
+#: src/components/inboxDrawer.tsx:331
 msgid "Inbox"
 msgstr "Inbox"
 
-#: src/components/inboxDrawer.tsx:327
+#: src/components/inboxDrawer.tsx:332
 msgid "Friends"
 msgstr "Friends"
+
+#: src/components/markup/QuoteMessage.tsx:61
+msgid "Invalid Quote"
+msgstr "Invalid Quote"
+
+#: src/components/markup/QuoteMessage.tsx:65
+msgid "Hidden Quote"
+msgstr "Hidden Quote"
 
 #: src/components/message-pane/HtmlEmbed.tsx:30
 msgid "Embed not supported by your browser."
 msgstr "Embed not supported by your browser."
 
 #: src/components/message-pane/JumpToPresent.tsx:23
-#: src/components/message-pane/messageItem.tsx:103
+#: src/components/message-pane/messageItem.tsx:107
 msgid "New Messages"
 msgstr "New Messages"
 
@@ -210,7 +218,7 @@ msgstr "{username} bumped the server."
 msgid "{username} pinned a message."
 msgstr "{username} pinned a message."
 
-#. placeholder {0}: channel.name!
+#. placeholder {0}: channel.name
 #: src/components/message-pane/chatbar.tsx:268
 msgid "Message in {0}"
 msgstr "Message in {0}"
@@ -260,35 +268,35 @@ msgstr "Mentions everyone."
 msgid "Role"
 msgstr "Role"
 
-#: src/components/message-pane/messageItem.tsx:143
+#: src/components/message-pane/messageItem.tsx:147
 msgid "Muted until {mutedUntil}"
 msgstr "Muted until {mutedUntil}"
 
-#: src/components/message-pane/messageItem.tsx:163
+#: src/components/message-pane/messageItem.tsx:167
 msgid "New to Nerimity"
 msgstr "New to Nerimity"
 
-#: src/components/message-pane/messageItem.tsx:178
+#: src/components/message-pane/messageItem.tsx:182
 msgid "Pinned Message"
 msgstr "Pinned Message"
 
-#: src/components/message-pane/messageItem.tsx:187
+#: src/components/message-pane/messageItem.tsx:191
 msgid "Webhook"
 msgstr "Webhook"
 
-#: src/components/message-pane/messageItem.tsx:189
+#: src/components/message-pane/messageItem.tsx:193
 msgid "Bot"
 msgstr "Bot"
 
-#: src/components/message-pane/messageItem.tsx:190
+#: src/components/message-pane/messageItem.tsx:194
 msgid "Owner"
 msgstr "Owner"
 
-#: src/components/message-pane/messageItem.tsx:198
+#: src/components/message-pane/messageItem.tsx:202
 msgid "Silent"
 msgstr "Silent"
 
-#: src/components/message-pane/messageItem.tsx:325
+#: src/components/message-pane/messageItem.tsx:338
 msgid "Message was deleted."
 msgstr "Message was deleted."
 
@@ -313,74 +321,78 @@ msgstr "Mention"
 msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
-#: src/components/miniProfile.tsx:208
+#: src/components/miniProfile.tsx:205
 msgid "<0>{followers}</0> Followers"
 msgstr "<0>{followers}</0> Followers"
 
-#: src/components/miniProfile.tsx:215
+#: src/components/miniProfile.tsx:212
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
-#: src/components/miniProfile.tsx:227
+#: src/components/miniProfile.tsx:224
 msgid "Full Profile"
 msgstr "Full Profile"
 
-#: src/components/miniProfile.tsx:234
-#: src/components/miniProfile.tsx:250
+#: src/components/miniProfile.tsx:231
+#: src/components/miniProfile.tsx:248
 msgid "Notes"
 msgstr "Notes"
 
-#: src/components/miniProfile.tsx:234
+#: src/components/miniProfile.tsx:231
 msgid "Message"
 msgstr "Message"
 
-#: src/components/miniProfile.tsx:246
+#: src/components/miniProfile.tsx:244
 msgid "Profile"
 msgstr "Profile"
 
-#: src/components/miniProfile.tsx:253
+#: src/components/miniProfile.tsx:251
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/miniProfile.tsx:269
+#: src/components/miniProfile.tsx:267
 msgid "Roles"
 msgstr "Roles"
 
-#: src/components/miniProfile.tsx:283
+#: src/components/miniProfile.tsx:281
 msgid "Joined"
 msgstr "Joined"
 
-#: src/components/miniProfile.tsx:299
+#: src/components/miniProfile.tsx:297
 msgid "About Me"
 msgstr "About Me"
 
-#: src/components/miniProfile.tsx:567
+#: src/components/miniProfile.tsx:571
 msgid "Appear As Offline"
 msgstr "Appear As Offline"
 
-#: src/components/serverMemberList.tsx:40
+#: src/components/miniProfile.tsx:657
+msgid "Set Custom Status"
+msgstr "Set Custom Status"
+
+#: src/components/serverMemberList.tsx:42
 #: src/store/userPresenceStore.ts:33
 msgid "Offline"
 msgstr "Offline"
 
-#: src/pages/LoginPage.tsx:16
+#: src/pages/LoginPage.tsx:15
 msgid "Email"
 msgstr "Email"
 
-#: src/pages/LoginPage.tsx:19
+#: src/pages/LoginPage.tsx:18
 msgid "Password"
 msgstr "Password"
 
-#: src/pages/LoginPage.tsx:24
-#: src/pages/LoginPage.tsx:59
+#: src/pages/LoginPage.tsx:23
+#: src/pages/LoginPage.tsx:58
 msgid "Login"
 msgstr "Login"
 
-#: src/pages/LoginPage.tsx:31
+#: src/pages/LoginPage.tsx:30
 msgid "Login to continue"
 msgstr "Login to continue"
 
-#: src/pages/LoginPage.tsx:67
+#: src/pages/LoginPage.tsx:66
 msgid "Logging in..."
 msgstr "Logging in..."
 

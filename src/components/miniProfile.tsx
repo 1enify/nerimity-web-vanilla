@@ -238,6 +238,7 @@ export const MiniProfile = (props: {
         {props.options && (
           <>
             <PresenceOption signal={contentAbort.signal} />
+            <CustomStatus signal={contentAbort.signal} />
 
             <div class={[style.section, style.options]}>
               <Button hoverBorder label={t`Profile`} icon="article_person" />
@@ -582,6 +583,7 @@ const PresenceOption = (props: { signal: AbortSignal }) => {
           class={style.userPresence}
           hideActivity
           userId={accountStore.currentUser?.id!}
+          hideCustomStatus
         />
         <Icon name="chevron_forward" />
       </>,
@@ -634,6 +636,44 @@ const PresenceOption = (props: { signal: AbortSignal }) => {
     },
     { signal: props.signal },
   );
+
+  rerender();
+  return el;
+};
+
+const CustomStatus = (props: { signal: AbortSignal }) => {
+  let el = (
+    <div class={[style.section, style.customStatusOption]}></div>
+  ) as HTMLDivElement;
+
+  const rerender = () => {
+    const presence = userPresenceStore.presences.get(
+      accountStore.currentUser?.id!,
+    );
+    el.replaceChildren(
+      <>
+        <Icon class={style.icon} name="edit" />
+        <Markup
+          text={presence?.custom ?? t`Set Custom Status`}
+          inline
+          animateInitialOnFocus
+          animateEmoji
+          class={style.markup}
+        />
+      </>,
+    );
+  };
+
+  storeEmitter.on(
+    "user:presence_update",
+    (event) => {
+      if (event.userId !== accountStore.currentUser?.id) return;
+      rerender();
+    },
+    props.signal,
+  );
+
+  // el.addEventListener("click", (event) => {}, { signal: props.signal });
 
   rerender();
   return el;

@@ -151,6 +151,35 @@
 }
 
 
+.section.customStatusOption {
+  flex-direction: row;
+  min-height: 48px;
+  padding: 12px;
+  padding-left: 16px;
+  cursor: pointer;
+  user-select: none;
+  gap: 6px;
+  
+  &:hover {
+    background-color: var(--gray-800);
+    .setCustomStatus,
+    .icon {
+      opacity: 1;
+    }
+  }
+  .icon {
+    margin-top: 2px;
+    opacity: 0.6;
+    color: var(--primary-color);
+    font-size: 16px;
+  }
+
+  .markup {
+    line-height: 1.8;
+    font-size: 12px;
+  }
+
+}
 .section.presenceOption {
   flex-direction: row;
   padding: 12px;
@@ -164,7 +193,7 @@
     flex: 1;
     gap: 4px;
     :global(.text)  {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 }

@@ -35,6 +35,7 @@ export const UserPresence = (props: {
   showAction?: boolean;
   iconColor?: string;
   class?: string | (string | boolean | undefined)[];
+  hideCustomStatus?: boolean;
 }) => {
   const presence = userPresenceStore.presences.get(props.userId);
   const status = UserPresenceDetails[presence?.status || 0];
@@ -44,7 +45,7 @@ export const UserPresence = (props: {
   }
 
   let label = status.text;
-  if (presence?.custom) {
+  if (!props.hideCustomStatus && presence?.custom) {
     label = presence.custom;
   }
 
