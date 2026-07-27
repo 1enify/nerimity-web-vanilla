@@ -86,6 +86,7 @@ export interface RawServer {
   createdById: string;
   createdAt: number;
   avatar?: string;
+  banner?: string;
   serverId: string;
   order?: number;
   customEmojis?: RawCustomEmoji[];

@@ -41,15 +41,35 @@ export function createVirtualList<T, V extends string | number>(
   };
 
   const onScroll = () => {
-    cachedScrollTop = props.parentEl.scrollTop; // read immediately on scroll
+    cachedScrollTop = props.parentEl.scrollTop;
     cachedClientHeight = props.parentEl.clientHeight;
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(updateChunks);
   };
 
+  const getContainerOffsetTop = () => {
+    let offset = 0;
+    let el: HTMLElement | null = containerEl;
+
+    while (el && el !== props.parentEl) {
+      offset += el.offsetTop;
+      el = el.offsetParent as HTMLElement | null;
+    }
+
+    if (el === props.parentEl) return offset;
+
+    const parentRect = props.parentEl.getBoundingClientRect();
+    const containerRect = containerEl.getBoundingClientRect();
+    return Math.max(
+      0,
+      containerRect.top - parentRect.top + props.parentEl.scrollTop,
+    );
+  };
+
   const updateChunks = () => {
-    const top = Math.max(0, cachedScrollTop - overscan);
-    const bottom = cachedScrollTop + cachedClientHeight + overscan;
+    const offsetTop = getContainerOffsetTop();
+    const top = Math.max(0, cachedScrollTop - offsetTop - overscan);
+    const bottom = cachedScrollTop - offsetTop + cachedClientHeight + overscan;
 
     const items: Item<T, V>[] = [];
     const pos: number[] = [];

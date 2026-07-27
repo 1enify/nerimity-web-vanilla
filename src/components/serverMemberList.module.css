@@ -50,11 +50,18 @@
   display: flex;
   align-items: center;
   height: 40px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: 2px;
+  margin-left: 2px;
   gap: 8px;
   .roleName {
     color: var(--text-muted);
     font-size: 14px;
   }
+}
+
+.bannerContainer {
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-top: 6px;
+  border-radius: var(--radius-6);
 }

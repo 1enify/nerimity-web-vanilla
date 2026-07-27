@@ -32,6 +32,7 @@ export class Server {
   name: string;
   hexColor: string;
   avatar?: string;
+  banner?: string;
   defaultChannelId: string;
   defaultRoleId: string;
   createdById: string;
@@ -50,6 +51,7 @@ export class Server {
     this.defaultRoleId = data.defaultRoleId;
     this.createdById = data.createdById;
     this.createdAt = data.createdAt;
+    this.banner = data.banner;
   }
   getOrLoadBotCommands() {
     return getBotCommandsQueue.add(async () => {

@@ -16,6 +16,7 @@ import { HoverAnimator } from "../utils/HoverAnimator";
 import { ManualMemo } from "../utils/memo";
 import { RolePermissionFlag } from "../utils/RolePermissionFlag";
 import { Avatar } from "./avatar";
+import { Banner } from "./Banner";
 import { CdnIcon } from "./cdnIcon";
 import { Drawer } from "./drawer";
 import { GradientText } from "./gradientText";
@@ -108,7 +109,16 @@ const roleOrder = () => {
 };
 
 export const createServerMemberList = () => {
-  let containerEl: HTMLDivElement | null = null;
+  let membersListEl = (<div class={style.membersList}></div>) as HTMLDivElement;
+  let bannerContainerEl = (
+    <div class={style.bannerContainer}></div>
+  ) as HTMLDivElement;
+  let containerEl = (
+    <div class={[style.memberListContainer, "scrollbarHover"]}>
+      {bannerContainerEl}
+      {membersListEl}
+    </div>
+  ) as HTMLDivElement;
   let hoverAnimator: HoverAnimator | null = null;
   const ac = new AbortController();
   const { signal } = ac;
@@ -265,6 +275,7 @@ export const createServerMemberList = () => {
   let vt: ReturnType<typeof createVirtualList> | null = null;
   const renderList = () => {
     if (!containerEl) return;
+
     if (vt) {
       vt.updateItems();
       return;
@@ -280,7 +291,7 @@ export const createServerMemberList = () => {
       renderItem: memberItem,
     });
 
-    containerEl.replaceChildren(vt.render());
+    membersListEl.replaceChildren(vt.render());
   };
 
   storeEmitter.on(
@@ -309,6 +320,16 @@ export const createServerMemberList = () => {
     },
     signal,
   );
+
+  const rerenderBanner = () => {
+    const server = serverStore.currentServer();
+    if (!server?.banner) return bannerContainerEl.replaceChildren();
+    bannerContainerEl.replaceChildren(
+      <Banner server={serverStore.currentServer()} size={600} />,
+    );
+  };
+  storeEmitter.on("navigate:serverId", rerenderBanner, signal);
+  storeEmitter.on("ws:authStateUpdate", rerenderBanner, signal);
 
   const updateVisibility = () => {
     if (memberListHidden) {
@@ -366,36 +387,38 @@ export const createServerMemberList = () => {
   );
 
   const render = () => {
-    containerEl = (
-      <div class={[style.memberListContainer, "scrollbarHover"]}></div>
-    ) as unknown as HTMLDivElement;
-
-    hoverAnimator = new HoverAnimator(containerEl, [
-      { trigger: `.${style.memberItemContainer}`, image: ".clanIcon img" },
-      {
-        trigger: `.${style.memberItemContainer}`,
-        image: "img.avatar",
-        crossAnimate: {
-          attr: "data-role-id",
-          targetAttr: "data-role-header-id",
-          target: "img",
-        },
-      },
-      { trigger: `.${style.roleItemContainer}`, image: "img" },
-    ]);
-
     renderList();
-
+    rerenderBanner();
     return containerEl;
   };
+  hoverAnimator = new HoverAnimator(containerEl, [
+    { trigger: `.${style.memberItemContainer}`, image: ".clanIcon img" },
+    {
+      trigger: `.${style.memberItemContainer}`,
+      image: "img.avatar",
+      crossAnimate: {
+        attr: "data-role-id",
+        targetAttr: "data-role-header-id",
+        target: "img",
+      },
+    },
+    { trigger: `.${style.roleItemContainer}`, image: "img" },
+    {
+      trigger: `.${style.memberListContainer}`,
+      image: `.${style.bannerContainer}` + " img",
+    },
+  ]);
 
   const destroy = () => {
     ac.abort();
     vt?.destroy();
     hoverAnimator?.destroy();
 
-    containerEl?.remove();
-    containerEl = null;
+    containerEl.remove();
+    (containerEl as any) = null;
+
+    membersListEl.remove();
+    (membersListEl as any) = null;
   };
 
   return {

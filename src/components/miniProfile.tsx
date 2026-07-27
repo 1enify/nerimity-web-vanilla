@@ -26,10 +26,10 @@ import { storeEmitter } from "../utils/EventEmitter";
 import { FocusAnimator } from "../utils/FocusAnimator";
 import { getFont } from "../utils/font";
 import { HoverAnimator } from "../utils/HoverAnimator";
-import { buildImageUrl } from "../utils/image";
 import { portalElement } from "../utils/portal";
 import { router } from "../utils/router";
 import { Avatar } from "./avatar";
+import { Banner } from "./Banner";
 import { Button } from "./button";
 import { CdnIcon } from "./cdnIcon";
 import { ContextMenu } from "./ContextMenu";
@@ -110,34 +110,6 @@ const MiniProfileModal = (props: {
         />
       </Modal.Body>
     </Modal.Root>
-  );
-};
-
-const Banner = (props: {
-  user: { banner?: string; hexColor?: string };
-  children?: any;
-  initialAnimate?: boolean;
-}) => {
-  const [url, animated] = buildImageUrl(props.user?.banner, {
-    animate: props.initialAnimate,
-  });
-  return (
-    <div class={style.banner}>
-      {!url && (
-        <div
-          style={{ "--color": props.user?.hexColor }}
-          class={style.bannerImage}
-        />
-      )}
-      {url && (
-        <img
-          {...(animated && { "data-img-anim": "" })}
-          class={style.bannerImage}
-          src={url}
-        />
-      )}
-      <div class={style.overlay}>{props.children}</div>
-    </div>
   );
 };
 
