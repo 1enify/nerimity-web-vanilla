@@ -56,6 +56,9 @@ export const createMiniProfileHandler = (opts: { signal: AbortSignal }) => {
         const href = anchorEl?.attributes.getNamedItem("href")?.value;
         const options = anchorEl?.dataset.options === "true";
 
+        const noMini = anchorEl.dataset.noMini;
+        if (noMini) return;
+
         const modalAbortController = new AbortController();
 
         const isProfilePath = router.match<{ id: string }>(
@@ -223,6 +226,9 @@ export const MiniProfile = (props: {
                 class={style.button}
                 icon="article_person"
                 label={t`Full Profile`}
+                data-no-mini
+                href={`/app/profile/${user?.id}`}
+                data-action="profile"
               />
               {!isCurrentChannel && (
                 <Button
@@ -242,7 +248,14 @@ export const MiniProfile = (props: {
             <CustomStatus signal={contentAbort.signal} />
 
             <div class={[style.section, style.options]}>
-              <Button hoverBorder label={t`Profile`} icon="article_person" />
+              <Button
+                href={`/app/profile/${user?.id}`}
+                hoverBorder
+                data-no-mini
+                label={t`Profile`}
+                icon="article_person"
+                data-action="profile"
+              />
               <Button
                 data-action="message"
                 hoverBorder
@@ -417,6 +430,9 @@ export const MiniProfile = (props: {
         }
         if (button.dataset.action === "logout") {
           createLogoutModal();
+        }
+        if (button.dataset.action === "profile") {
+          props.abort.abort();
         }
       }
     },

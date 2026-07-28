@@ -15,6 +15,7 @@ import { lazy, type LazyResult } from "../../utils/lazy";
 import { router } from "../../utils/router";
 import type createHomePane from "./createHomePane";
 import type createInboxChannelRoute from "./createInboxChannelRoute";
+import type createProfilePane from "./createProfilePane";
 import type createServerChannelRoute from "./createServerChannelRoute";
 
 import style from "./AppPage.module.css";
@@ -58,6 +59,7 @@ const createAppPage = () => {
   let inboxChannelPage: ReturnType<typeof createInboxChannelRoute> | null =
     null;
   let dashboardPane: ReturnType<typeof createHomePane> | null = null;
+  let profilePane: ReturnType<typeof createProfilePane> | null = null;
 
   const appRouteSource = createTokenSource();
   const contentSource = createTokenSource();
@@ -76,6 +78,23 @@ const createAppPage = () => {
       const createHomePane = (await import("./createHomePane")).default;
       if (isStale()) return;
       dashboardPane = createHomePane(content);
+    },
+    { signal },
+  );
+
+  router.createMatchListener<{ userId: string }>(
+    "/app/profile/:userId",
+    async (res) => {
+      if (!res) {
+        profilePane?.destroy();
+        profilePane = null;
+      }
+      const isStale = contentSource.capture();
+      const createProfilePaneRoute = (await import("./createProfilePane"))
+        .default;
+
+      if (isStale()) return;
+      profilePane = createProfilePaneRoute(content);
     },
     { signal },
   );
