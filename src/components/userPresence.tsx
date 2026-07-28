@@ -12,18 +12,24 @@ import style from "./userPresence.module.css";
 const getActivityLabel = (
   activity: RawUserActivity | undefined,
   type: ActivityType,
-  nameOnly?: boolean,
+  showAction?: boolean,
 ) => {
   if (!activity) return null;
   const title = activity?.title;
   const name = activity?.name;
-  if (name && nameOnly) return name;
   const subtitle = activity?.subtitle;
-  if (!title) return name;
+
+  if (name && !showAction) return name;
 
   if (type.isMusic || type.isVideo) {
     return title + (subtitle ? ` - ${subtitle}` : "");
   }
+
+  const sub =
+    title?.trim() && subtitle?.trim()
+      ? `${title} - ${subtitle}`
+      : title || subtitle;
+  return name + (sub ? ` - ${sub}` : "");
 };
 
 export const UserPresence = (props: {
@@ -57,7 +63,7 @@ export const UserPresence = (props: {
   const activityLabel = getActivityLabel(
     activity,
     activityType,
-    props.showAction,
+    !props.showAction,
   );
 
   const countEl =

@@ -51,6 +51,7 @@ export const createMiniProfileHandler = (opts: { signal: AbortSignal }) => {
     (e) => {
       if (e.target instanceof Element) {
         const anchorEl = e.target.closest("a[data-route]") as HTMLAnchorElement;
+        if (!anchorEl) return;
 
         const href = anchorEl?.attributes.getNamedItem("href")?.value;
         const options = anchorEl?.dataset.options === "true";
