@@ -7,10 +7,12 @@ const Root = (props: {
   checked?: boolean;
   [key: string]: any;
   children?: any;
+  disabled?: boolean;
 }) => {
   const { checked, children, ...rest } = props;
   return (
     <div
+      data-disabled={props.disabled}
       data-checked={checked}
       {...rest}
       class={[style.checkboxContainer, props.class]}
@@ -36,6 +38,7 @@ const createHandler = (opts: {
   el: HTMLDivElement;
   onChange: (checked: boolean, el: HTMLElement) => void;
   signal: AbortSignal;
+  disableUpdateState?: boolean;
 }) => {
   opts.el.addEventListener(
     "click",
@@ -45,9 +48,15 @@ const createHandler = (opts: {
         `.${style.checkboxContainer}`,
       ) as HTMLDivElement;
       if (checkEl) {
+        if (checkEl.dataset.disabled) {
+          return;
+        }
+
         const checked = checkEl.dataset.checked === "true" ? false : true;
 
-        checkEl.dataset.checked = `${checked}`;
+        if (!opts.disableUpdateState) {
+          checkEl.dataset.checked = `${checked}`;
+        }
 
         opts.onChange(checked, checkEl);
       }

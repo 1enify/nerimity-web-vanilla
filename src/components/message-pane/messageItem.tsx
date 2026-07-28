@@ -2,6 +2,7 @@ import { t } from "@lingui/core/macro";
 
 import { Dynamic } from "../../dynamic";
 import { h, Fragment } from "../../h";
+import { accountStore } from "../../store/accountStore";
 import { channelStore } from "../../store/channelStore";
 import { friendStore } from "../../store/friendStore";
 import { type Message } from "../../store/messageStore";
@@ -100,6 +101,9 @@ export const MessageItem = (props: {
   const isServerCreator = props.message.createdBy.id === server?.createdById;
 
   const font = getFont(creator.profile?.font);
+
+  const isCurrentUser =
+    props.message.createdBy.id === accountStore.currentUser?.id;
 
   return (
     <div data-message-id={props.message.id} data-grouped={group}>
@@ -214,6 +218,7 @@ export const MessageItem = (props: {
                         text={props.message.content || ""}
                         message={props.message}
                         container={props.container}
+                        canEditCheckboxes={isCurrentUser}
                         class={["focusAnimate", style.messageContent]}
                       />
                     )}

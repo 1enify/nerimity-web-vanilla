@@ -19,6 +19,7 @@ import { setRecentServerChannel } from "../../utils/recentServerChannels";
 import { ContextMenu } from "../ContextMenu";
 import { Drawer } from "../drawer";
 import { handleImagePreviewModal } from "../ImagePreviewModal";
+import { handleMarkupCheckboxClick } from "../markup/markup";
 import { createModal } from "../modal";
 import { MessageSkeleton } from "../skeleton";
 import { createChatbar } from "./chatbar";
@@ -317,6 +318,14 @@ const createMessagePane = () => {
       rootMargin: "0px 0px -50px 0px",
     },
   );
+
+  handleMarkupCheckboxClick({
+    el: logs,
+    signal,
+    onChange({ content, message }) {
+      messageStore.editMessage(message.channelId, message.id, content);
+    },
+  });
 
   const checkAndScrollBottom = () => {
     const property = getChannelProperty();

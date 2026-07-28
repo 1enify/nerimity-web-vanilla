@@ -13,6 +13,7 @@ import { serverRoleStore } from "../../store/serverRoleStore";
 import { serverStore } from "../../store/serverStore";
 import { userStore } from "../../store/userStore";
 import { shortcodeToUnicode, unicodeToShortcode } from "../../utils/emojis";
+import { Checkbox } from "../checkbox";
 import { Icon } from "../icon";
 import { CodeBlock } from "./CodeBlock";
 import { Emoji } from "./Emoji";
@@ -37,6 +38,7 @@ export interface Props {
   replaceCommandBotId?: boolean;
   isQuote?: boolean;
   container?: HTMLDivElement;
+  canEditCheckboxes?: boolean;
 }
 
 type RenderContext = {
@@ -74,6 +76,11 @@ const CustomColorExprRegex = new RegExp(
     ")+)" +
     /\s+(?<text>.*)$/.source,
 );
+
+const markupCheckbox = new WeakMap<
+  HTMLElement,
+  { message: Message; entity: Entity }
+>();
 
 function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
   const type = entity.params.type;
@@ -276,6 +283,29 @@ function transformEntity(entity: Entity, ctx: RenderContext): any {
         </blockquote>
       );
     }
+    case "checkbox": {
+      const { checked } = entity.params;
+      const props = ctx.props();
+
+      const checkbox = (
+        <Checkbox.Root
+          class={style.checkbox}
+          checked={checked}
+          disabled={!props.canEditCheckboxes}
+        >
+          <Checkbox.Box />
+        </Checkbox.Root>
+      ) as HTMLDivElement;
+
+      if (props.message) {
+        markupCheckbox.set(checkbox, {
+          message: props.message,
+          entity: entity,
+        });
+      }
+
+      return checkbox;
+    }
 
     case "color": {
       const { color } = entity.params;
@@ -390,4 +420,26 @@ export function Markup(props: Props) {
       {props.message?.editedAt ? <Icon class={style.edit} name="edit" /> : null}
     </span>
   );
+}
+
+export function handleMarkupCheckboxClick(opts: {
+  el: HTMLDivElement;
+  onChange: (event: { message: Message; content: string }) => void;
+  signal: AbortSignal;
+}) {
+  Checkbox.createHandler({
+    ...opts,
+    disableUpdateState: true,
+    onChange(state, el) {
+      const data = markupCheckbox.get(el);
+      if (!data) return;
+
+      const text = data.message.content ?? "";
+      const before = text.slice(0, data.entity.outerSpan.start);
+      const checkbox = `-[${state ? "x" : " "}]`;
+      const after = text.slice(data.entity.outerSpan.end, text.length);
+      const content = `${before}${checkbox}${after}`;
+      opts.onChange({ message: data.message, content });
+    },
+  });
 }
