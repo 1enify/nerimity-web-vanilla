@@ -30,7 +30,7 @@
   .avatars {
     display: flex;
 
-    .avatar {
+    :global(.avatar) {
       margin-left: -6px;
       border-radius: 50%;
       outline: 2px solid var(--gray-900);

@@ -99,8 +99,9 @@ Remove mobile blue highlight on tap
 }
 
 .font {
+  --font-size: 14px;
   line-height: var(--lh);
   letter-spacing: var(--ls);
-  font-size: calc(14px * var(--scale, 1));
   font-family: var(--font);
+  font-size: calc(var(--font-size) * var(--scale, 1));
 }

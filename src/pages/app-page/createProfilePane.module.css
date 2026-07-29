@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  padding-right: 10px;
+  padding-left: 10px;
+  place-self: center;
+  gap: 8px;
+}
+
+.content {
+  width: 100%;
+  .banner {
+    overflow: hidden;
+    border-radius: var(--radius-16);
+    transition: filter 0.2s;
+    filter: brightness(70%);
+    &:hover {
+      filter: none;
+    }
+  }
+  .overlayInfo {
+    position: relative;
+    z-index: 1111111;
+    margin-top: -64px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+  }
+}
+
+.section {
+  padding: 12px;
+  border-radius: var(--radius-16);
+  background-color: var(--gray-900);
+}
+
+.detailsSection {
+  font-size: 16px;
+  .nameAndTag {
+    margin-bottom: 6px;
+    .clan {
+      margin-left: 6px;
+    }
+    .username {
+      --font-size: 16px;
+    }
+    .tag {
+      opacity: 0.6;
+    }
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    color: var(--gray-400);
+    gap: 8px;
+    .full {
+      color: var(--gray-100);
+    }
+  }
+  .bio {
+    overflow: auto;
+    max-height: 800px;
+    padding-top: 26px;
+    font-size: 14px;
+  }
+}
+
+.sidebar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+  width: 300px;
+  border-radius: var(--radius-16);
+  background-color: var(--gray-900);
+}

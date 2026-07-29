@@ -7,6 +7,7 @@ import { serverStore } from "../store/serverStore";
 import { userStore } from "../store/userStore";
 import { portalElement } from "../utils/portal";
 import { RolePermissionFlag } from "../utils/RolePermissionFlag";
+import { router } from "../utils/router";
 import { Avatar } from "./avatar";
 import { createBanMemberModal } from "./BanMemberModal";
 import { ContextMenu } from "./ContextMenu";
@@ -45,6 +46,9 @@ export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
         const item = target.closest(".ctx-item");
         const id = item?.id;
         switch (id) {
+          case "view_profile":
+            router.navigate("/app/profile/" + user?.id);
+            break;
           case "copy_id":
             navigator.clipboard.writeText(userId);
             break;
