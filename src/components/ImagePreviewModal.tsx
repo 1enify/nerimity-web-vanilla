@@ -79,10 +79,14 @@ const createImagePreviewModal = (opts: {
   let downX = 0;
   let downY = 0;
   let MOVE_THRESHOLD = 10;
-  el.addEventListener("pointerdown", (e) => {
-    downX = e.clientX;
-    downY = e.clientY;
-  });
+  el.addEventListener(
+    "pointerdown",
+    (e) => {
+      downX = e.clientX;
+      downY = e.clientY;
+    },
+    { signal },
+  );
 
   el.addEventListener(
     "pointerup",
