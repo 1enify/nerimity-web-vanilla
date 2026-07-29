@@ -16,77 +16,99 @@ import { createKickMemberModal } from "./KickMemberModal";
 import { createModal } from "./modal";
 
 export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
-  document.body.addEventListener("contextmenu", (event) => {
-    const target = event.target as HTMLElement;
-    const userEl = target.closest(`[data-user-id]`) as HTMLElement;
-    if (!userEl) return;
-    const userId = userEl.dataset?.userId!;
+  let abortController: AbortController | null = null;
 
-    const abortController = new AbortController();
+  opts.signal.addEventListener(
+    "abort",
+    () => {
+      abortController?.abort();
+      abortController = null;
+    },
+    { once: true },
+  );
 
-    if (!userId) return;
-    event.stopPropagation();
-    event.preventDefault();
+  document.body.addEventListener(
+    "contextmenu",
+    (event) => {
+      const target = event.target as HTMLElement;
+      const userEl = target.closest(`[data-user-id]`) as HTMLElement;
+      if (!userEl) return;
 
-    const user =
-      userStore.users.get(userId) ||
-      messageStore.findUserInCurrentMessages(userId);
-    const member = serverMemberStore.serverMembers
-      .get(serverStore.currentServerId!)
-      ?.get(userId);
+      const userId = userEl.dataset?.userId;
+      if (!userId) return;
 
-    const username =
-      messageStore.findUserInCurrentMessages(userId)?.username ?? "";
+      event.stopPropagation();
+      event.preventDefault();
 
-    portalElement().addEventListener(
-      "click",
-      (event) => {
-        abortController.abort();
-        const target = event.target as HTMLElement;
-        const item = target.closest(".ctx-item");
-        const id = item?.id;
-        switch (id) {
-          case "view_profile":
-            router.navigate("/app/profile/" + user?.id);
-            break;
-          case "copy_id":
-            navigator.clipboard.writeText(userId);
-            break;
-          case "copy_object":
-            console.log("Copied user object to clipboard:", { user, member });
-            navigator.clipboard.writeText(JSON.stringify({ user, member }));
-            break;
-          case "kick":
-            createKickMemberModal({ userId });
-            break;
-          case "ban":
-            createBanMemberModal({ userId, username });
-            break;
-          case "edit_roles":
-            createEditServerRolesModal({ userId, username });
-            break;
+      abortController?.abort();
+      abortController = new AbortController();
 
-          default:
-            break;
-        }
-      },
-      { signal: abortController.signal },
-    );
+      const currentSignal = abortController.signal;
 
-    createModal(
-      () => (
-        <UserContextMenu
-          x={`${event.clientX}px`}
-          y={`${event.clientY}px`}
-          userId={userId}
-        />
-      ),
-      abortController,
-    );
-    opts.signal.addEventListener("abort", () => abortController.abort(), {
-      once: true,
-    });
-  });
+      const user =
+        userStore.users.get(userId) ||
+        messageStore.findUserInCurrentMessages(userId);
+      const member = serverMemberStore.serverMembers
+        .get(serverStore.currentServerId!)
+        ?.get(userId);
+
+      const username =
+        messageStore.findUserInCurrentMessages(userId)?.username ?? "";
+
+      portalElement().addEventListener(
+        "click",
+        (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          const item = target?.closest(".ctx-item");
+          const id = item?.id;
+
+          e = null as any;
+
+          if (abortController) {
+            abortController.abort("menu_closed");
+            abortController = null;
+          }
+
+          if (!id) return;
+
+          switch (id) {
+            case "view_profile":
+              router.navigate("/app/profile/" + user?.id);
+              break;
+            case "copy_id":
+              navigator.clipboard.writeText(userId);
+              break;
+            case "copy_object":
+              console.log("Copied user object to clipboard:", { user, member });
+              navigator.clipboard.writeText(JSON.stringify({ user, member }));
+              break;
+            case "kick":
+              createKickMemberModal({ userId });
+              break;
+            case "ban":
+              createBanMemberModal({ userId, username });
+              break;
+            case "edit_roles":
+              createEditServerRolesModal({ userId, username });
+              break;
+          }
+        },
+        { signal: currentSignal, once: true },
+      );
+
+      createModal(
+        () => (
+          <UserContextMenu
+            x={`${event.clientX}px`}
+            y={`${event.clientY}px`}
+            userId={userId}
+          />
+        ),
+        abortController,
+      );
+    },
+    { signal: opts.signal },
+  );
 };
 
 const UserContextMenu = (props: { x: string; y: string; userId: string }) => {
