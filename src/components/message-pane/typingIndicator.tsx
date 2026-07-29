@@ -3,6 +3,8 @@ import { t } from "@lingui/core/macro";
 import { h, Fragment } from "../../h";
 import { channelStore } from "../../store/channelStore";
 import type { Message } from "../../store/messageStore";
+import { ServerMember, serverMemberStore } from "../../store/serverMemberStore";
+import { serverStore } from "../../store/serverStore";
 import { userStore, type User } from "../../store/userStore";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { Avatar } from "../avatar";
@@ -11,6 +13,7 @@ import { Icon } from "../icon";
 import style from "./typingIndicator.module.css";
 interface TypingUser {
   user: User;
+  member?: ServerMember;
   timestamp: number;
 }
 
@@ -36,7 +39,11 @@ export const createTypingIndicator = (abortController: AbortController) => {
     }
     const user = userStore.users.get(userId);
     if (!user) return;
-    const typingUser = { user, timestamp: Date.now() };
+    const member = serverMemberStore.getMember(
+      serverStore.currentServerId!,
+      userId,
+    );
+    const typingUser = { user, member, timestamp: Date.now() };
     typingUsers.set(userId, typingUser);
     rerender();
   };
@@ -69,7 +76,9 @@ export const createTypingIndicator = (abortController: AbortController) => {
     el.classList.remove(style.hide!);
 
     const values = [...typingUsers.values()];
-    const usernames = formatNames(values.map((u) => u.user.username))!;
+    const usernames = formatNames(
+      values.map((u) => u.member?.nickname || u.user.username),
+    )!;
 
     const avatars = values.map((u) => <Avatar user={u.user} size={14} />);
 

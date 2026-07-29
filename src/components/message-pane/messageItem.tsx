@@ -327,7 +327,7 @@ const ReplyMessage = (props: { message: RawReplyMessage }) => {
             color={color}
             href={`/app/profile/${creator.id}`}
           >
-            {creator.username}
+            {member?.nickname || creator.username}
           </GradientText>
           <Markup
             replaceCommandBotId
