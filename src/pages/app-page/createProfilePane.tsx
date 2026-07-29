@@ -100,9 +100,11 @@ const createProfilePane = (content: HTMLElement) => {
             </div>
           )}
 
-          <div class={style.bio}>
-            <Markup text={userDetails?.profile?.bio || ""} />
-          </div>
+          {userDetails?.profile?.bio && (
+            <div class={style.bio}>
+              <Markup text={userDetails?.profile?.bio} />
+            </div>
+          )}
         </div>
       </div>
     );
