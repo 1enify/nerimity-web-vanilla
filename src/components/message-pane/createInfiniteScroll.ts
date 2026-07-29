@@ -232,7 +232,6 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
         handleStillObserving();
       }, 1000);
       if (messageItemEl) {
-        console.log("fuck you mate");
         messageItemEl?.scrollIntoView({
           behavior: animate ? "smooth" : "instant",
           inline: "nearest",
