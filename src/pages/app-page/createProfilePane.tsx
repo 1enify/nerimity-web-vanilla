@@ -236,7 +236,7 @@ const createProfilePane = (content: HTMLElement) => {
           userDetails.profile.primaryColor,
         );
       }
-      Drawer().content.style.setProperty("--color", bg);
+      Drawer().content.style.setProperty("--content-bg-color", bg);
       Drawer().content.classList.add("showBg");
     }
 
