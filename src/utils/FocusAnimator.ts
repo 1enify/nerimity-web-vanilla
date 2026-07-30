@@ -9,20 +9,23 @@ export class FocusAnimator {
     this.controller = new AbortController();
     const { signal } = this.controller;
 
-    const update = (hovered: boolean) => {
-      this.container
-        .querySelectorAll<HTMLImageElement>(this.image)
-        .forEach((img) => {
-          this.updateImageState(img, hovered);
-        });
-    };
+    window.addEventListener("focus", () => this.update(true), { signal });
+    window.addEventListener("blur", () => this.update(false), { signal });
 
-    window.addEventListener("focus", () => update(true), { signal });
-    window.addEventListener("blur", () => update(false), { signal });
-
-    update(document.hasFocus());
+    this.update(document.hasFocus());
   }
 
+  private update(hovered: boolean) {
+    this.container
+      .querySelectorAll<HTMLImageElement>(this.image)
+      .forEach((img) => {
+        this.updateImageState(img, hovered);
+      });
+  }
+
+  trigger() {
+    this.update(document.hasFocus());
+  }
   private updateImageState(img: HTMLImageElement, hovered: boolean) {
     if (img.dataset.imgAnim === undefined) return;
 

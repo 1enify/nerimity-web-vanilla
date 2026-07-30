@@ -13,6 +13,7 @@ import { User, userStore } from "../../store/userStore";
 import { createWidthQuery } from "../../utils/createWidthQuery";
 import { formatTimestamp, getDaysAgo } from "../../utils/date";
 import { storeEmitter } from "../../utils/EventEmitter";
+import { FocusAnimator } from "../../utils/FocusAnimator";
 import { getFont } from "../../utils/font";
 import { router } from "../../utils/router";
 
@@ -157,6 +158,8 @@ const createProfilePane = (content: HTMLElement) => {
 
   const getUser = () => userDetails?.user || localUser;
 
+  const focusAnim = new FocusAnimator(content, "img");
+
   const rerender = () => {
     if (signal.aborted) return;
     const desktop = widthQuery.matches;
@@ -182,6 +185,7 @@ const createProfilePane = (content: HTMLElement) => {
     }
 
     content.replaceChildren(el);
+    focusAnim.trigger();
   };
 
   storeEmitter.on("ws:authStateUpdate", rerender, signal);
@@ -215,6 +219,8 @@ const createProfilePane = (content: HTMLElement) => {
   );
 
   const destroy = () => {
+    focusAnim.destroy();
+
     contentAbortController?.abort();
     sidebarAbortController?.abort();
     abortController.abort();
