@@ -171,16 +171,18 @@ const createProfilePane = (content: HTMLElement) => {
       </div>
     ) as HTMLDivElement;
 
-    if (userDetails?.profile?.primaryColor) {
-      el.style.setProperty("--primary-color", userDetails.profile.primaryColor);
-    }
-
     const colorOne = userDetails?.profile?.bgColorOne || "#000000";
     const colorTwo = userDetails?.profile?.bgColorTwo || "#000000";
 
     const bg = `linear-gradient(180deg, ${colorOne}, ${colorTwo})`;
 
     if (content.parentElement) {
+      if (userDetails?.profile?.primaryColor) {
+        content.parentElement.style.setProperty(
+          "--primary-color",
+          userDetails.profile.primaryColor,
+        );
+      }
       content.parentElement.style.background = bg;
     }
 
@@ -213,6 +215,7 @@ const createProfilePane = (content: HTMLElement) => {
     () => {
       requestAnimationFrame(() => {
         Drawer().content.style.background = "";
+        Drawer().content.style.removeProperty("--primary-color");
       });
     },
     { once: true },
