@@ -281,6 +281,8 @@ const createProfilePane = (content: HTMLElement) => {
     contentAbortController?.abort();
     sidebarAbortController?.abort();
     abortController.abort();
+
+    content.replaceChildren();
     (content as any) = null;
   };
 
