@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import morphdom from "morphdom";
 
-import { h } from "../h";
+import { h, Fragment } from "../h";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { inboxStore } from "../store/inboxStore";
@@ -70,15 +70,21 @@ export const createAppHeader = () => {
     <Button icon="info" class={style.button} />
   ) as HTMLButtonElement;
 
-  let container = (
+  let headerContainer = (
     <header class={style.header}>
-      <div class={style.backdrop}></div>
       {leftDrawerButton}
       <div class={style.details}>
         <Pill />
       </div>
       {rightDrawerButton}
     </header>
+  ) as HTMLDivElement;
+
+  let container = (
+    <>
+      {headerContainer}
+      <div class={style.backdrop}></div>
+    </>
   ) as unknown as HTMLDivElement;
 
   leftDrawerButton.addEventListener(
@@ -100,7 +106,9 @@ export const createAppHeader = () => {
   let pendingAnim: Animation | null = null;
 
   const updatePill = () => {
-    const pillEl = container.querySelector(`.${style.pill}`) as HTMLElement;
+    const pillEl = headerContainer.querySelector(
+      `.${style.pill}`,
+    ) as HTMLElement;
 
     const oldWidth = pillEl.getBoundingClientRect().width;
 
@@ -151,8 +159,10 @@ export const createAppHeader = () => {
   const destroy = () => {
     abortController.abort();
     container.remove();
+    headerContainer.remove();
     (rightDrawerButton as any) = null;
     (container as any) = null;
+    (headerContainer as any) = null;
   };
   return { render, destroy };
 };
