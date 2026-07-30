@@ -1,3 +1,10 @@
+.mobile {
+  .sidebar {
+    width: initial;
+    margin-top: 8px;
+  }
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -10,6 +17,7 @@
 
 .content {
   width: 100%;
+  min-width: 0;
   .banner {
     overflow: hidden;
     border-radius: var(--radius-16);
@@ -21,7 +29,7 @@
   }
   .overlayInfo {
     position: relative;
-    z-index: 1111111;
+    z-index: 111;
     margin-top: -64px;
     margin-bottom: 10px;
     margin-left: 18px;
@@ -32,6 +40,27 @@
   padding: 12px;
   border-radius: var(--radius-16);
   background-color: var(--gray-900);
+}
+
+.sidebarItem {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: var(--radius-16);
+  background-color: var(--gray-900);
+  gap: 4px;
+  .title {
+    font-weight: bold;
+  }
+  .info {
+    opacity: 0.6;
+  }
+}
+.joinedAtItem {
+  cursor: pointer;
+  &:hover {
+    background-color: var(--gray-800);
+  }
 }
 
 .detailsSection {
@@ -69,10 +98,8 @@
 
 .sidebar {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   flex-shrink: 0;
-  justify-content: center;
   width: 300px;
-  border-radius: var(--radius-16);
-  background-color: var(--gray-900);
+  gap: 6px;
 }

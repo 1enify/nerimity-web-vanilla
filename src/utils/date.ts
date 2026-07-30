@@ -292,3 +292,19 @@ export function formatTimestamp(timestampMs: number, seconds = false) {
     return t`Error`;
   }
 }
+
+export function getDaysAgo(timestamp: number) {
+  try {
+    const now = Temporal.Now.zonedDateTimeISO();
+    const start = Temporal.Instant.fromEpochMilliseconds(
+      Math.round(timestamp),
+    ).toZonedDateTimeISO(now.timeZoneId);
+    const elapsed = start.until(now, {
+      smallestUnit: "day",
+    });
+    return formatters.relative.format(-elapsed.days, "day");
+  } catch (e) {
+    console.warn(e);
+    return t`Error`;
+  }
+}
