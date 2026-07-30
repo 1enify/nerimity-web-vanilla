@@ -18,6 +18,7 @@ export default defineConfig({
     devRerenderHighlighter(),
     googleFontsLocal({
       icons: [
+        "calendar_month",
         "keyboard_return",
         "bar_chart",
         "settings",

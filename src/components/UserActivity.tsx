@@ -68,13 +68,12 @@ const MediaProgress = () => {
 
 const activityMap = new WeakMap<Element, RawUserActivity>();
 
-export const UserActivity = ({
-  userId,
-  activity,
-}: {
+export const UserActivity = (props: {
   userId: string;
   activity: RawUserActivity;
+  class?: string;
 }) => {
+  const { userId, activity } = props;
   const activityType = getActivityType(activity);
 
   const isMusic =
@@ -95,7 +94,7 @@ export const UserActivity = ({
   const showRich = imgSrc || activity.title || activity.subtitle;
 
   const el = (
-    <div class={style.userActivity} data-rich={!!showRich}>
+    <div class={[style.userActivity, props.class]} data-rich={!!showRich}>
       <UserPresence
         class={style.userPresence}
         iconColor="var(--primary-color)"
@@ -105,7 +104,10 @@ export const UserActivity = ({
         showAction
       />
       {showRich && (
-        <div class={style.richActivity}>
+        <div
+          class={[style.richActivity, "richActivity"]}
+          data-media-progress={isMusic || isVideo}
+        >
           {imgSrc && (
             <img
               src={imgSrc}

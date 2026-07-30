@@ -4,11 +4,14 @@ import { Trans } from "@trans";
 import { Avatar } from "../../components/avatar";
 import { Banner } from "../../components/Banner";
 import { Drawer } from "../../components/drawer";
+import { Icon } from "../../components/icon";
 import { Markup } from "../../components/markup/markup";
 import { ServerClanItem } from "../../components/serverClanItem";
+import { updateActivity, UserActivity } from "../../components/UserActivity";
 import { UserPresence } from "../../components/userPresence";
 import { h } from "../../h";
 import { getUserDetails, type UserDetails } from "../../services/userService";
+import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
 import { createWidthQuery } from "../../utils/createWidthQuery";
 import { formatTimestamp, getDaysAgo } from "../../utils/date";
@@ -118,6 +121,7 @@ const Sidebar = (opts: { userDetails?: UserDetails; user?: User }) => {
   return (
     <div class={style.sidebar}>
       <SidebarJoined user={opts.user} signal={signal} />
+      <SidebarActivity user={opts.user} signal={signal} />
     </div>
   );
 };
@@ -128,7 +132,10 @@ const SidebarJoined = (opts: { user?: User; signal: AbortSignal }) => {
 
   const el = (
     <div class={[style.sidebarItem, style.joinedAtItem]}>
-      <div class={style.title}>{t`Joined Nerimity`}</div>
+      <div class={style.title}>
+        <Icon name="calendar_month" class={style.icon} />
+        {t`Joined Nerimity`}
+      </div>
       {infoEl}
     </div>
   ) as HTMLDivElement;
@@ -145,6 +152,52 @@ const SidebarJoined = (opts: { user?: User; signal: AbortSignal }) => {
   el.addEventListener("click", toggle, { signal: opts.signal });
 
   return el;
+};
+const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
+  let activitiesContainer = (
+    <div class={style.activities}></div>
+  ) as HTMLDivElement;
+
+  const rerender = () => {
+    const presence = userPresenceStore.presences.get(props.user?.id!);
+    const activities = presence?.activities || [];
+    activitiesContainer.replaceChildren(
+      ...activities.map((activity) => (
+        <UserActivity
+          class={style.sidebarItem}
+          activity={activity}
+          userId={props.user?.id!}
+        />
+      )),
+    );
+  };
+  rerender();
+
+  const intervalId = setInterval(() => {
+    const activitiesEl = document.querySelector(`.${style.activities}`);
+    if (!activitiesEl) return;
+
+    const activities = [...activitiesEl.children!];
+    for (let i = 0; i < activities.length; i++) {
+      const activityEl = activities[i] as HTMLDivElement;
+      updateActivity(activityEl);
+    }
+  }, 1000);
+  props.signal.addEventListener("abort", () => clearInterval(intervalId), {
+    once: true,
+  });
+
+  rerender();
+  storeEmitter.on(
+    "user:presence_update",
+    (event) => {
+      if (event.userId !== props.user?.id!) return;
+      rerender();
+    },
+    props.signal,
+  );
+
+  return activitiesContainer;
 };
 
 const createProfilePane = (content: HTMLElement) => {

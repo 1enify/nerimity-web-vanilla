@@ -322,12 +322,12 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:209
-#: src/pages/app-page/createProfilePane.tsx:82
+#: src/pages/app-page/createProfilePane.tsx:91
 msgid "<0>{followers}</0> Followers"
 msgstr "<0>{followers}</0> Followers"
 
 #: src/components/miniProfile.tsx:216
-#: src/pages/app-page/createProfilePane.tsx:89
+#: src/pages/app-page/createProfilePane.tsx:98
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -398,7 +398,7 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:124
+#: src/pages/app-page/createProfilePane.tsx:137
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
