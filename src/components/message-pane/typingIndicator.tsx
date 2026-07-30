@@ -103,18 +103,22 @@ export const createTypingIndicator = (abortController: AbortController) => {
   storeEmitter.on("channel:typing", handleTyping, signal);
   storeEmitter.on("message:created", handleMessageCreated, signal);
 
-  signal.addEventListener("abort", () => {
-    if (timeout) clearTimeout(timeout);
-    timeout = null;
+  signal.addEventListener(
+    "abort",
+    () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = null;
 
-    usernamesEl.remove();
-    avatarsEl.remove();
-    el.remove();
+      usernamesEl.remove();
+      avatarsEl.remove();
+      el.remove();
 
-    (usernamesEl as any) = null;
-    (avatarsEl as any) = null;
-    (el as any) = null;
-  });
+      (usernamesEl as any) = null;
+      (avatarsEl as any) = null;
+      (el as any) = null;
+    },
+    { once: true },
+  );
 
   return {
     el,

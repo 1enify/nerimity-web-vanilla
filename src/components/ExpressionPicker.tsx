@@ -149,15 +149,19 @@ export const createExpressionPicker = (props: ExpressionPickerProps) => {
     { signal: abortController.signal },
   );
 
-  abortController.signal.addEventListener("abort", () => {
-    const app = document.getElementById("app")!;
-    app.style.height = "";
-    el.remove();
-    currentPage?.abortController.abort();
-    if (currentInstance?.targetEl === props.targetEl) {
-      currentInstance = null;
-    }
-  });
+  abortController.signal.addEventListener(
+    "abort",
+    () => {
+      const app = document.getElementById("app")!;
+      app.style.height = "";
+      el.remove();
+      currentPage?.abortController.abort();
+      if (currentInstance?.targetEl === props.targetEl) {
+        currentInstance = null;
+      }
+    },
+    { once: true },
+  );
 
   storeEmitter.on(
     "drawer:modeChange",

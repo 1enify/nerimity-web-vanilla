@@ -127,14 +127,18 @@ export const createRepliesIndicator = (abortController: AbortController) => {
   storeEmitter.on("message_property:replying", rerender, signal);
   storeEmitter.on("navigate:channelId", rerender, signal);
 
-  signal.addEventListener("abort", () => {
-    listEl.remove();
-    countPill.remove();
-    el.remove();
-    (listEl as any) = null;
-    (countPill as any) = null;
-    (el as any) = null;
-  });
+  signal.addEventListener(
+    "abort",
+    () => {
+      listEl.remove();
+      countPill.remove();
+      el.remove();
+      (listEl as any) = null;
+      (countPill as any) = null;
+      (el as any) = null;
+    },
+    { once: true },
+  );
 
   return el;
 };

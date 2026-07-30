@@ -23,7 +23,7 @@ export function fileToDataUrl(file: File): Promise<string> {
       () => {
         resolve(reader.result as string);
       },
-      false,
+      { once: true },
     );
 
     reader.readAsDataURL(file);

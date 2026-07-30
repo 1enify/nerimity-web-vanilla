@@ -490,7 +490,9 @@ const UserActivities = (props: { userId: string; signal: AbortSignal }) => {
       updateActivity(activityEl);
     }
   }, 1000);
-  props.signal.addEventListener("abort", () => clearInterval(intervalId));
+  props.signal.addEventListener("abort", () => clearInterval(intervalId), {
+    once: true,
+  });
 
   rerender();
   storeEmitter.on(
