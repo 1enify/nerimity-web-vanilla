@@ -229,14 +229,15 @@ const createProfilePane = (content: HTMLElement) => {
 
     const bg = `linear-gradient(180deg, ${colorOne}, ${colorTwo})`;
 
-    if (content.parentElement) {
+    if (content.parentElement && userDetails) {
       if (userDetails?.profile?.primaryColor) {
         content.parentElement.style.setProperty(
           "--primary-color",
           userDetails.profile.primaryColor,
         );
       }
-      content.parentElement.style.background = bg;
+      Drawer().content.style.setProperty("--color", bg);
+      Drawer().content.classList.add("showBg");
     }
 
     content.replaceChildren(el);
@@ -267,7 +268,7 @@ const createProfilePane = (content: HTMLElement) => {
     "abort",
     () => {
       requestAnimationFrame(() => {
-        Drawer().content.style.background = "";
+        Drawer().content.classList.remove("showBg");
         Drawer().content.style.removeProperty("--primary-color");
       });
     },
