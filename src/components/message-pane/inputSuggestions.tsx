@@ -261,7 +261,7 @@ export const createInputSuggestions = (opts: {
     const recipient = recipientId
       ? userStore.users.get(recipientId)
       : undefined;
-    if (recipient) users.push(recipient);
+    if (recipient && recipient.id !== users[0]?.id) users.push(recipient);
 
     const matched = matchSorter(users, searchTerm, {
       keys: ["username"],
