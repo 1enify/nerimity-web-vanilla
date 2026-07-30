@@ -14,13 +14,11 @@ import {
   createIntersectionObserver,
   createResizeObserver,
 } from "../../utils/observer";
-import { portalElement } from "../../utils/portal";
 import { setRecentServerChannel } from "../../utils/recentServerChannels";
 import { ContextMenu } from "../ContextMenu";
 import { Drawer } from "../drawer";
 import { handleImagePreviewModal } from "../ImagePreviewModal";
 import { handleMarkupCheckboxClick } from "../markup/markup";
-import { createModal } from "../modal";
 import { MessageSkeleton } from "../skeleton";
 import { createChatbar } from "./chatbar";
 import { createInfiniteScroll } from "./createInfiniteScroll";
@@ -519,77 +517,47 @@ const createMessageContextMenuHandler = (opts: {
   el: HTMLElement;
   signal: AbortSignal;
 }) => {
-  opts.el.addEventListener("contextmenu", (event) => {
-    const target = event.target as HTMLElement;
-    if (target.closest("[data-user-id]")) return;
-
-    const messageEl = target.closest(`[data-message-id]`) as HTMLElement;
-    if (!messageEl) return;
-    const messageId = messageEl.dataset?.messageId!;
-
-    const abortController = new AbortController();
-
-    if (!messageId) return;
-    event.preventDefault();
-
-    const message = messageStore.messages
-      .get(channelStore.currentChannelId!)
-      ?.find((m) => m.id === messageId);
-    if (!message) return;
-
-    portalElement().addEventListener(
-      "click",
-      (event) => {
-        abortController.abort();
-        const target = event.target as HTMLElement;
-        const item = target.closest(".ctx-item");
-        const id = item?.id;
-        switch (id) {
-          case "delete":
-            createDeleteMessageModal({
-              message,
-              skipConfirmation: event.shiftKey,
-            });
-            break;
-          case "edit":
-            channelStore.setEditingMessage(
-              channelStore.currentChannelId!,
-              message,
-            );
-            break;
-          case "copy":
-            navigator.clipboard.writeText(message.content || "");
-            break;
-          case "copy_id":
-            navigator.clipboard.writeText(message.id);
-            break;
-          case "copy_object":
-            console.log("Copied message object to clipboard:", message);
-            navigator.clipboard.writeText(JSON.stringify(message));
-            break;
-          case "reply":
-            channelStore.addReply(channelStore.currentChannelId!, message);
-            break;
-          default:
-            break;
-        }
-      },
-      { signal: abortController.signal },
-    );
-
-    createModal(
-      () => (
-        <MessageContextMenu
-          message={message}
-          x={`${event.clientX}px`}
-          y={`${event.clientY}px`}
-        />
-      ),
-      abortController,
-    );
-    opts.signal.addEventListener("abort", () => abortController.abort(), {
-      once: true,
-    });
+  ContextMenu.createHandler({
+    el: opts.el,
+    signal: opts.signal,
+    selector: "[data-message-id]",
+    attr: "messageId",
+    shouldSkip: (target) => !!target.closest("[data-user-id]"),
+    resolveData: (messageId) =>
+      messageStore.messages
+        .get(channelStore.currentChannelId!)
+        ?.find((m) => m.id === messageId),
+    renderMenu: ({ data, x, y }) => (
+      <MessageContextMenu message={data} x={x} y={y} />
+    ),
+    onAction: (actionId, { data: message, event }) => {
+      switch (actionId) {
+        case "delete":
+          createDeleteMessageModal({
+            message,
+            skipConfirmation: event.shiftKey,
+          });
+          break;
+        case "edit":
+          channelStore.setEditingMessage(
+            channelStore.currentChannelId!,
+            message,
+          );
+          break;
+        case "copy":
+          navigator.clipboard.writeText(message.content || "");
+          break;
+        case "copy_id":
+          navigator.clipboard.writeText(message.id);
+          break;
+        case "copy_object":
+          navigator.clipboard.writeText(JSON.stringify(message));
+          break;
+        case "reply":
+          channelStore.addReply(channelStore.currentChannelId!, message);
+          break;
+      }
+    },
   });
 };
 

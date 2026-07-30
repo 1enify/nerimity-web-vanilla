@@ -1,6 +1,7 @@
 import { h } from "../h";
+import { portalElement } from "../utils/portal";
 import { Icon } from "./icon";
-import { Modal } from "./modal";
+import { createModal, Modal } from "./modal";
 
 import style from "./ContextMenu.module.css";
 
@@ -47,7 +48,95 @@ const Separator = () => {
   return <div class={style.separator} />;
 };
 
+type ContextMenuHandlerConfig<TData> = {
+  el?: HTMLElement;
+  signal: AbortSignal;
+  selector: string;
+  attr: string;
+  shouldSkip?: (target: HTMLElement) => boolean;
+  resolveData: (id: string) => TData | null | undefined;
+  renderMenu: (props: {
+    id: string;
+    data: TData;
+    x: string;
+    y: string;
+  }) => JSX.Element;
+  onAction: (
+    actionId: string,
+    ctx: { id: string; data: TData; event: MouseEvent },
+  ) => void;
+};
+
+const createHandler = <TData,>(config: ContextMenuHandlerConfig<TData>) => {
+  const el = config.el ?? document.body;
+  let abortController: AbortController | null = null;
+
+  config.signal.addEventListener(
+    "abort",
+    () => {
+      abortController?.abort();
+      abortController = null;
+    },
+    { once: true },
+  );
+
+  el.addEventListener(
+    "contextmenu",
+    (event) => {
+      const target = event.target as HTMLElement;
+      if (config.shouldSkip?.(target)) return;
+
+      const matchEl = target.closest(config.selector) as HTMLElement | null;
+      if (!matchEl) return;
+
+      const id = matchEl.dataset?.[config.attr];
+      if (!id) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const data = config.resolveData(id);
+      if (data == null) return;
+
+      abortController?.abort();
+      abortController = new AbortController();
+      const currentSignal = abortController.signal;
+
+      portalElement().addEventListener(
+        "click",
+        (e: MouseEvent) => {
+          const clickTarget = e.target as HTMLElement;
+          const item = clickTarget?.closest(".ctx-item");
+          const actionId = item?.id;
+
+          if (abortController) {
+            abortController.abort("menu_closed");
+            abortController = null;
+          }
+
+          if (!actionId) return;
+          config.onAction(actionId, { id, data, event: e });
+        },
+        { signal: currentSignal, once: true },
+      );
+
+      createModal(
+        () =>
+          config.renderMenu({
+            id,
+            data,
+            x: `${event.clientX}px`,
+            y: `${event.clientY}px`,
+          }),
+        abortController,
+      );
+    },
+    { signal: config.signal },
+  );
+};
+
 export const ContextMenu = {
+  createHandler,
   Root,
   Icon: ItemIcon,
   Item,
