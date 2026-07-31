@@ -1,1 +1,1 @@
-export { Trans } from "@lingui/react/macro";
+export { Trans, Plural } from "@lingui/react/macro";

@@ -113,7 +113,7 @@ msgstr "Clear local settings"
 
 #: src/components/LogoutModal.tsx:40
 #: src/components/LogoutModal.tsx:53
-#: src/components/miniProfile.tsx:269
+#: src/components/miniProfile.tsx:285
 msgid "Logout"
 msgstr "Logout"
 
@@ -148,7 +148,7 @@ msgid "Copy Object"
 msgstr "Copy Object"
 
 #: src/components/appHeader.tsx:35
-#: src/components/miniProfile.tsx:255
+#: src/components/miniProfile.tsx:271
 msgid "Profile"
 msgstr "Profile"
 
@@ -326,50 +326,50 @@ msgstr "Mention"
 msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
+#. placeholder {0}: 0
 #: src/components/miniProfile.tsx:209
-#: src/pages/app-page/createProfilePane.tsx:91
-msgid "<0>{followers}</0> Followers"
-msgstr "<0>{followers}</0> Followers"
+msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
+msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
-#: src/components/miniProfile.tsx:216
+#: src/components/miniProfile.tsx:232
 #: src/pages/app-page/createProfilePane.tsx:98
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
-#: src/components/miniProfile.tsx:228
+#: src/components/miniProfile.tsx:244
 msgid "Full Profile"
 msgstr "Full Profile"
 
-#: src/components/miniProfile.tsx:238
-#: src/components/miniProfile.tsx:262
+#: src/components/miniProfile.tsx:254
+#: src/components/miniProfile.tsx:278
 msgid "Notes"
 msgstr "Notes"
 
-#: src/components/miniProfile.tsx:238
+#: src/components/miniProfile.tsx:254
 msgid "Message"
 msgstr "Message"
 
-#: src/components/miniProfile.tsx:265
+#: src/components/miniProfile.tsx:281
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/miniProfile.tsx:281
+#: src/components/miniProfile.tsx:297
 msgid "Roles"
 msgstr "Roles"
 
-#: src/components/miniProfile.tsx:295
+#: src/components/miniProfile.tsx:311
 msgid "Joined"
 msgstr "Joined"
 
-#: src/components/miniProfile.tsx:311
+#: src/components/miniProfile.tsx:327
 msgid "About Me"
 msgstr "About Me"
 
-#: src/components/miniProfile.tsx:590
+#: src/components/miniProfile.tsx:606
 msgid "Appear As Offline"
 msgstr "Appear As Offline"
 
-#: src/components/miniProfile.tsx:676
+#: src/components/miniProfile.tsx:692
 msgid "Set Custom Status"
 msgstr "Set Custom Status"
 
@@ -398,6 +398,10 @@ msgstr "Login to continue"
 #: src/pages/LoginPage.tsx:66
 msgid "Logging in..."
 msgstr "Logging in..."
+
+#: src/pages/app-page/createProfilePane.tsx:91
+msgid "<0>{followers}</0> Followers"
+msgstr "<0>{followers}</0> Followers"
 
 #: src/pages/app-page/createProfilePane.tsx:137
 msgid "Joined Nerimity"

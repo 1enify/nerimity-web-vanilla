@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@trans";
+import { Plural, Trans } from "@trans";
 
 import { h, Fragment } from "../h";
 import {
@@ -206,9 +206,25 @@ export const MiniProfile = (props: {
             <div class={style.stats}>
               {!hideFollowers && (
                 <span class={style.stat}>
-                  <Trans>
-                    <span class={style.full}>{followers}</span> Followers
-                  </Trans>
+                  <Plural
+                    value={followers || 0}
+                    _0={
+                      <Trans>
+                        <span class={style.full}>No</span> Followers
+                      </Trans>
+                    }
+
+                    one={
+                      <Trans>
+                        <span class={style.full}>#</span> Follower
+                      </Trans>
+                    }
+                    other={
+                      <Trans>
+                        <span class={style.full}>#</span> Followers
+                      </Trans>
+                    }
+                  />
                 </span>
               )}
               {!hideFollowing && (

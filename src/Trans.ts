@@ -1,4 +1,7 @@
 import { i18n, type MessageId } from "@lingui/core";
+import type { PluralChoiceProps } from "@lingui/react/macro";
+
+import { Fragment } from "./h";
 
 const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/;
 
@@ -129,4 +132,8 @@ export function Trans(props: TransProps): Node {
     );
   }
   return frag;
+}
+
+export function Plural(_props: PluralChoiceProps): Node {
+  return Fragment(null);
 }
