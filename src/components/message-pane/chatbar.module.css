@@ -8,6 +8,7 @@
   flex-direction: column;
   padding: 8px;
   padding-top: 0;
+  padding-right: 2px;
   pointer-events: none;
   gap: 4px;
   & * {
