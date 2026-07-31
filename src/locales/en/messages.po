@@ -326,13 +326,14 @@ msgstr "Mention"
 msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
-#. placeholder {0}: 0
+#. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:209
+#: src/pages/app-page/createProfilePane.tsx:91
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:232
-#: src/pages/app-page/createProfilePane.tsx:98
+#: src/pages/app-page/createProfilePane.tsx:114
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -399,11 +400,7 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:91
-msgid "<0>{followers}</0> Followers"
-msgstr "<0>{followers}</0> Followers"
-
-#: src/pages/app-page/createProfilePane.tsx:137
+#: src/pages/app-page/createProfilePane.tsx:153
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
