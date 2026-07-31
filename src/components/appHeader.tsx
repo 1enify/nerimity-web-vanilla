@@ -8,6 +8,7 @@ import { inboxStore } from "../store/inboxStore";
 import { serverStore } from "../store/serverStore";
 import { userStore } from "../store/userStore";
 import { storeEmitter } from "../utils/EventEmitter";
+import { router } from "../utils/router";
 import { Avatar } from "./avatar";
 import { Button } from "./button";
 import { CdnIcon } from "./cdnIcon";
@@ -20,22 +21,29 @@ const Pill = () => {
   const server = serverStore.servers.get(serverStore.currentServerId!);
   const channel = channelStore.channels.get(channelStore.currentChannelId!);
   const inbox = inboxStore.inboxes.get(channelStore.currentChannelId!);
-  const user = !inbox ? null : userStore.users.get(inbox.recipientId)!;
+  const user = inbox ? userStore.users.get(inbox.recipientId)! : null;
 
   const authError = accountStore.authError;
   const authenticated = accountStore.authenticated;
-  const label = !accountStore.authenticated
-    ? accountStore.connectionState()
-    : channel?.name || user?.username || t`Home`;
-  const icon = authError
-    ? "gpp_maybe"
-    : !authenticated
-      ? "cached"
-      : !server && !channel
-        ? "home"
-        : null;
+  const isProfilePage = router.match("/app/profile/:id");
+  const isServerChannel = !!(server && channel);
 
-  const isServerChannel = server && channel;
+  const getLabel = () => {
+    if (!authenticated) return accountStore.connectionState();
+    if (channel?.name) return channel.name;
+    if (user?.username) return user.username;
+    return isProfilePage ? t`Profile` : t`Home`;
+  };
+
+  const getIcon = () => {
+    if (authError) return "gpp_maybe";
+    if (!authenticated) return "cached";
+    if (server || channel) return null;
+    return isProfilePage ? "article_person" : "home";
+  };
+
+  const label = getLabel();
+  const icon = getIcon();
 
   return (
     <div class={style.pill}>
@@ -104,21 +112,22 @@ export const createAppHeader = () => {
   );
 
   let pendingAnim: Animation | null = null;
-
   const updatePill = () => {
     const pillEl = headerContainer.querySelector(
       `.${style.pill}`,
     ) as HTMLElement;
 
     const oldWidth = pillEl.getBoundingClientRect().width;
+    const oldHTML = pillEl.innerHTML;
+
+    morphdom(pillEl, <Pill />);
+
+    if (pillEl.innerHTML === oldHTML) return;
 
     pendingAnim?.cancel();
     pendingAnim = null;
 
-    morphdom(pillEl, <Pill />);
-
     const newLabelEl = pillEl.querySelector("." + style.label) as HTMLElement;
-
     const newWidth = pillEl.getBoundingClientRect().width;
 
     if (oldWidth !== newWidth) {
@@ -128,7 +137,7 @@ export const createAppHeader = () => {
         easing: "ease",
         fill: "none",
       }).onfinish = () => {
-        newLabelEl.style.textOverflow = "";
+        newLabelEl.removeAttribute("style");
       };
     }
 
@@ -144,7 +153,15 @@ export const createAppHeader = () => {
 
   storeEmitter.on("ws:authStateUpdate", updatePill, signal);
   storeEmitter.on("ws:connectStateUpdate", updatePill, signal);
-  storeEmitter.on("navigate:channelId", updatePill, signal);
+
+  window.addEventListener(
+    "navigate",
+    () => {
+      requestAnimationFrame(updatePill);
+    },
+    { signal: signal },
+  );
+
   storeEmitter.on(
     "drawer:rightDrawerAvailable",
     (available) => {

@@ -147,7 +147,12 @@ msgstr "Copy ID"
 msgid "Copy Object"
 msgstr "Copy Object"
 
-#: src/components/appHeader.tsx:29
+#: src/components/appHeader.tsx:35
+#: src/components/miniProfile.tsx:255
+msgid "Profile"
+msgstr "Profile"
+
+#: src/components/appHeader.tsx:35
 msgid "Home"
 msgstr "Home"
 
@@ -343,10 +348,6 @@ msgstr "Notes"
 #: src/components/miniProfile.tsx:238
 msgid "Message"
 msgstr "Message"
-
-#: src/components/miniProfile.tsx:255
-msgid "Profile"
-msgstr "Profile"
 
 #: src/components/miniProfile.tsx:265
 msgid "Settings"
