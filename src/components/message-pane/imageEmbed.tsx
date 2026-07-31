@@ -50,6 +50,7 @@ export const ImageEmbed = (props: {
       src={props.attachmentProperty ? props.attachmentProperty.image?.src : url}
       {...(animated && { "data-img-anim": "" })}
       loading="lazy"
+      fetchpriority="high"
       class={[style.image, "image"]}
     />
   ) as HTMLImageElement;
