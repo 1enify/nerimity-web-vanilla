@@ -1,6 +1,5 @@
 .messagePane {
   --padding-right: 0;
-  --mobile-padding-right: 0;
   position: relative;
   display: flex;
   flex-direction: column;

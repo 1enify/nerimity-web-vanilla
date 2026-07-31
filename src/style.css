@@ -45,7 +45,7 @@ textarea {
 #portal .scrollbarHover,
 body .scrollbarHover {
   overflow: auto;
-  padding-right: var(--mobile-padding-right, 6px);
+  padding-right: 4px;
 }
 #portal:not(.mobileAgent),
 #app:not(.mobileAgent) {

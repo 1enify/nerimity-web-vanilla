@@ -9,6 +9,7 @@
   padding: 8px;
   padding-top: 0;
   padding-right: 2px;
+  padding-left: 6px;
   pointer-events: none;
   gap: 4px;
   & * {
