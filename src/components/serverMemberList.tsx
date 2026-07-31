@@ -325,7 +325,7 @@ export const createServerMemberList = () => {
     const server = serverStore.currentServer();
     if (!server?.banner) return bannerContainerEl.replaceChildren();
     bannerContainerEl.replaceChildren(
-      <Banner server={serverStore.currentServer()} size={600} />,
+      <Banner server={serverStore.currentServer()} size={400} />,
     );
   };
   storeEmitter.on("navigate:serverId", rerenderBanner, signal);
