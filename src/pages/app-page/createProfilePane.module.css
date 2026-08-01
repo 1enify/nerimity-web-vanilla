@@ -45,14 +45,27 @@
   font-size: 16px;
   .nameAndTag {
     margin-bottom: 6px;
-    .clan {
-      margin-left: 6px;
-    }
     .username {
       --font-size: 16px;
     }
     .tag {
       opacity: 0.6;
+    }
+    .badges {
+      display: inline-flex;
+      gap: 2px;
+    }
+    .clan {
+      margin-left: 6px;
+    }
+    .followsYou {
+      padding: 6px;
+      padding-top: 2px;
+      padding-bottom: 0;
+      border-radius: var(--radius-6);
+      color: var(--gray-100);
+      background-color: var(--gray-800);
+      font-size: 12px;
     }
   }
 

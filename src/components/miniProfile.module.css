@@ -40,6 +40,15 @@
       display: flex;
       gap: 6px;
     }
+    .followsYou {
+      padding: 6px;
+      padding-top: 2px;
+      padding-bottom: 3px;
+      border-radius: var(--radius-6);
+      color: var(--gray-100);
+      background-color: var(--gray-800);
+      font-size: 12px;
+    }
     .tag {
       color: var(--gray-400);
     }

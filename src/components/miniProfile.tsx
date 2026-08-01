@@ -201,6 +201,9 @@ export const MiniProfile = (props: {
             {details?.profile?.clan && (
               <ServerClanItem clan={details.profile.clan} />
             )}
+            {details?.followsYou && (
+              <span class={style.followsYou}>{t`Follows You`}</span>
+            )}
           </span>
           {userPresenceContainer}
           {showStats && (

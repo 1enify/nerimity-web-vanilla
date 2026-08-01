@@ -77,11 +77,16 @@ const Content = (opts: {
             {user.username}
           </span>
           <span class={style.tag}>:{user.tag}</span>
-          {userDetails?.profile?.clan && (
-            <span class={style.clan}>
-              <ServerClanItem clan={userDetails?.profile?.clan} />
-            </span>
-          )}
+          <span class={style.badges}>
+            {userDetails?.profile?.clan && (
+              <span class={style.clan}>
+                <ServerClanItem clan={userDetails?.profile?.clan} />
+              </span>
+            )}
+            {userDetails?.followsYou && (
+              <span class={style.followsYou}>{t`Follows You`}</span>
+            )}
+          </span>
         </div>
         {presenceContainer}
         {showStats && (
