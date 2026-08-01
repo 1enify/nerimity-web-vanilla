@@ -2,9 +2,9 @@ import { lingui, linguiTransformerBabelPreset } from "@lingui/vite-plugin";
 import babel from "@rolldown/plugin-babel";
 import { defineConfig } from "vite";
 
+import { shikiLangsPlugin } from "./vite-plugins/vitePluginCopyShikiLangs.ts";
 import { googleFontsLocal } from "./vite-plugins/vitePluginGoogleFontsLocal.ts";
 import { devRerenderHighlighter } from "./vite-plugins/vitePluginRerenderHighlighter.ts";
-import { shikiLangsPlugin } from "./vite-plugins/vitePluginCopyShikiLangs.ts";
 
 export default defineConfig({
   resolve: {
@@ -18,6 +18,7 @@ export default defineConfig({
     devRerenderHighlighter(),
     googleFontsLocal({
       icons: [
+        "save",
         "calendar_month",
         "keyboard_return",
         "bar_chart",

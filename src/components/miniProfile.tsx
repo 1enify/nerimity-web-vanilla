@@ -36,6 +36,7 @@ import { ContextMenu } from "./ContextMenu";
 import { createEditServerRolesModal } from "./EditServerRolesModal";
 import { GradientText } from "./gradientText";
 import { Icon } from "./icon";
+import { Input } from "./input";
 import { createLogoutModal } from "./LogoutModal";
 import { Markup } from "./markup/markup";
 import { createModal, Modal } from "./modal";
@@ -699,6 +700,14 @@ const CustomStatus = (props: { signal: AbortSignal }) => {
     );
   };
 
+  el.addEventListener(
+    "click",
+    () => {
+      createCustomStatusModal();
+    },
+    { signal: props.signal },
+  );
+
   storeEmitter.on(
     "user:presence_update",
     (event) => {
@@ -712,4 +721,78 @@ const CustomStatus = (props: { signal: AbortSignal }) => {
 
   rerender();
   return el;
+};
+
+const createCustomStatusModal = () => {
+  const abortController = new AbortController();
+  const { signal } = abortController;
+
+  const previewEl = (
+    <div class={style.customStatusPreview}></div>
+  ) as HTMLDivElement;
+
+  const el = (
+    <Modal.Root>
+      <Modal.Header label={t`Set Custom Status`} icon="edit" />
+      <Modal.Body width="300px">
+        {previewEl}
+        <Input
+          class={style.customStatusInput}
+          placeholder={t`What are you up to?`}
+        />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button data-action="cancel" label={t`Don't save`} hoverBorder />
+        <Button data-action="save" icon="save" label={t`Save`} />
+      </Modal.Footer>
+    </Modal.Root>
+  ) as HTMLDivElement;
+
+  const presence = userPresenceStore.presences.get(
+    accountStore.currentUser?.id!,
+  );
+
+  const inputEl = el.querySelector(
+    `.${style.customStatusInput} input`,
+  ) as HTMLInputElement;
+  inputEl.value = presence?.custom || "";
+
+  const updatePreview = () => {
+    const val = inputEl.value.trim();
+    previewEl.classList.toggle(style.hide!, !val);
+    previewEl.replaceChildren(
+      <div class={style.inner}>
+        <Markup text={val} inline animateEmoji />
+      </div>,
+    );
+  };
+  updatePreview();
+
+  inputEl.addEventListener("input", updatePreview, { signal });
+
+  el.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target as HTMLElement;
+      const button = target.closest("[data-action]") as HTMLElement;
+      if (!button) return;
+      const action = button.dataset.action;
+      switch (action) {
+        case "cancel":
+          abortController.abort();
+          break;
+        case "save":
+          updatePresence({ custom: inputEl.value });
+          abortController.abort();
+          break;
+        default:
+          break;
+      }
+
+      console.log(action);
+    },
+    { signal },
+  );
+
+  createModal(() => el, abortController);
 };
