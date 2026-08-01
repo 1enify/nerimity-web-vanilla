@@ -192,7 +192,7 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
       return <span>timestamp</span>;
     }
     case "ruby": {
-      const output: any[] = [];
+      const output: Node[] = [];
       const matches = expr.matchAll(/(.+?)\((.*?)\)/g);
       for (const match of matches) {
         const text = match[1]!.trim();
@@ -231,7 +231,7 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
         const output = expr.split("  ").join("\n").trim();
 
         if (output.length > 0) {
-          return <div class="vertical" textContent={output} />;
+          return <div class={style.vertical}>{output}</div>;
         }
       }
       break;
@@ -263,14 +263,22 @@ function transformEntity(entity: Entity, ctx: RenderContext): any {
       return <MarkupLink name={url} url={url} />;
     }
     case "code": {
-      return <code class={entity.type}>{transformEntities(entity, ctx)}</code>;
+      return <code class={style.code}>{transformEntities(entity, ctx)}</code>;
     }
     case "spoiler": {
-      return <span>{transformEntities(entity, ctx)}</span>;
+      return (
+        <span class={style.spoiler}>
+          <span class={style.innerSpoiler}>
+            {transformEntities(entity, ctx)}
+          </span>
+        </span>
+      );
     }
     case "codeblock": {
       if (ctx.props().inline) {
-        return <code class="code">{sliceText(ctx, entity.innerSpan)}</code>;
+        return (
+          <code class={style.code}>{sliceText(ctx, entity.innerSpan)}</code>
+        );
       }
       const lang = entity.params.lang;
       const value = sliceText(ctx, entity.innerSpan);
@@ -278,7 +286,7 @@ function transformEntity(entity: Entity, ctx: RenderContext): any {
     }
     case "blockquote": {
       return (
-        <blockquote classList={{ inline: ctx.props().inline }}>
+        <blockquote class={[ctx.props().inline && style.inline]}>
           {transformEntities(entity, ctx)}
         </blockquote>
       );
@@ -422,7 +430,28 @@ export function Markup(props: Props) {
   );
 }
 
-export function handleMarkupCheckboxClick(opts: {
+export function handleMarkupEvents(opts: {
+  el: HTMLDivElement;
+  onCheckboxChange: (event: { message: Message; content: string }) => void;
+  signal: AbortSignal;
+}) {
+  const { el, onCheckboxChange, signal } = opts;
+
+  el.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target as HTMLDivElement;
+      const spoiler = target.closest("." + style.spoiler);
+      if (spoiler) {
+        spoiler.classList.add(style.spoil!);
+      }
+    },
+    { signal },
+  );
+
+  handleMarkupCheckboxClick({ el, onChange: onCheckboxChange, signal });
+}
+function handleMarkupCheckboxClick(opts: {
   el: HTMLDivElement;
   onChange: (event: { message: Message; content: string }) => void;
   signal: AbortSignal;

@@ -43,4 +43,70 @@
   .checkbox {
     display: inline-block;
   }
+  blockquote {
+    position: relative;
+    width: fit-content;
+    padding-top: 0.3rem;
+    padding-right: 0.4rem;
+    padding-bottom: 0.3rem;
+    padding-left: 0.8rem;
+    margin: 0;
+    border: 1px solid var(--gray-700);
+    border-radius: var(--radius-4);
+    background-color: var(--gray-900);
+
+    &:before {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      width: 4px;
+      border-radius: var(--radius-max);
+      background: var(--primary-color);
+      content: "";
+    }
+    &.inline {
+      display: inline;
+      padding: 0;
+      padding-right: 4px;
+      padding-left: 8px;
+      &:before {
+        width: 2px;
+      }
+    }
+  }
+  .code {
+    padding-right: 1px;
+    padding-left: 1px;
+    border: 1px solid var(--gray-700);
+    border-radius: 4px;
+    color: var(--color-200);
+    background-color: var(--gray-900);
+  }
+  .vertical {
+    overflow: auto;
+    max-width: 40vw;
+
+    writing-mode: vertical-rl;
+  }
+
+  .spoiler {
+    border-radius: 4px;
+    background-color: var(--gray-800);
+    cursor: pointer;
+    &:hover {
+      background-color: var(--gray-700);
+    }
+
+    &.spoil .innerSpoiler {
+      opacity: 1;
+      user-select: initial;
+      pointer-events: initial;
+    }
+    .innerSpoiler {
+      opacity: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+  }
 }

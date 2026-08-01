@@ -18,7 +18,7 @@ import { setRecentServerChannel } from "../../utils/recentServerChannels";
 import { ContextMenu } from "../ContextMenu";
 import { Drawer } from "../drawer";
 import { handleImagePreviewModal } from "../ImagePreviewModal";
-import { handleMarkupCheckboxClick } from "../markup/markup";
+import { handleMarkupEvents } from "../markup/markup";
 import { MessageSkeleton } from "../skeleton";
 import { createChatbar } from "./chatbar";
 import { createInfiniteScroll } from "./createInfiniteScroll";
@@ -317,10 +317,10 @@ const createMessagePane = () => {
     },
   );
 
-  handleMarkupCheckboxClick({
+  handleMarkupEvents({
     el: logs,
     signal,
-    onChange({ content, message }) {
+    onCheckboxChange({ content, message }) {
       messageStore.editMessage(message.channelId, message.id, content);
     },
   });
