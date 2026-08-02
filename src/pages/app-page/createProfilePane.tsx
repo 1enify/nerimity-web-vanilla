@@ -235,9 +235,11 @@ const MutualItem = (props: { userId?: string; serverId?: string }) => {
   return (
     <Dynamic
       component={Link}
+      data-no-mini={!!user}
+      data-user-id={user?.id}
       href={
         user
-          ? `./${user.id}`
+          ? `/app/profile/${user.id}`
           : `/app/servers/${server?.id}/${getRecentServerChannelId(server?.id!)}`
       }
       class={style.mutualItem}
