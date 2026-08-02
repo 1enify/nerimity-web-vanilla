@@ -17,6 +17,7 @@ import { accountStore } from "../../store/accountStore";
 import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
+import { hasBit } from "../../utils/bitwise";
 import { createWidthQuery } from "../../utils/createWidthQuery";
 import { formatTimestamp, getDaysAgo } from "../../utils/date";
 import { storeEmitter } from "../../utils/EventEmitter";
@@ -24,6 +25,7 @@ import { FocusAnimator } from "../../utils/FocusAnimator";
 import { getFont } from "../../utils/font";
 import { getRecentServerChannelId } from "../../utils/recentServerChannels";
 import { router } from "../../utils/router";
+import { UserBadgeValues, type UserBadge } from "../../utils/UserBadgeFlag";
 
 import style from "./createProfilePane.module.css";
 
@@ -94,6 +96,7 @@ const Content = (opts: {
           </span>
         </div>
         {presenceContainer}
+        <Badges user={userDetails?.user || user} />
         {showStats && (
           <div class={style.stats}>
             {!hideFollowers && (
@@ -139,6 +142,51 @@ const Content = (opts: {
     </div>
   );
 };
+
+const BadgeItem = (props: { badge: UserBadge }) => {
+  return (
+    <div
+      data-bit={props.badge.bit}
+      style={{ background: props.badge.color, color: props.badge.textColor }}
+      class={style.badgeItem}
+    >
+      {props.badge.icon && <Icon class={style.icon} name={props.badge.icon} />}
+      {props.badge.name()}
+    </div>
+  );
+};
+
+const Badges = (props: { user: User }) => {
+  const enabledBadges = UserBadgeValues.filter((b) =>
+    hasBit(props.user.badges, b.bit),
+  );
+
+  if (!enabledBadges.length) return null;
+  let earnedBadges: UserBadge[] = [];
+  let otherBadges: UserBadge[] = [];
+
+  for (let i = 0; i < enabledBadges.length; i++) {
+    const badge = enabledBadges[i]!;
+    if (badge.type === "earned") {
+      earnedBadges.push(badge);
+    } else {
+      otherBadges.push(badge);
+    }
+  }
+
+  return (
+    <div class={style.badgesContainer}>
+      {earnedBadges.map((b) => (
+        <BadgeItem badge={b} />
+      ))}
+      <div class={style.separator} />
+      {otherBadges.map((b) => (
+        <BadgeItem badge={b} />
+      ))}
+    </div>
+  );
+};
+
 const Sidebar = (opts: {
   mobile?: boolean;
   userDetails?: UserDetails;

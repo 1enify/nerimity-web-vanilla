@@ -192,3 +192,35 @@
   opacity: 0.6;
   transform: rotate(0);
 }
+
+.badgesContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  gap: 6px;
+  .separator {
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-max);
+    background-color: var(--gray-600);
+  }
+  .badgeItem {
+    display: flex;
+    align-items: center;
+    padding-right: 6px;
+    padding-left: 6px;
+    border-radius: var(--radius-max);
+    color: var(--gray-800);
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    gap: 4px;
+    &:hover {
+      opacity: 0.8;
+    }
+    .icon {
+      font-size: 12px;
+    }
+  }
+}

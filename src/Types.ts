@@ -101,6 +101,7 @@ export interface RawUser {
   banner?: string;
   bot?: boolean;
   joinedAt: number;
+  badges: number;
 }
 
 export interface RawUserPresence {

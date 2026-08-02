@@ -290,6 +290,7 @@ msgid "Webhook"
 msgstr "Webhook"
 
 #: src/components/message-pane/messageItem.tsx:197
+#: src/utils/UserBadgeFlag.ts:298
 msgid "Bot"
 msgstr "Bot"
 
@@ -327,18 +328,18 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:205
-#: src/pages/app-page/createProfilePane.tsx:92
+#: src/pages/app-page/createProfilePane.tsx:94
 msgid "Follows You"
 msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/createProfilePane.tsx:101
+#: src/pages/app-page/createProfilePane.tsx:104
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/createProfilePane.tsx:124
+#: src/pages/app-page/createProfilePane.tsx:127
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -418,15 +419,15 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:190
+#: src/pages/app-page/createProfilePane.tsx:238
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/createProfilePane.tsx:190
+#: src/pages/app-page/createProfilePane.tsx:238
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/createProfilePane.tsx:259
+#: src/pages/app-page/createProfilePane.tsx:309
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
@@ -465,6 +466,160 @@ msgstr "Away From Keyboard"
 #: src/store/userPresenceStore.ts:29
 msgid "Do Not Disturb"
 msgstr "Do Not Disturb"
+
+#: src/utils/UserBadgeFlag.ts:57
+msgid "Avatar Border by {author} on {platform}, edited by {editor}"
+msgstr "Avatar Border by {author} on {platform}, edited by {editor}"
+
+#: src/utils/UserBadgeFlag.ts:59
+msgid "Avatar Border by {author} on {platform}"
+msgstr "Avatar Border by {author} on {platform}"
+
+#: src/utils/UserBadgeFlag.ts:79
+#: src/utils/UserBadgeFlag.ts:88
+#: src/utils/UserBadgeFlag.ts:97
+msgid "Deer"
+msgstr "Deer"
+
+#: src/utils/UserBadgeFlag.ts:84
+msgid "Kawaii Pink Deer"
+msgstr "Kawaii Pink Deer"
+
+#: src/utils/UserBadgeFlag.ts:93
+msgid "Emo Deer Antlers"
+msgstr "Emo Deer Antlers"
+
+#: src/utils/UserBadgeFlag.ts:102
+msgid "Cute Deer Antlers"
+msgstr "Cute Deer Antlers"
+
+#: src/utils/UserBadgeFlag.ts:106
+#: src/utils/UserBadgeFlag.ts:114
+msgid "Goat"
+msgstr "Goat"
+
+#: src/utils/UserBadgeFlag.ts:110
+msgid "Goat Horns"
+msgstr "Goat Horns"
+
+#: src/utils/UserBadgeFlag.ts:119
+msgid "Kawaii Goat Ears"
+msgstr "Kawaii Goat Ears"
+
+#: src/utils/UserBadgeFlag.ts:123
+msgid "Wolf"
+msgstr "Wolf"
+
+#: src/utils/UserBadgeFlag.ts:128
+msgid "Wolfy Ears"
+msgstr "Wolfy Ears"
+
+#: src/utils/UserBadgeFlag.ts:132
+#: src/utils/UserBadgeFlag.ts:141
+msgid "Doggy"
+msgstr "Doggy"
+
+#: src/utils/UserBadgeFlag.ts:137
+msgid "Shiba Inu Doggy"
+msgstr "Shiba Inu Doggy"
+
+#: src/utils/UserBadgeFlag.ts:145
+msgid "Good Puppy Ears"
+msgstr "Good Puppy Ears"
+
+#: src/utils/UserBadgeFlag.ts:149
+#: src/utils/UserBadgeFlag.ts:158
+msgid "Bunny"
+msgstr "Bunny"
+
+#: src/utils/UserBadgeFlag.ts:154
+msgid "Maid Bunny Ears"
+msgstr "Maid Bunny Ears"
+
+#: src/utils/UserBadgeFlag.ts:163
+msgid "Floppy Bunny Ears"
+msgstr "Floppy Bunny Ears"
+
+#: src/utils/UserBadgeFlag.ts:167
+#: src/utils/UserBadgeFlag.ts:176
+#: src/utils/UserBadgeFlag.ts:185
+#: src/utils/UserBadgeFlag.ts:194
+msgid "Kitty"
+msgstr "Kitty"
+
+#: src/utils/UserBadgeFlag.ts:172
+msgid "Kitty Maid Ears"
+msgstr "Kitty Maid Ears"
+
+#: src/utils/UserBadgeFlag.ts:181
+msgid "Chesire Kitty Ears"
+msgstr "Chesire Kitty Ears"
+
+#: src/utils/UserBadgeFlag.ts:189
+msgid "Arctic Kitty Ears"
+msgstr "Arctic Kitty Ears"
+
+#: src/utils/UserBadgeFlag.ts:198
+msgid "Calico Kitty Ears"
+msgstr "Calico Kitty Ears"
+
+#: src/utils/UserBadgeFlag.ts:203
+#: src/utils/UserBadgeFlag.ts:212
+msgid "Foxy"
+msgstr "Foxy"
+
+#: src/utils/UserBadgeFlag.ts:207
+msgid "Golden Foxy Ears"
+msgstr "Golden Foxy Ears"
+
+#: src/utils/UserBadgeFlag.ts:216
+msgid "Brown Foxy Ears"
+msgstr "Brown Foxy Ears"
+
+#: src/utils/UserBadgeFlag.ts:221
+msgid "Founder"
+msgstr "Founder"
+
+#: src/utils/UserBadgeFlag.ts:223
+msgid "Creator of Nerimity"
+msgstr "Creator of Nerimity"
+
+#: src/utils/UserBadgeFlag.ts:245
+msgid "Moderator"
+msgstr "Moderator"
+
+#: src/utils/UserBadgeFlag.ts:247
+msgid "Moderator of Nerimity"
+msgstr "Moderator of Nerimity"
+
+#: src/utils/UserBadgeFlag.ts:257
+msgid "Emo Supporter"
+msgstr "Emo Supporter"
+
+#: src/utils/UserBadgeFlag.ts:258
+#: src/utils/UserBadgeFlag.ts:269
+msgid "Supported this project by donating money"
+msgstr "Supported this project by donating money"
+
+#: src/utils/UserBadgeFlag.ts:268
+msgid "Supporter"
+msgstr "Supporter"
+
+#: src/utils/UserBadgeFlag.ts:279
+msgid "Contributor"
+msgstr "Contributor"
+
+#: src/utils/UserBadgeFlag.ts:280
+msgid "Helped with this project in some way"
+msgstr "Helped with this project in some way"
+
+#: src/utils/UserBadgeFlag.ts:288
+msgid "Palestine"
+msgstr "Palestine"
+
+#: src/utils/UserBadgeFlag.ts:299
+msgid "This user is a bot"
+msgstr "This user is a bot"
 
 #: src/utils/date.ts:113
 msgid "Expired"

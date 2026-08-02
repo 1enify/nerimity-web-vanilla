@@ -12,6 +12,7 @@ export class User {
   banner?: string;
   bot?: boolean;
   joinedAt: number;
+  badges?: number;
   constructor(data: RawUser) {
     this.id = data.id;
     this.username = data.username;
@@ -22,6 +23,7 @@ export class User {
     this.banner = data.banner;
     this.bot = data.bot;
     this.joinedAt = data.joinedAt;
+    this.badges = data.badges;
   }
 }
 
