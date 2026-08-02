@@ -73,6 +73,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 6px;
+    font-size: 14px;
     color: var(--gray-400);
     gap: 8px;
     .full {
