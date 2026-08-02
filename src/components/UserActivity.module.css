@@ -5,6 +5,12 @@
   &[data-rich="true"] {
     gap: 6px;
   }
+  &[data-video="true"] .activityImage {
+    width: initial;
+    background-color: black;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+  }
 }
 
 .userPresence {
@@ -36,15 +42,11 @@
     height: 60px;
     border-radius: var(--radius-4);
     object-fit: contain;
-    &[data-video="true"] {
-      width: initial;
-      background-color: black;
-      object-fit: cover;
-      aspect-ratio: 16/9;
-    }
   }
   .richDetails {
+    display: flex;
     flex: 1;
+    flex-direction: column;
     .subtitle {
       color: var(--gray-400);
       font-size: 12px;
@@ -53,7 +55,9 @@
 }
 
 .progressContainer {
-  margin-top: 2px;
+  padding-top: 2px;
+  margin-top: auto;
+
   .info {
     display: flex;
     justify-content: space-between;

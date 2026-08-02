@@ -94,7 +94,11 @@ export const UserActivity = (props: {
   const showRich = imgSrc || activity.title || activity.subtitle;
 
   const el = (
-    <div class={[style.userActivity, props.class]} data-rich={!!showRich}>
+    <div
+      class={[style.userActivity, props.class]}
+      data-rich={!!showRich}
+      data-video={isVideo || isLiveStream}
+    >
       <UserPresence
         class={style.userPresence}
         iconColor="var(--primary-color)"
@@ -108,13 +112,7 @@ export const UserActivity = (props: {
           class={[style.richActivity, "richActivity"]}
           data-media-progress={isMusic || isVideo}
         >
-          {imgSrc && (
-            <img
-              src={imgSrc}
-              class={style.activityImage}
-              data-video={isVideo || isLiveStream}
-            />
-          )}
+          {imgSrc && <img src={imgSrc} class={style.activityImage} />}
           <div class={style.richDetails}>
             {(activity.title || activity.name) && (
               <Dynamic

@@ -95,42 +95,48 @@
   gap: 4px;
 }
 
-.activities {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  :global(.richActivity) {
-    padding: 0;
-    background-color: transparent;
-
-    &[data-media-progress="true"] {
-      align-items: stretch;
-      flex-direction: column;
-      color: red !important;
-    }
-
+.activity {
+  padding: 12px;
+  &[data-video="true"] :global(.richActivity) {
+    flex-direction: column;
     img {
-      width: 80px;
-      height: 80px;
-    }
-    [data-video="true"] {
       width: 100%;
       max-width: 360px;
       height: initial;
     }
   }
 }
+.activities {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  :global(.richActivity) {
+    padding: 0;
+    padding-top: 10px;
+    background-color: transparent;
+
+    &[data-media-progress="true"] {
+      align-items: stretch;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}
 
 .sidebarItem {
   display: flex;
+  overflow: hidden;
   flex-direction: column;
-  padding: 12px;
   border-radius: var(--radius-16);
   background-color: var(--gray-900);
-  gap: 4px;
   .title {
     display: flex;
     align-items: center;
+    padding: 12px;
+    border-radius: var(--radius-16);
   }
   .icon {
     margin-right: 4px;
@@ -138,6 +144,8 @@
     font-size: 14px;
   }
   .info {
+    padding: 12px;
+    padding-top: 0;
     opacity: 0.6;
   }
 }
@@ -148,22 +156,39 @@
   }
 }
 
+.sidebarItem.mutual {
+  .title {
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      background-color: var(--gray-800);
+    }
+  }
+}
 .mutualList {
   display: flex;
   flex-direction: column;
+  padding: 4px;
+  padding-top: 0;
 }
 .mutualItem {
-  overflow: hidden;
   display: flex;
-  gap: 8px;
+  overflow: hidden;
   align-items: center;
   padding: 6px;
+  border-radius: var(--radius-14);
   cursor: pointer;
-  border-radius: var(--radius-6);
+  gap: 8px;
   &:hover {
     background-color: var(--gray-800);
   }
-  &:first-child {
-    margin-top: 6px;
-  }
+}
+
+.expanded .expandIcon {
+  transform: rotate(180deg);
+}
+.expandIcon {
+  margin-left: auto;
+  opacity: 0.6;
+  transform: rotate(0);
 }

@@ -11,8 +11,9 @@ import { ServerClanItem } from "../../components/serverClanItem";
 import { updateActivity, UserActivity } from "../../components/UserActivity";
 import { UserPresence } from "../../components/userPresence";
 import { Dynamic } from "../../dynamic";
-import { h } from "../../h";
+import { h, Fragment } from "../../h";
 import { getUserDetails, type UserDetails } from "../../services/userService";
+import { accountStore } from "../../store/accountStore";
 import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
@@ -21,6 +22,7 @@ import { formatTimestamp, getDaysAgo } from "../../utils/date";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { FocusAnimator } from "../../utils/FocusAnimator";
 import { getFont } from "../../utils/font";
+import { getRecentServerChannelId } from "../../utils/recentServerChannels";
 import { router } from "../../utils/router";
 
 import style from "./createProfilePane.module.css";
@@ -133,27 +135,39 @@ const Content = (opts: {
           </div>
         )}
       </div>
-      {opts.mobile && <Sidebar {...opts} />}
+      {opts.mobile && <Sidebar {...opts} mobile />}
     </div>
   );
 };
-const Sidebar = (opts: { userDetails?: UserDetails; user?: User }) => {
+const Sidebar = (opts: {
+  mobile?: boolean;
+  userDetails?: UserDetails;
+  user?: User;
+}) => {
   sidebarAbortController?.abort();
   sidebarAbortController = new AbortController();
   const { signal } = sidebarAbortController;
+
+  const isCurrentUser = accountStore.currentUser?.id === opts.user?.id;
 
   return (
     <div class={style.sidebar}>
       <SidebarJoined user={opts.user} signal={signal} />
       <SidebarActivity user={opts.user} signal={signal} />
-      <MutualList
-        friendIds={opts.userDetails?.mutualFriendIds}
-        signal={signal}
-      />
-      <MutualList
-        serverIds={opts.userDetails?.mutualServerIds}
-        signal={signal}
-      />
+      {!isCurrentUser && (
+        <>
+          <MutualList
+            friendIds={opts.userDetails?.mutualFriendIds}
+            signal={signal}
+            mobile={opts.mobile}
+          />
+          <MutualList
+            serverIds={opts.userDetails?.mutualServerIds}
+            signal={signal}
+            mobile={opts.mobile}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -162,25 +176,50 @@ const MutualList = (opts: {
   friendIds?: string[];
   serverIds?: string[];
   signal: AbortSignal;
+  mobile?: boolean;
 }) => {
+  let collapsed = !!opts.mobile;
+
   if (!opts.friendIds?.length && !opts.serverIds?.length) return null;
 
+  let itemsEl = (<div class={style.mutualList}></div>) as HTMLDivElement;
+
+  let titleEl = (
+    <div class={style.title}>
+      <Icon name="group" class={style.icon} />
+      {opts.friendIds ? t`Mutual Friends` : t`Mutual Servers`}
+      <Icon class={style.expandIcon} name="keyboard_arrow_down" />
+    </div>
+  );
+
   const el = (
-    <div class={[style.sidebarItem]}>
-      <div class={style.title}>
-        <Icon name="group" class={style.icon} />
-        {opts.friendIds ? t`Mutual Friends` : t`Mutual Servers`}
-      </div>
-      <div class={style.mutualList}>
-        {opts.friendIds?.map((id) => (
-          <MutualItem userId={id} />
-        ))}
-        {opts.serverIds?.map((id) => (
-          <MutualItem serverId={id} />
-        ))}
-      </div>
+    <div class={[style.sidebarItem, style.mutual]}>
+      {titleEl}
+      {itemsEl}
     </div>
   ) as HTMLDivElement;
+
+  const rerender = () => {
+    el.classList.toggle(style.expanded!, collapsed);
+    itemsEl.style.display = collapsed ? "none" : "flex";
+    itemsEl.replaceChildren(
+      <>
+        {!collapsed && opts.friendIds?.map((id) => <MutualItem userId={id} />)}
+        {!collapsed &&
+          opts.serverIds?.map((id) => <MutualItem serverId={id} />)}
+      </>,
+    );
+  };
+  rerender();
+
+  titleEl.addEventListener(
+    "click",
+    () => {
+      collapsed = !collapsed;
+      rerender();
+    },
+    { signal: opts.signal },
+  );
 
   return el;
 };
@@ -199,7 +238,7 @@ const MutualItem = (props: { userId?: string; serverId?: string }) => {
       href={
         user
           ? `./${user.id}`
-          : `/app/servers/${server?.id}/${server?.defaultChannelId}`
+          : `/app/servers/${server?.id}/${getRecentServerChannelId(server?.id!)}`
       }
       class={style.mutualItem}
     >
@@ -247,7 +286,7 @@ const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
     activitiesContainer.replaceChildren(
       ...activities.map((activity) => (
         <UserActivity
-          class={style.sidebarItem}
+          class={style.sidebarItem + " " + style.activity}
           activity={activity}
           userId={props.user?.id!}
         />
