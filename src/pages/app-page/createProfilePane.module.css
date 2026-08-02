@@ -92,7 +92,7 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 300px;
-  gap: 6px;
+  gap: 4px;
 }
 
 .activities {
@@ -145,5 +145,25 @@
   cursor: pointer;
   &:hover {
     background-color: var(--gray-800);
+  }
+}
+
+.mutualList {
+  display: flex;
+  flex-direction: column;
+}
+.mutualItem {
+  overflow: hidden;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: var(--radius-6);
+  &:hover {
+    background-color: var(--gray-800);
+  }
+  &:first-child {
+    margin-top: 6px;
   }
 }

@@ -11,6 +11,8 @@ export type UserDetails = {
   hideFollowers: boolean;
   hideFollowing: boolean;
   profile?: Profile;
+  mutualFriendIds: string[];
+  mutualServerIds: string[]
   user: RawUser & {
     _count: {
       followers: number;

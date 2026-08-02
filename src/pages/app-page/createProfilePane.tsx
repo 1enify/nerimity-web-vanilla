@@ -5,12 +5,15 @@ import { Avatar } from "../../components/avatar";
 import { Banner } from "../../components/Banner";
 import { Drawer } from "../../components/drawer";
 import { Icon } from "../../components/icon";
+import { Link } from "../../components/link";
 import { Markup } from "../../components/markup/markup";
 import { ServerClanItem } from "../../components/serverClanItem";
 import { updateActivity, UserActivity } from "../../components/UserActivity";
 import { UserPresence } from "../../components/userPresence";
+import { Dynamic } from "../../dynamic";
 import { h } from "../../h";
 import { getUserDetails, type UserDetails } from "../../services/userService";
+import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
 import { createWidthQuery } from "../../utils/createWidthQuery";
@@ -143,7 +146,66 @@ const Sidebar = (opts: { userDetails?: UserDetails; user?: User }) => {
     <div class={style.sidebar}>
       <SidebarJoined user={opts.user} signal={signal} />
       <SidebarActivity user={opts.user} signal={signal} />
+      <MutualList
+        friendIds={opts.userDetails?.mutualFriendIds}
+        signal={signal}
+      />
+      <MutualList
+        serverIds={opts.userDetails?.mutualServerIds}
+        signal={signal}
+      />
     </div>
+  );
+};
+
+const MutualList = (opts: {
+  friendIds?: string[];
+  serverIds?: string[];
+  signal: AbortSignal;
+}) => {
+  if (!opts.friendIds?.length && !opts.serverIds?.length) return null;
+
+  const el = (
+    <div class={[style.sidebarItem]}>
+      <div class={style.title}>
+        <Icon name="group" class={style.icon} />
+        {opts.friendIds ? t`Mutual Friends` : t`Mutual Servers`}
+      </div>
+      <div class={style.mutualList}>
+        {opts.friendIds?.map((id) => (
+          <MutualItem userId={id} />
+        ))}
+        {opts.serverIds?.map((id) => (
+          <MutualItem serverId={id} />
+        ))}
+      </div>
+    </div>
+  ) as HTMLDivElement;
+
+  return el;
+};
+
+const MutualItem = (props: { userId?: string; serverId?: string }) => {
+  const user = userStore.users.get(props.userId!);
+  const server = serverStore.servers.get(props.serverId!);
+  if (!user && !server) return null;
+
+  const name = user?.username || server?.name;
+  const font = user ? getFont(user?.profile?.font) : undefined;
+
+  return (
+    <Dynamic
+      component={Link}
+      href={
+        user
+          ? `./${user.id}`
+          : `/app/servers/${server?.id}/${server?.defaultChannelId}`
+      }
+      class={style.mutualItem}
+    >
+      <Avatar size={26} server={server} user={user} />
+      <span class={[font?.class, "font"]}>{name}</span>
+    </Dynamic>
   );
 };
 
