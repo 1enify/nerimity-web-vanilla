@@ -152,6 +152,9 @@
 }
 .joinedAtItem {
   cursor: pointer;
+  .title {
+    padding-bottom: 6px;
+  }
   &:hover {
     background-color: var(--gray-800);
   }
