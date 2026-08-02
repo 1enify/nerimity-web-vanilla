@@ -327,18 +327,18 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:205
-#: src/pages/app-page/createProfilePane.tsx:87
+#: src/pages/app-page/createProfilePane.tsx:92
 msgid "Follows You"
 msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/createProfilePane.tsx:96
+#: src/pages/app-page/createProfilePane.tsx:101
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/createProfilePane.tsx:119
+#: src/pages/app-page/createProfilePane.tsx:124
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -418,7 +418,15 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:158
+#: src/pages/app-page/createProfilePane.tsx:190
+msgid "Mutual Friends"
+msgstr "Mutual Friends"
+
+#: src/pages/app-page/createProfilePane.tsx:190
+msgid "Mutual Servers"
+msgstr "Mutual Servers"
+
+#: src/pages/app-page/createProfilePane.tsx:259
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
