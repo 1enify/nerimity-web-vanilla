@@ -1,5 +1,6 @@
 import { copyFileSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
+
 import type { Plugin } from "vite";
 
 export function shikiLangsPlugin(): Plugin {
@@ -14,6 +15,7 @@ export function shikiLangsPlugin(): Plugin {
           copyFileSync(join(src, file), join(dest, file));
         }
       }
+      console.log("[shiki-langs-copy] Copied languages");
     },
   };
 }
