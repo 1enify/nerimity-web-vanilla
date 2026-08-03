@@ -63,13 +63,6 @@ const Content = (opts: {
     signal,
   );
 
-  const followers = userDetails?.user._count?.followers;
-  const following = userDetails?.user._count?.following;
-
-  const hideFollowers = userDetails?.hideFollowers;
-  const hideFollowing = userDetails?.hideFollowing || user?.bot;
-  const showStats = userDetails && (!hideFollowers || !hideFollowing);
-
   return (
     <div class={style.content}>
       <div class={style.banner}>
@@ -97,40 +90,7 @@ const Content = (opts: {
         </div>
         {presenceContainer}
         <Badges user={userDetails?.user || user} />
-        {showStats && (
-          <div class={style.stats}>
-            {!hideFollowers && (
-              <span class={style.stat}>
-                <Plural
-                  value={followers || 0}
-                  _0={
-                    <Trans>
-                      <span class={style.full}>No</span> Followers
-                    </Trans>
-                  }
-
-                  one={
-                    <Trans>
-                      <span class={style.full}>#</span> Follower
-                    </Trans>
-                  }
-                  other={
-                    <Trans>
-                      <span class={style.full}>#</span> Followers
-                    </Trans>
-                  }
-                />
-              </span>
-            )}
-            {!hideFollowing && (
-              <span class={style.stat}>
-                <Trans>
-                  <span class={style.full}>{following}</span> Following
-                </Trans>
-              </span>
-            )}
-          </div>
-        )}
+        <Stats details={userDetails} />
 
         {userDetails?.profile?.bio && (
           <div class={style.bio}>
@@ -139,6 +99,52 @@ const Content = (opts: {
         )}
       </div>
       {opts.mobile && <Sidebar {...opts} mobile />}
+    </div>
+  );
+};
+
+const Stats = ({ details }: { details?: UserDetails }) => {
+  const followers = details?.user._count?.followers;
+  const following = details?.user._count?.following;
+
+  const hideFollowers = details?.hideFollowers;
+  const hideFollowing = details?.hideFollowing || details?.user.bot;
+  const showStats = details && (!hideFollowers || !hideFollowing);
+
+  if (!showStats) return null;
+
+  return (
+    <div class={style.stats}>
+      {!hideFollowers && (
+        <span class={style.stat}>
+          <Plural
+            value={followers || 0}
+            _0={
+              <Trans>
+                <span class={style.full}>No</span> Followers
+              </Trans>
+            }
+
+            one={
+              <Trans>
+                <span class={style.full}>#</span> Follower
+              </Trans>
+            }
+            other={
+              <Trans>
+                <span class={style.full}>#</span> Followers
+              </Trans>
+            }
+          />
+        </span>
+      )}
+      {!hideFollowing && (
+        <span class={style.stat}>
+          <Trans>
+            <span class={style.full}>{following}</span> Following
+          </Trans>
+        </span>
+      )}
     </div>
   );
 };
