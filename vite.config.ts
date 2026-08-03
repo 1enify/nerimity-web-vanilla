@@ -18,6 +18,11 @@ export default defineConfig({
     devRerenderHighlighter(),
     googleFontsLocal({
       icons: [
+        "group_add",
+        "person_add_disabled",
+        "do_not_disturb_on",
+        "add_circle",
+        "person_add",
         "volunteer_activism",
         "crown",
         "robot_2",

@@ -3,6 +3,7 @@ import { Plural, Trans } from "@trans";
 
 import { Avatar } from "../../components/avatar";
 import { Banner } from "../../components/Banner";
+import { Button } from "../../components/button";
 import { Drawer } from "../../components/drawer";
 import { Icon } from "../../components/icon";
 import { Link } from "../../components/link";
@@ -14,9 +15,11 @@ import { Dynamic } from "../../dynamic";
 import { h, Fragment } from "../../h";
 import { getUserDetails, type UserDetails } from "../../services/userService";
 import { accountStore } from "../../store/accountStore";
+import { friendStore } from "../../store/friendStore";
 import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
+import { FriendStatus } from "../../Types";
 import { hasBit } from "../../utils/bitwise";
 import { createWidthQuery } from "../../utils/createWidthQuery";
 import { formatTimestamp, getDaysAgo } from "../../utils/date";
@@ -71,6 +74,7 @@ const Content = (opts: {
       <div class={style.overlayInfo}>
         <Avatar user={user} size={128} />
       </div>
+      <Actions details={userDetails} />
       <div class={[style.section, style.detailsSection]}>
         <div class={style.nameAndTag}>
           <span class={[style.username, font?.class, "font"]}>
@@ -100,6 +104,63 @@ const Content = (opts: {
       </div>
       {opts.mobile && <Sidebar {...opts} mobile />}
     </div>
+  );
+};
+
+const Actions = ({ details }: { details?: UserDetails }) => {
+  const isFollowing = !!details?.user.followers.length;
+  const friend = friendStore.friends.get(details?.user.id!);
+
+  const isCurrent = accountStore.currentUser?.id === details?.user.id;
+  const bot = details?.user.bot;
+
+  const getFriendButtonState = () => {
+    const blocked = friend?.status === FriendStatus.BLOCKED;
+    const pending = friend?.status === FriendStatus.PENDING;
+    const sent = friend?.status === FriendStatus.SENT;
+    const friends = friend?.status === FriendStatus.FRIENDS;
+
+    if (blocked) return { icon: "block", label: t`Unblock` };
+    if (pending) return { icon: "check", label: t`Accept Request` };
+    if (sent) return { icon: "close", label: t`Remove Request`, alert: true };
+    if (friends)
+      return {
+        icon: "person_add_disabled",
+        label: t`Remove Friend`,
+        alert: true,
+      };
+    return { icon: "group_add", label: t`Add Friend` };
+  };
+
+  const friendButtonState = getFriendButtonState();
+
+  return (
+    <div class={style.actions}>
+      <div class={style.actionsInner}>
+        {isFollowing && (
+          <ActionButton alert icon="do_not_disturb_on" label={t`Unfollow`} />
+        )}
+        {!isFollowing && <ActionButton icon="add_circle" label={t`Follow`} />}
+        {!bot && <ActionButton {...friendButtonState} />}
+        <ActionButton icon="mail" label={isCurrent ? t`Notes` : t`Message`} />
+        <ActionButton icon="more_horiz" />
+      </div>
+    </div>
+  );
+};
+
+const ActionButton = (props: {
+  icon?: string;
+  label?: string;
+  alert?: boolean;
+}) => {
+  return (
+    <Button
+      hoverBorder
+      label={props.label}
+      icon={props.icon}
+      alert={props.alert}
+    />
   );
 };
 
@@ -180,12 +241,14 @@ const Badges = (props: { user: User }) => {
     }
   }
 
+  const showSeparator = !!(earnedBadges.length && otherBadges.length);
+
   return (
     <div class={style.badgesContainer}>
       {earnedBadges.map((b) => (
         <BadgeItem badge={b} />
       ))}
-      <div class={style.separator} />
+      {showSeparator && <div class={style.separator} />}
       {otherBadges.map((b) => (
         <BadgeItem badge={b} />
       ))}
