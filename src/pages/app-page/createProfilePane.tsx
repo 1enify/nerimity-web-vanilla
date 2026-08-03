@@ -16,6 +16,7 @@ import { h, Fragment } from "../../h";
 import { getUserDetails, type UserDetails } from "../../services/userService";
 import { accountStore } from "../../store/accountStore";
 import { friendStore } from "../../store/friendStore";
+import { inboxStore } from "../../store/inboxStore";
 import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
 import { User, userStore } from "../../store/userStore";
@@ -74,7 +75,7 @@ const Content = (opts: {
       <div class={style.overlayInfo}>
         <Avatar user={user} size={128} />
       </div>
-      <Actions details={userDetails} />
+      <Actions details={userDetails} user={opts.user} signal={signal} />
       <div class={[style.section, style.detailsSection]}>
         <div class={style.nameAndTag}>
           <span class={[style.username, font?.class, "font"]}>
@@ -107,12 +108,20 @@ const Content = (opts: {
   );
 };
 
-const Actions = ({ details }: { details?: UserDetails }) => {
+const Actions = ({
+  user,
+  details,
+  signal,
+}: {
+  user?: User;
+  details?: UserDetails;
+  signal: AbortSignal;
+}) => {
   const isFollowing = !!details?.user.followers.length;
-  const friend = friendStore.friends.get(details?.user.id!);
+  const friend = friendStore.friends.get(user?.id!);
 
-  const isCurrent = accountStore.currentUser?.id === details?.user.id;
-  const bot = details?.user.bot;
+  const isCurrent = accountStore.currentUser?.id === user?.id;
+  const bot = user?.bot;
 
   const getFriendButtonState = () => {
     const blocked = friend?.status === FriendStatus.BLOCKED;
@@ -120,45 +129,82 @@ const Actions = ({ details }: { details?: UserDetails }) => {
     const sent = friend?.status === FriendStatus.SENT;
     const friends = friend?.status === FriendStatus.FRIENDS;
 
-    if (blocked) return { icon: "block", label: t`Unblock` };
-    if (pending) return { icon: "check", label: t`Accept Request` };
-    if (sent) return { icon: "close", label: t`Remove Request`, alert: true };
+    if (blocked) return { action: "unblock", icon: "block", label: t`Unblock` };
+    if (pending)
+      return {
+        action: "accept_friend",
+        icon: "check",
+        label: t`Accept Request`,
+      };
+    if (sent)
+      return {
+        action: "remove_request",
+        icon: "close",
+        label: t`Remove Request`,
+        alert: true,
+      };
     if (friends)
       return {
+        action: "remove_friend",
         icon: "person_add_disabled",
         label: t`Remove Friend`,
         alert: true,
       };
-    return { icon: "group_add", label: t`Add Friend` };
+    return { action: "add_friend", icon: "group_add", label: t`Add Friend` };
   };
 
   const friendButtonState = getFriendButtonState();
-
-  return (
+  const el = (
     <div class={style.actions}>
       <div class={style.actionsInner}>
         {isFollowing && (
-          <ActionButton alert icon="do_not_disturb_on" label={t`Unfollow`} />
+          <ActionButton
+            action="unfollow"
+            alert
+            icon="do_not_disturb_on"
+            label={t`Unfollow`}
+          />
         )}
         {!isFollowing && !isCurrent && (
-          <ActionButton icon="add_circle" label={t`Follow`} />
+          <ActionButton action="follow" icon="add_circle" label={t`Follow`} />
         )}
         {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
-        <ActionButton icon="mail" label={isCurrent ? t`Notes` : t`Message`} />
-        <ActionButton icon="more_horiz" />
+        <ActionButton
+          action="message"
+          icon="mail"
+          label={isCurrent ? t`Notes` : t`Message`}
+        />
+        <ActionButton action="" icon="more_horiz" />
       </div>
     </div>
+  ) as HTMLDivElement;
+
+  el.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target as HTMLDivElement;
+      const button = target.closest("[data-action]") as HTMLDivElement;
+      const action = button.dataset?.action;
+      if (action === "message") {
+        inboxStore.openChannel(user?.id!);
+      }
+    },
+    { signal },
   );
+
+  return el;
 };
 
 const ActionButton = (props: {
   icon?: string;
   label?: string;
   alert?: boolean;
+  action: string;
 }) => {
   return (
     <Button
       hoverBorder
+      data-action={props.action}
       label={props.label}
       icon={props.icon}
       alert={props.alert}

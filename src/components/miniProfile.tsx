@@ -417,17 +417,6 @@ export const MiniProfile = (props: {
     });
   }
 
-  let dmOpening = false;
-  const openChannel = async (userId: string) => {
-    if (dmOpening) return;
-    dmOpening = true;
-    const inbox = await inboxStore.loadInbox(userId).finally(() => {
-      dmOpening = false;
-    });
-    if (!inbox) return;
-    router.navigate(`/app/inbox/${inbox.channelId}`);
-  };
-
   miniProfileEl.addEventListener(
     "click",
     (e) => {
@@ -445,7 +434,7 @@ export const MiniProfile = (props: {
         const button = e.target.closest(".button") as HTMLElement;
         if (!button) return;
         if (button.dataset.action === "message") {
-          openChannel(props.userId);
+          inboxStore.openChannel(props.userId);
           props.abort.abort();
         }
         if (button.dataset.action === "logout") {

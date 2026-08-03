@@ -69,5 +69,24 @@ function createInboxStore() {
     removeInbox(channelId);
   };
 
-  return { inboxes, setInboxes, setInbox, loadInbox, removeInbox, close };
+  let dmOpening = false;
+  const openChannel = async (userId: string) => {
+    if (dmOpening) return;
+    dmOpening = true;
+    const inbox = await inboxStore.loadInbox(userId).finally(() => {
+      dmOpening = false;
+    });
+    if (!inbox) return;
+    router.navigate(`/app/inbox/${inbox.channelId}`);
+  };
+
+  return {
+    inboxes,
+    setInboxes,
+    setInbox,
+    loadInbox,
+    removeInbox,
+    close,
+    openChannel,
+  };
 }
