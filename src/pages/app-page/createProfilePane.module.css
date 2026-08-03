@@ -182,6 +182,11 @@
 }
 
 .sidebarItem.mutual {
+  &.botCreator {
+    .title {
+      pointer-events: none;
+    }
+  }
   .title {
     cursor: pointer;
     user-select: none;

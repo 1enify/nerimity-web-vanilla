@@ -334,12 +334,12 @@ msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/createProfilePane.tsx:181
+#: src/pages/app-page/createProfilePane.tsx:183
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/createProfilePane.tsx:204
+#: src/pages/app-page/createProfilePane.tsx:206
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -349,12 +349,12 @@ msgstr "Full Profile"
 
 #: src/components/miniProfile.tsx:258
 #: src/components/miniProfile.tsx:282
-#: src/pages/app-page/createProfilePane.tsx:145
+#: src/pages/app-page/createProfilePane.tsx:147
 msgid "Notes"
 msgstr "Notes"
 
 #: src/components/miniProfile.tsx:258
-#: src/pages/app-page/createProfilePane.tsx:145
+#: src/pages/app-page/createProfilePane.tsx:147
 msgid "Message"
 msgstr "Message"
 
@@ -445,19 +445,23 @@ msgstr "Add Friend"
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: src/pages/app-page/createProfilePane.tsx:143
+#: src/pages/app-page/createProfilePane.tsx:144
 msgid "Follow"
 msgstr "Follow"
 
-#: src/pages/app-page/createProfilePane.tsx:307
+#: src/pages/app-page/createProfilePane.tsx:303
+msgid "Bot Creator"
+msgstr "Bot Creator"
+
+#: src/pages/app-page/createProfilePane.tsx:326
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/createProfilePane.tsx:307
+#: src/pages/app-page/createProfilePane.tsx:326
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/createProfilePane.tsx:378
+#: src/pages/app-page/createProfilePane.tsx:401
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 

@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lingui compile & Extract
+        run: pnpm lingui extract --clean && pnpm lingui compile
+
       - name: Build
         run: pnpm run build
 

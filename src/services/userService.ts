@@ -1,4 +1,9 @@
-import type { Profile, RawUser, RawUserPresence } from "../Types";
+import type {
+  Profile,
+  RawBotCommand,
+  RawUser,
+  RawUserPresence,
+} from "../Types";
 import { request } from "./request";
 
 interface GetUserDetailsOpts {
@@ -14,6 +19,19 @@ export type UserDetails = {
   mutualFriendIds: string[];
   mutualServerIds: string[];
   user: RawUser & {
+    application?: {
+      botCommands?: RawBotCommand[];
+      creatorAccount: {
+        user: {
+          username: string;
+          tag: string;
+          id: string;
+          avatar?: string;
+          badges: number;
+          hexColor: string;
+        };
+      };
+    };
     following: any[];
     followers: any[];
     _count: {

@@ -140,8 +140,10 @@ const Actions = ({ details }: { details?: UserDetails }) => {
         {isFollowing && (
           <ActionButton alert icon="do_not_disturb_on" label={t`Unfollow`} />
         )}
-        {!isFollowing && <ActionButton icon="add_circle" label={t`Follow`} />}
-        {!bot && <ActionButton {...friendButtonState} />}
+        {!isFollowing && !isCurrent && (
+          <ActionButton icon="add_circle" label={t`Follow`} />
+        )}
+        {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
         <ActionButton icon="mail" label={isCurrent ? t`Notes` : t`Message`} />
         <ActionButton icon="more_horiz" />
       </div>
@@ -267,9 +269,12 @@ const Sidebar = (opts: {
 
   const isCurrentUser = accountStore.currentUser?.id === opts.user?.id;
 
+  const bot = opts.userDetails?.user.bot;
+
   return (
     <div class={style.sidebar}>
       <SidebarJoined user={opts.user} signal={signal} />
+      {bot && <SidebarBotCreator details={opts.userDetails!} />}
       <SidebarActivity user={opts.user} signal={signal} />
       {!isCurrentUser && (
         <>
@@ -289,6 +294,20 @@ const Sidebar = (opts: {
   );
 };
 
+const SidebarBotCreator = (opts: { details: UserDetails }) => {
+  const user = opts.details.user.application?.creatorAccount.user as User;
+  return (
+    <div class={[style.sidebarItem, style.mutual, style.botCreator]}>
+      <div class={style.title}>
+        <Icon name="group" class={style.icon} />
+        {t`Bot Creator`}
+      </div>
+      <div class={style.mutualList}>
+        <MutualItem user={user!} />
+      </div>
+    </div>
+  );
+};
 const MutualList = (opts: {
   friendIds?: string[];
   serverIds?: string[];
@@ -341,8 +360,12 @@ const MutualList = (opts: {
   return el;
 };
 
-const MutualItem = (props: { userId?: string; serverId?: string }) => {
-  const user = userStore.users.get(props.userId!);
+const MutualItem = (props: {
+  userId?: string;
+  serverId?: string;
+  user?: User;
+}) => {
+  const user = userStore.users.get(props.userId!) || props.user;
   const server = serverStore.servers.get(props.serverId!);
   if (!user && !server) return null;
 
