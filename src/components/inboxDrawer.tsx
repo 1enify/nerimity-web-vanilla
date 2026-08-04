@@ -69,7 +69,7 @@ const UserItem = (props: {
       class={style.inboxItem}
       data-channel-id={channelId || props.inbox?.channelId}
       data-user-id={props.user.id}
-      alert={!!count}
+      alert={!!count || sentRequest || pendingRequest}
     >
       <Avatar user={props.user} size={28} />
       <div class={style.info}>
