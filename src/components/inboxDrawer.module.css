@@ -56,10 +56,14 @@
   .pill {
     flex-shrink: 0;
   }
+  .requestButton,
   .closeButton {
     display: none;
     padding: 4px;
     font-size: 16px;
+  }
+  .requestButton {
+    display: flex;
   }
 }
 
@@ -90,5 +94,12 @@
   }
   .icon {
     font-size: 16px;
+  }
+  .pill {
+    width: 15px;
+    min-width: initial;
+    height: 15px;
+    color: var(--text-color);
+    font-size: 10px;
   }
 }

@@ -156,21 +156,23 @@ msgstr "Profile"
 msgid "Home"
 msgstr "Home"
 
-#. placeholder {0}: online.length
-#: src/components/inboxDrawer.tsx:271
-msgid "Online - {0}"
-msgstr "Online - {0}"
+#: src/components/inboxDrawer.tsx:314
+msgid "Requests - {count}"
+msgstr "Requests - {count}"
 
-#. placeholder {0}: offline.length
-#: src/components/inboxDrawer.tsx:272
-msgid "Offline - {0}"
-msgstr "Offline - {0}"
+#: src/components/inboxDrawer.tsx:317
+msgid "Online - {count}"
+msgstr "Online - {count}"
 
-#: src/components/inboxDrawer.tsx:331
+#: src/components/inboxDrawer.tsx:320
+msgid "Offline - {count}"
+msgstr "Offline - {count}"
+
+#: src/components/inboxDrawer.tsx:387
 msgid "Inbox"
 msgstr "Inbox"
 
-#: src/components/inboxDrawer.tsx:332
+#: src/components/inboxDrawer.tsx:393
 msgid "Friends"
 msgstr "Friends"
 
@@ -328,18 +330,18 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:205
-#: src/pages/app-page/createProfilePane.tsx:91
+#: src/pages/app-page/createProfilePane.tsx:124
 msgid "Follows You"
 msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/createProfilePane.tsx:183
+#: src/pages/app-page/createProfilePane.tsx:295
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/createProfilePane.tsx:206
+#: src/pages/app-page/createProfilePane.tsx:318
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -349,12 +351,12 @@ msgstr "Full Profile"
 
 #: src/components/miniProfile.tsx:258
 #: src/components/miniProfile.tsx:282
-#: src/pages/app-page/createProfilePane.tsx:147
+#: src/pages/app-page/createProfilePane.tsx:204
 msgid "Notes"
 msgstr "Notes"
 
 #: src/components/miniProfile.tsx:258
-#: src/pages/app-page/createProfilePane.tsx:147
+#: src/pages/app-page/createProfilePane.tsx:204
 msgid "Message"
 msgstr "Message"
 
@@ -374,24 +376,24 @@ msgstr "Joined"
 msgid "About Me"
 msgstr "About Me"
 
-#: src/components/miniProfile.tsx:610
+#: src/components/miniProfile.tsx:599
 msgid "Appear As Offline"
 msgstr "Appear As Offline"
 
-#: src/components/miniProfile.tsx:696
-#: src/components/miniProfile.tsx:739
+#: src/components/miniProfile.tsx:685
+#: src/components/miniProfile.tsx:728
 msgid "Set Custom Status"
 msgstr "Set Custom Status"
 
-#: src/components/miniProfile.tsx:744
+#: src/components/miniProfile.tsx:733
 msgid "What are you up to?"
 msgstr "What are you up to?"
 
-#: src/components/miniProfile.tsx:748
+#: src/components/miniProfile.tsx:737
 msgid "Don't save"
 msgstr "Don't save"
 
-#: src/components/miniProfile.tsx:749
+#: src/components/miniProfile.tsx:738
 msgid "Save"
 msgstr "Save"
 
@@ -421,47 +423,47 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:123
+#: src/pages/app-page/createProfilePane.tsx:146
 msgid "Unblock"
 msgstr "Unblock"
 
-#: src/pages/app-page/createProfilePane.tsx:124
+#: src/pages/app-page/createProfilePane.tsx:151
 msgid "Accept Request"
 msgstr "Accept Request"
 
-#: src/pages/app-page/createProfilePane.tsx:125
+#: src/pages/app-page/createProfilePane.tsx:157
 msgid "Remove Request"
 msgstr "Remove Request"
 
-#: src/pages/app-page/createProfilePane.tsx:129
+#: src/pages/app-page/createProfilePane.tsx:164
 msgid "Remove Friend"
 msgstr "Remove Friend"
 
-#: src/pages/app-page/createProfilePane.tsx:132
+#: src/pages/app-page/createProfilePane.tsx:167
 msgid "Add Friend"
 msgstr "Add Friend"
 
-#: src/pages/app-page/createProfilePane.tsx:141
+#: src/pages/app-page/createProfilePane.tsx:187
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: src/pages/app-page/createProfilePane.tsx:144
+#: src/pages/app-page/createProfilePane.tsx:197
 msgid "Follow"
 msgstr "Follow"
 
-#: src/pages/app-page/createProfilePane.tsx:303
+#: src/pages/app-page/createProfilePane.tsx:429
 msgid "Bot Creator"
 msgstr "Bot Creator"
 
-#: src/pages/app-page/createProfilePane.tsx:326
+#: src/pages/app-page/createProfilePane.tsx:452
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/createProfilePane.tsx:326
+#: src/pages/app-page/createProfilePane.tsx:452
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/createProfilePane.tsx:401
+#: src/pages/app-page/createProfilePane.tsx:527
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 

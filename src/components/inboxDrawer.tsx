@@ -1,6 +1,6 @@
-import { t } from "@lingui/core/macro";
+import { ph, t } from "@lingui/core/macro";
 
-import { h } from "../h";
+import { h, Fragment } from "../h";
 import { Channel, channelStore } from "../store/channelStore";
 import { Friend, friendStore } from "../store/friendStore";
 import { Inbox, inboxStore } from "../store/inboxStore";
@@ -27,11 +27,19 @@ import { UserPresence as UserPresenceItem } from "./userPresence";
 
 import style from "./inboxDrawer.module.css";
 
-const TabItem = (props: { name: string; icon: string; selected?: boolean }) => {
+const TabItem = (props: {
+  name: string;
+  icon: string;
+  selected?: boolean;
+  count?: number;
+}) => {
   return (
     <button class={style.tabItem} data-selected={props.selected}>
       <Icon class={style.icon} name={props.icon} />
       <span class={style.name}>{props.name}</span>
+      {!!props.count && (
+        <NotificationPill count={props.count} class={style.pill} />
+      )}
     </button>
   );
 };
@@ -48,6 +56,11 @@ const UserItem = (props: {
   const count = props.inbox?.count ?? props.friendItem?.count;
 
   const font = getFont(props.user?.profile?.font);
+
+  const friendStatus = props.friendItem?.friend.status;
+
+  const sentRequest = friendStatus === FriendStatus.SENT;
+  const pendingRequest = friendStatus === FriendStatus.PENDING;
 
   return (
     <Item.Base
@@ -68,6 +81,21 @@ const UserItem = (props: {
       <div class={style.right}>
         {count && <NotificationPill class={style.pill} count={count} />}
         {props.inbox && <Button class={style.closeButton} icon="close" alert />}
+        {pendingRequest && (
+          <Button
+            data-action="req-accept"
+            class={style.requestButton}
+            icon="check"
+          />
+        )}
+        {(pendingRequest || sentRequest) && (
+          <Button
+            data-action="req-cancel"
+            class={style.requestButton}
+            icon="close"
+            alert
+          />
+        )}
       </div>
     </Item.Base>
   );
@@ -196,15 +224,20 @@ interface FriendItem {
   user: User;
   inbox?: Inbox;
   count?: number;
+  createdAt: number;
 }
 const createFriendsList = () => {
+  const requestsTitle = (<div class={style.friendsTitle}></div>) as HTMLElement;
   const onlineTitle = (<div class={style.friendsTitle}></div>) as HTMLElement;
   const offlineTitle = (<div class={style.friendsTitle}></div>) as HTMLElement;
 
+  const requestsListEl = (<div></div>) as HTMLElement;
   const onlineListEl = (<div></div>) as HTMLElement;
   const offlineListEl = (<div></div>) as HTMLElement;
   const friendListEl = (
     <div class={style.inboxList}>
+      {requestsTitle}
+      {requestsListEl}
       {onlineTitle}
       {onlineListEl}
       {offlineTitle}
@@ -241,6 +274,7 @@ const createFriendsList = () => {
         friend,
         inbox: userIdToInbox.get(friend.recipientId)!,
         count: userIdToMentionCount.get(friend.recipientId),
+        createdAt: friend.createdAt,
         user,
       }));
 
@@ -248,50 +282,59 @@ const createFriendsList = () => {
   });
 
   const categorizedFriends = new ManualMemo(() => {
+    let requests: FriendItem[] = [];
     const online: FriendItem[] = [];
     const offline: FriendItem[] = [];
     const friends = sorted.value();
 
     for (let i = 0; i < friends.length; i++) {
       const friend = friends[i]!;
-      if (friend.friend.status !== FriendStatus.FRIENDS) continue;
+      const friendStatus = friend.friend.status;
+      if ([FriendStatus.PENDING, FriendStatus.SENT].includes(friendStatus)) {
+        requests.push(friend);
+        continue;
+      }
+      if (friendStatus !== FriendStatus.FRIENDS) continue;
       const presence = userPresenceStore.presences.get(friend.userId);
       if (presence?.status) online.push(friend);
       else offline.push(friend);
     }
 
-    return { online, offline };
+    requests = requests.sort((a, b) => a.createdAt - b.createdAt);
+
+    return { online, offline, requests };
   });
 
   const rerender = (forceRerenderId?: string | boolean) => {
+    const requests = categorizedFriends.value().requests;
     const online = categorizedFriends.value().online;
     const offline = categorizedFriends.value().offline;
+
+    requestsTitle.classList.toggle(style.hide!, requests.length === 0);
+    requestsTitle.textContent = t`Requests - ${ph({ count: requests.length })}`;
+
     onlineTitle.classList.toggle(style.hide!, online.length === 0);
+    onlineTitle.textContent = t`Online - ${ph({ count: online.length })}`;
+
     offlineTitle.classList.toggle(style.hide!, offline.length === 0);
-    onlineTitle.textContent = t`Online - ${online.length}`;
-    offlineTitle.textContent = t`Offline - ${offline.length}`;
-    reconcile({
-      container: onlineListEl,
-      values: online,
-      valueId: "userId",
-      dataAttr: "user-id",
-      create: FriendItem,
-      shouldRecreate: (_, item) => {
-        if (forceRerenderId === true) return true;
-        return item.userId === forceRerenderId;
-      },
-    });
-    reconcile({
-      container: offlineListEl,
-      values: offline,
-      valueId: "userId",
-      dataAttr: "user-id",
-      create: FriendItem,
-      shouldRecreate: (_, item) => {
-        if (forceRerenderId === true) return true;
-        return item.userId === forceRerenderId;
-      },
-    });
+    offlineTitle.textContent = t`Offline - ${ph({ count: offline.length })}`;
+
+    const reconciler = (container: HTMLElement, values: FriendItem[]) =>
+      reconcile({
+        container,
+        values,
+        valueId: "userId",
+        dataAttr: "user-id",
+        create: FriendItem,
+        shouldRecreate: (_, item) => {
+          if (forceRerenderId === true) return true;
+          return item.userId === forceRerenderId;
+        },
+      });
+
+    reconciler(requestsListEl, requests);
+    reconciler(onlineListEl, online);
+    reconciler(offlineListEl, offline);
   };
   rerender();
 
@@ -326,12 +369,36 @@ const createInboxDrawer = () => {
   let inboxList: ReturnType<typeof createInboxList> | null = createInboxList();
   let friendList: ReturnType<typeof createFriendsList> | null = null;
 
-  let tabsEl = (
-    <div class={style.tabs}>
-      <TabItem name={t`Inbox`} icon="inbox" selected />
-      <TabItem name={t`Friends`} icon="diversity_1" />
-    </div>
-  ) as HTMLElement;
+  let tabsEl = (<div class={style.tabs}></div>) as HTMLElement;
+
+  const rerenderTabs = () => {
+    const requestLength = [...friendStore.friends.values()].filter((f) => {
+      return [FriendStatus.PENDING, FriendStatus.SENT].includes(f.status);
+    }).length;
+
+    let mentionCount = 0;
+    [...messageMentionStore.mentions.values()].forEach((e) => {
+      if (!e.serverId) mentionCount += e.count;
+    });
+
+    tabsEl.replaceChildren(
+      <>
+        <TabItem
+          name={t`Inbox`}
+          icon="inbox"
+          selected={!!inboxList}
+          count={mentionCount}
+        />
+        <TabItem
+          name={t`Friends`}
+          icon="diversity_1"
+          selected={!!friendList}
+          count={requestLength}
+        />
+      </>,
+    );
+  };
+  rerenderTabs();
 
   let containerEl = (
     <div class={["scrollbarHover"]}>
@@ -413,6 +480,18 @@ const createInboxDrawer = () => {
           return;
         }
 
+        const actionEl = target.closest("[data-action]") as HTMLDivElement;
+        const action = actionEl?.dataset.action as "req-cancel" | "req-accept";
+        if (action) {
+          e?.preventDefault();
+          e.stopPropagation();
+          if (action === "req-accept") {
+          }
+          if (action === "req-cancel") {
+          }
+          return;
+        }
+
         Drawer().updatePage({ page: 1 });
         const channel = channelStore.channels.get(channelId!);
         if (channel) return;
@@ -442,6 +521,7 @@ const createInboxDrawer = () => {
       friendList?.sorted.rerun();
       friendList?.categorizedFriends.rerun();
       friendList?.rerender();
+      rerenderTabs();
     },
     signal,
   );
@@ -456,6 +536,7 @@ const createInboxDrawer = () => {
     "mention:dm_update",
     (mention) => {
       (inboxList || friendList)?.handleMentionUpdate(mention);
+      rerenderTabs();
     },
     signal,
   );
@@ -465,6 +546,7 @@ const createInboxDrawer = () => {
     (event) => {
       if (event.serverId) return;
       (inboxList || friendList)?.handleMentionUpdate();
+      rerenderTabs();
     },
     signal,
   );
@@ -475,6 +557,7 @@ const createInboxDrawer = () => {
     friendList?.sorted.rerun();
     friendList?.categorizedFriends.rerun();
     friendList?.rerender(event.recipientId);
+    rerenderTabs();
   };
 
   storeEmitter.on("inbox:open", rerender, signal);
