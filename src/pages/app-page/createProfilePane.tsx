@@ -13,6 +13,7 @@ import { updateActivity, UserActivity } from "../../components/UserActivity";
 import { UserPresence } from "../../components/userPresence";
 import { Dynamic } from "../../dynamic";
 import { h, Fragment } from "../../h";
+import { addFriend, removeFriend } from "../../services/friendService";
 import {
   followUser,
   getUserDetails,
@@ -152,7 +153,7 @@ const Actions = ({
       };
     if (sent)
       return {
-        action: "remove_request",
+        action: "remove_friend",
         icon: "close",
         label: t`Remove Request`,
         alert: true,
@@ -246,8 +247,27 @@ const Actions = ({
         rerender();
         return;
       }
+      if (action === "add_friend") {
+        addFriend({
+          username: user?.username!,
+          tag: user?.tag!,
+        });
+      }
+      if (action === "remove_friend") {
+        removeFriend(user?.id!);
+      }
     },
     { signal },
+  );
+
+  storeEmitter.on(
+    "friend:request",
+    (event) => {
+      if (event.friend.recipientId === user?.id) {
+        rerender();
+      }
+    },
+    signal,
   );
 
   return el;
