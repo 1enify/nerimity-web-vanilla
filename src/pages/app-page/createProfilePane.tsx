@@ -48,7 +48,6 @@ const Content = (opts: {
   const { signal } = contentAbortController;
 
   if (!user) return null;
-  const font = getFont(user?.profile?.font || userDetails?.profile?.font);
 
   const presenceContainer = (<div></div>) as HTMLDivElement;
 
@@ -77,24 +76,9 @@ const Content = (opts: {
       </div>
       <Actions details={userDetails} user={opts.user} signal={signal} />
       <div class={[style.section, style.detailsSection]}>
-        <div class={style.nameAndTag}>
-          <span class={[style.username, font?.class, "font"]}>
-            {user.username}
-          </span>
-          <span class={style.tag}>:{user.tag}</span>
-          <span class={style.badges}>
-            {userDetails?.profile?.clan && (
-              <span class={style.clan}>
-                <ServerClanItem clan={userDetails?.profile?.clan} />
-              </span>
-            )}
-            {userDetails?.followsYou && (
-              <span class={style.followsYou}>{t`Follows You`}</span>
-            )}
-          </span>
-        </div>
+        <NameAndTag details={userDetails} user={user} />
         {presenceContainer}
-        <Badges user={userDetails?.user || user} />
+        <Badges user={user} />
         <Stats details={userDetails} />
 
         {userDetails?.profile?.bio && (
@@ -104,6 +88,33 @@ const Content = (opts: {
         )}
       </div>
       {opts.mobile && <Sidebar {...opts} mobile />}
+    </div>
+  );
+};
+
+const NameAndTag = ({
+  user,
+  details,
+}: {
+  user: User;
+  details?: UserDetails;
+}) => {
+  const font = getFont(user?.profile?.font || details?.profile?.font);
+
+  return (
+    <div class={style.nameAndTag}>
+      <span class={[style.username, font?.class, "font"]}>{user.username}</span>
+      <span class={style.tag}>:{user.tag}</span>
+      <span class={style.badges}>
+        {details?.profile?.clan && (
+          <span class={style.clan}>
+            <ServerClanItem clan={details?.profile?.clan} />
+          </span>
+        )}
+        {details?.followsYou && (
+          <span class={style.followsYou}>{t`Follows You`}</span>
+        )}
+      </span>
     </div>
   );
 };
