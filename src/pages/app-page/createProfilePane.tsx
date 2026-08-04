@@ -13,9 +13,14 @@ import { updateActivity, UserActivity } from "../../components/UserActivity";
 import { UserPresence } from "../../components/userPresence";
 import { Dynamic } from "../../dynamic";
 import { h, Fragment } from "../../h";
-import { getUserDetails, type UserDetails } from "../../services/userService";
+import {
+  followUser,
+  getUserDetails,
+  unfollowUser,
+  type UserDetails,
+} from "../../services/userService";
 import { accountStore } from "../../store/accountStore";
-import { friendStore } from "../../store/friendStore";
+import { Friend, friendStore } from "../../store/friendStore";
 import { inboxStore } from "../../store/inboxStore";
 import { serverStore } from "../../store/serverStore";
 import { userPresenceStore } from "../../store/userPresenceStore";
@@ -24,7 +29,7 @@ import { FriendStatus } from "../../Types";
 import { hasBit } from "../../utils/bitwise";
 import { createWidthQuery } from "../../utils/createWidthQuery";
 import { formatTimestamp, getDaysAgo } from "../../utils/date";
-import { storeEmitter } from "../../utils/EventEmitter";
+import { createEventEmitter, storeEmitter } from "../../utils/EventEmitter";
 import { FocusAnimator } from "../../utils/FocusAnimator";
 import { getFont } from "../../utils/font";
 import { getRecentServerChannelId } from "../../utils/recentServerChannels";
@@ -35,6 +40,10 @@ import style from "./createProfilePane.module.css";
 
 let contentAbortController: AbortController | undefined = undefined;
 let sidebarAbortController: AbortController | undefined = undefined;
+
+export const emitter = createEventEmitter<{
+  follow_state_changed: null;
+}>();
 
 const Content = (opts: {
   userDetails?: UserDetails;
@@ -79,7 +88,7 @@ const Content = (opts: {
         <NameAndTag details={userDetails} user={user} />
         {presenceContainer}
         <Badges user={user} />
-        <Stats details={userDetails} />
+        <Stats details={userDetails} signal={signal} />
 
         {userDetails?.profile?.bio && (
           <div class={style.bio}>
@@ -128,13 +137,7 @@ const Actions = ({
   details?: UserDetails;
   signal: AbortSignal;
 }) => {
-  const isFollowing = !!details?.user.followers.length;
-  const friend = friendStore.friends.get(user?.id!);
-
-  const isCurrent = accountStore.currentUser?.id === user?.id;
-  const bot = user?.bot;
-
-  const getFriendButtonState = () => {
+  const getFriendButtonState = (friend?: Friend) => {
     const blocked = friend?.status === FriendStatus.BLOCKED;
     const pending = friend?.status === FriendStatus.PENDING;
     const sent = friend?.status === FriendStatus.SENT;
@@ -164,40 +167,84 @@ const Actions = ({
     return { action: "add_friend", icon: "group_add", label: t`Add Friend` };
   };
 
-  const friendButtonState = getFriendButtonState();
-  const el = (
-    <div class={style.actions}>
-      <div class={style.actionsInner}>
-        {isFollowing && (
+  const el = (<div class={style.actions}></div>) as HTMLDivElement;
+
+  const rerender = () => {
+    const isFollowing = !!details?.user.followers.length;
+    const friend = friendStore.friends.get(user?.id!);
+
+    const isCurrent = accountStore.currentUser?.id === user?.id;
+    const bot = user?.bot;
+    const friendButtonState = getFriendButtonState(friend);
+    el.replaceChildren(
+      <>
+        <div class={style.actionsInner}>
+          {details && isFollowing && (
+            <ActionButton
+              action="unfollow"
+              alert
+              icon="do_not_disturb_on"
+              label={t`Unfollow`}
+            />
+          )}
+          {accountStore.authenticated &&
+            !isFollowing &&
+            !isCurrent &&
+            details && (
+              <ActionButton
+                action="follow"
+                icon="add_circle"
+                label={t`Follow`}
+              />
+            )}
+          {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
           <ActionButton
-            action="unfollow"
-            alert
-            icon="do_not_disturb_on"
-            label={t`Unfollow`}
+            action="message"
+            icon="mail"
+            label={isCurrent ? t`Notes` : t`Message`}
           />
-        )}
-        {!isFollowing && !isCurrent && (
-          <ActionButton action="follow" icon="add_circle" label={t`Follow`} />
-        )}
-        {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
-        <ActionButton
-          action="message"
-          icon="mail"
-          label={isCurrent ? t`Notes` : t`Message`}
-        />
-        <ActionButton action="" icon="more_horiz" />
-      </div>
-    </div>
-  ) as HTMLDivElement;
+          <ActionButton action="" icon="more_horiz" />
+        </div>
+      </>,
+    );
+  };
+  rerender();
 
   el.addEventListener(
     "click",
-    (event) => {
+    async (event) => {
       const target = event.target as HTMLDivElement;
       const button = target.closest("[data-action]") as HTMLDivElement;
       const action = button.dataset?.action;
       if (action === "message") {
         inboxStore.openChannel(user?.id!);
+        return;
+      }
+      if (action === "follow") {
+        const [, error] = await followUser(user?.id!);
+        if (error) {
+          alert(error.message);
+        }
+        if (details) {
+          details.user.followers = [1];
+        }
+
+        emitter.emit("follow_state_changed");
+        rerender();
+
+        return;
+      }
+      if (action === "unfollow") {
+        const [, error] = await unfollowUser(user?.id!);
+        if (error) {
+          alert(error.message);
+        }
+        if (details) {
+          details.user.followers = [];
+        }
+        emitter.emit("follow_state_changed");
+        rerender();
+        return;
       }
     },
     { signal },
@@ -223,50 +270,72 @@ const ActionButton = (props: {
   );
 };
 
-const Stats = ({ details }: { details?: UserDetails }) => {
-  const followers = details?.user._count?.followers;
-  const following = details?.user._count?.following;
+const Stats = ({
+  details,
+  signal,
+}: {
+  details?: UserDetails;
+  signal: AbortSignal;
+}) => {
+  const el = (<div class={style.stats}></div>) as HTMLDivElement;
 
-  const hideFollowers = details?.hideFollowers;
-  const hideFollowing = details?.hideFollowing || details?.user.bot;
-  const showStats = details && (!hideFollowers || !hideFollowing);
+  const rerender = () => {
+    const followers = details?.user._count?.followers;
+    const following = details?.user._count?.following;
 
-  if (!showStats) return null;
+    const hideFollowers = details?.hideFollowers;
+    const hideFollowing = details?.hideFollowing || details?.user.bot;
+    const showStats = details && (!hideFollowers || !hideFollowing);
 
-  return (
-    <div class={style.stats}>
-      {!hideFollowers && (
-        <span class={style.stat}>
-          <Plural
-            value={followers || 0}
-            _0={
-              <Trans>
-                <span class={style.full}>No</span> Followers
-              </Trans>
-            }
+    if (!showStats) return null;
+    el.replaceChildren(
+      <>
+        {!hideFollowers && (
+          <span class={style.stat}>
+            <Plural
+              value={followers || 0}
+              _0={
+                <Trans>
+                  <span class={style.full}>No</span> Followers
+                </Trans>
+              }
 
-            one={
-              <Trans>
-                <span class={style.full}>#</span> Follower
-              </Trans>
-            }
-            other={
-              <Trans>
-                <span class={style.full}>#</span> Followers
-              </Trans>
-            }
-          />
-        </span>
-      )}
-      {!hideFollowing && (
-        <span class={style.stat}>
-          <Trans>
-            <span class={style.full}>{following}</span> Following
-          </Trans>
-        </span>
-      )}
-    </div>
+              one={
+                <Trans>
+                  <span class={style.full}>#</span> Follower
+                </Trans>
+              }
+              other={
+                <Trans>
+                  <span class={style.full}>#</span> Followers
+                </Trans>
+              }
+            />
+          </span>
+        )}
+        {!hideFollowing && (
+          <span class={style.stat}>
+            <Trans>
+              <span class={style.full}>{following}</span> Following
+            </Trans>
+          </span>
+        )}
+      </>,
+    );
+  };
+
+  rerender();
+  emitter.on(
+    "follow_state_changed",
+    async () => {
+      const [newDetails] = await getUserDetails({ userId: details?.user.id! });
+      if (newDetails) details = newDetails;
+      rerender();
+    },
+    signal,
   );
+
+  return el;
 };
 
 const BadgeItem = (props: { badge: UserBadge }) => {
@@ -534,6 +603,19 @@ const createProfilePane = (content: HTMLElement) => {
 
   const focusAnim = new FocusAnimator(content, "img");
 
+  const fetchUser = async () => {
+    const param = router.match<{ userId: string }>("/app/profile/:userId");
+    const userId = param?.params.userId;
+    if (!userId) return rerender();
+    localUser = userStore.users.get(userId);
+    rerender();
+
+    const [details, error] = await getUserDetails({ userId });
+    if (error) return;
+    userDetails = details;
+    rerender();
+  };
+
   const rerender = () => {
     if (signal.aborted) return;
     const desktop = widthQuery.matches;
@@ -569,17 +651,7 @@ const createProfilePane = (content: HTMLElement) => {
 
   router.createMatchListener<{ userId: string }>(
     "/app/profile/:userId",
-    async (res) => {
-      const userId = res?.params.userId;
-      if (!userId) return rerender();
-      localUser = userStore.users.get(userId);
-      rerender();
-
-      const [details, error] = await getUserDetails({ userId });
-      if (error) return;
-      userDetails = details;
-      rerender();
-    },
+    fetchUser,
     { signal },
   );
 

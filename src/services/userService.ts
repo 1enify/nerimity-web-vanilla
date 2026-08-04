@@ -63,3 +63,17 @@ export async function updatePresence(presence: Partial<RawUserPresence>) {
     useToken: true,
   });
 }
+
+export async function followUser(userId: string) {
+  return request(`/users/${userId}/follow`, {
+    method: "POST",
+    useToken: true,
+  });
+}
+
+export async function unfollowUser(userId: string) {
+  return request(`/users/${userId}/follow`, {
+    method: "DELETE",
+    useToken: true,
+  });
+}

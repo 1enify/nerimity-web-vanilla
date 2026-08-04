@@ -47,7 +47,7 @@ type StoreEvents = {
 
 export const storeEmitter = createEventEmitter<StoreEvents>();
 
-function createEventEmitter<T extends Record<string, unknown>>() {
+export function createEventEmitter<T extends Record<string, unknown>>() {
   const listeners = new Map<keyof T, Set<(data: any) => void>>();
 
   const on = <K extends keyof T>(
