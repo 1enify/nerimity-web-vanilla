@@ -43,8 +43,22 @@ function createFriendStore() {
     storeEmitter.emit("friend:request", { friend });
   };
 
+  const remove = (userId: string) => {
+    const friend = friends.get(userId);
+    if (!friend) return;
+    friends.delete(userId);
+    storeEmitter.emit("friend:request", { friend });
+  };
+
   const isFriendBlocked = (userId: string) =>
     friends.get(userId)?.status === FriendStatus.BLOCKED;
 
-  return { friends, setFriends, isFriendBlocked, setFriend, updateStatus };
+  return {
+    friends,
+    setFriends,
+    isFriendBlocked,
+    setFriend,
+    updateStatus,
+    remove,
+  };
 }

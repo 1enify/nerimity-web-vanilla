@@ -56,6 +56,7 @@ const handlers: Record<string, (payload: any) => void> = {
   "friend:request_sent": onFriendRequest,
   "friend:request_pending": onFriendRequest,
   "friend:request_accepted": onFriendRequestAccept,
+  "friend:removed": onFriendRemove,
 };
 
 export const socketEventHandler = (event: string, payload: any) => {
@@ -310,4 +311,8 @@ function onFriendRequest(payload: RawFriend) {
 
 function onFriendRequestAccept(payload: { friendId: string }) {
   friendStore.updateStatus(payload.friendId, FriendStatus.FRIENDS);
+}
+
+function onFriendRemove(payload: { friendId: string }) {
+  friendStore.remove(payload.friendId);
 }

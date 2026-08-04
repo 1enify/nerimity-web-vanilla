@@ -30,7 +30,7 @@ live: https://vanilla.nerimity.com
 - [x] `friend:request_sent`
 - [x] `friend:request_pending`
 - [x] `friend:request_accepted`
-- [ ] `friend:removed`
+- [x] `friend:removed`
 - [x] `inbox:opened`
 - [x] `inbox:closed`
 - [x] `notification:dismissed`
