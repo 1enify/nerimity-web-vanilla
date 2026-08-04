@@ -372,9 +372,9 @@ const createInboxDrawer = () => {
   let tabsEl = (<div class={style.tabs}></div>) as HTMLElement;
 
   const rerenderTabs = () => {
-    const requestLength = [...friendStore.friends.values()].filter((f) => {
-      return [FriendStatus.PENDING, FriendStatus.SENT].includes(f.status);
-    }).length;
+    const requestLength = [...friendStore.friends.values()].filter(
+      (f) => f.status === FriendStatus.PENDING,
+    ).length;
 
     let mentionCount = 0;
     [...messageMentionStore.mentions.values()].forEach((e) => {
