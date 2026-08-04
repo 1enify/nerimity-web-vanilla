@@ -27,9 +27,9 @@ live: https://vanilla.nerimity.com
 - [ ] `user:reminder_update`
 - [ ] `user:reminder_remove`
 
-- [ ] `friend:request_sent`
-- [ ] `friend:request_pending`
-- [ ] `friend:request_accepted`
+- [x] `friend:request_sent`
+- [x] `friend:request_pending`
+- [x] `friend:request_accepted`
 - [ ] `friend:removed`
 - [x] `inbox:opened`
 - [x] `inbox:closed`

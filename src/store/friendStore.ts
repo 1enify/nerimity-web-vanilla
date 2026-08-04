@@ -1,4 +1,5 @@
 import { FriendStatus, type RawFriend } from "../Types";
+import { storeEmitter } from "../utils/EventEmitter";
 import { userStore } from "./userStore";
 
 export const friendStore = createFriendStore();
@@ -28,8 +29,22 @@ function createFriendStore() {
     }
   };
 
+  const setFriend = (rawFriend: RawFriend) => {
+    userStore.addUser(rawFriend.recipient);
+    const friend = new Friend(rawFriend);
+    friends.set(friend.recipientId, friend);
+    storeEmitter.emit("friend:request", { friend });
+  };
+
+  const updateStatus = (userId: string, status: FriendStatus) => {
+    const friend = friends.get(userId);
+    if (!friend) return;
+    friend.status = status;
+    storeEmitter.emit("friend:request", { friend });
+  };
+
   const isFriendBlocked = (userId: string) =>
     friends.get(userId)?.status === FriendStatus.BLOCKED;
 
-  return { friends, setFriends, isFriendBlocked };
+  return { friends, setFriends, isFriendBlocked, setFriend, updateStatus };
 }

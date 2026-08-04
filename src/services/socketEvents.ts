@@ -10,14 +10,16 @@ import { serverMemberStore } from "../store/serverMemberStore";
 import { serverRoleStore } from "../store/serverRoleStore";
 import { serverStore } from "../store/serverStore";
 import { userPresenceStore } from "../store/userPresenceStore";
-import type {
-  RawChannel,
-  RawCustomEmoji,
-  RawInbox,
-  RawMessage,
-  RawServerMember,
-  RawServerRole,
-  RawUserNotificationSettings,
+import {
+  FriendStatus,
+  type RawChannel,
+  type RawCustomEmoji,
+  type RawFriend,
+  type RawInbox,
+  type RawMessage,
+  type RawServerMember,
+  type RawServerRole,
+  type RawUserNotificationSettings,
 } from "../Types";
 import {
   createCustomEmojiLoader,
@@ -51,6 +53,9 @@ const handlers: Record<string, (payload: any) => void> = {
   "server:emoji_add": onServerEmojiAdded,
   "server:emoji_remove": onServerEmojiRemoved,
   "server:emoji_update": onServerEmojiUpdated,
+  "friend:request_sent": onFriendRequest,
+  "friend:request_pending": onFriendRequest,
+  "friend:request_accepted": onFriendRequestAccept,
 };
 
 export const socketEventHandler = (event: string, payload: any) => {
@@ -297,4 +302,12 @@ async function onServerEmojiUpdated(payload: {
   const loader = await createCustomEmojiLoader();
   await loader?.update(payload.emojiId, payload.name);
   loader?.done();
+}
+
+function onFriendRequest(payload: RawFriend) {
+  friendStore.setFriend(payload);
+}
+
+function onFriendRequestAccept(payload: { friendId: string }) {
+  friendStore.updateStatus(payload.friendId, FriendStatus.FRIENDS);
 }

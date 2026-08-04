@@ -503,6 +503,8 @@ const createInboxDrawer = () => {
     { signal },
   );
 
+  storeEmitter.on("friend:request", () => rerender(), signal);
+
   storeEmitter.on(
     "user:presence_update",
     (event) => {
@@ -551,12 +553,12 @@ const createInboxDrawer = () => {
     signal,
   );
 
-  const rerender = (event: { recipientId: string }) => {
+  const rerender = (event?: { recipientId: string }) => {
     inboxList?.sorted.rerun();
     inboxList?.rerender();
     friendList?.sorted.rerun();
     friendList?.categorizedFriends.rerun();
-    friendList?.rerender(event.recipientId);
+    friendList?.rerender(event?.recipientId);
     rerenderTabs();
   };
 
