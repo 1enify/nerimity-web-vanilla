@@ -23,6 +23,7 @@ import { Button } from "./button";
 import { Drawer } from "./drawer";
 import { Icon } from "./icon";
 import { Item } from "./item";
+import { Link } from "./link";
 import { NotificationPill } from "./NotificationPill";
 import { UserPresence as UserPresenceItem } from "./userPresence";
 
@@ -72,7 +73,9 @@ const UserItem = (props: {
       data-user-id={props.user.id}
       alert={!!count || sentRequest || pendingRequest}
     >
-      <Avatar user={props.user} size={28} />
+      <Link href={`/app/profile/${props.user.id}`}>
+        <Avatar user={props.user} size={28} />
+      </Link>
       <div class={style.info}>
         <div class={[style.username, font?.class, "font"]}>
           {props.user?.username}
