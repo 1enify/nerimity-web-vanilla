@@ -551,6 +551,7 @@ const createMessageContextMenuHandler = (opts: {
           navigator.clipboard.writeText(message.id);
           break;
         case "copy_object":
+          console.log("Copied Object to clipboard", message);
           navigator.clipboard.writeText(JSON.stringify(message));
           break;
         case "reply":

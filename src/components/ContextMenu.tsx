@@ -65,6 +65,7 @@ type ContextMenuHandlerConfig<TData> = {
     actionId: string,
     ctx: { id: string; data: TData; event: MouseEvent },
   ) => void;
+  mode?: "contextmenu" | "click";
 };
 
 const createHandler = <TData,>(config: ContextMenuHandlerConfig<TData>) => {
@@ -81,7 +82,7 @@ const createHandler = <TData,>(config: ContextMenuHandlerConfig<TData>) => {
   );
 
   el.addEventListener(
-    "contextmenu",
+    config.mode ?? "contextmenu",
     (event) => {
       const target = event.target as HTMLElement;
       if (config.shouldSkip?.(target)) return;

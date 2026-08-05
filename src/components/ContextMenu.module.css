@@ -5,10 +5,17 @@
 }
 
 .contextMenu {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  width: max-content;
+  min-width: max-content;
+  max-width: calc(100vw - 16px);
   padding: 4px;
   opacity: 0;
   animation: show 0.2s ease-in-out;
   animation-fill-mode: forwards;
+  white-space: nowrap;
 }
 
 .separator + .separator {
@@ -34,9 +41,13 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  min-width: max-content;
   border-radius: var(--radius-10);
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 
   &:before {
     position: absolute;
@@ -72,6 +83,8 @@
   .label {
     margin-right: 6px;
     margin-left: 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .icon {

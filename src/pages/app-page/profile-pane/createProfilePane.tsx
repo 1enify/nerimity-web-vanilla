@@ -10,6 +10,7 @@ import { Link } from "../../../components/link";
 import { Markup } from "../../../components/markup/markup";
 import { ServerClanItem } from "../../../components/serverClanItem";
 import { updateActivity, UserActivity } from "../../../components/UserActivity";
+import { createUserContextMenuHandler } from "../../../components/UserContextMenu";
 import { UserPresence } from "../../../components/userPresence";
 import { Dynamic } from "../../../dynamic";
 import { h, Fragment } from "../../../h";
@@ -206,10 +207,10 @@ const Actions = ({
           {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
           <ActionButton
             action="message"
-            icon="mail"
+            icon={isCurrent ? "book" : "mail"}
             label={isCurrent ? t`Notes` : t`Message`}
           />
-          <ActionButton action="" icon="more_horiz" />
+          <ActionButton userId={user?.id!} action="more" icon="more_horiz" />
         </div>
       </>,
     );
@@ -221,7 +222,7 @@ const Actions = ({
     async (event) => {
       const target = event.target as HTMLDivElement;
       const button = target.closest("[data-action]") as HTMLDivElement;
-      const action = button.dataset?.action;
+      const action = button?.dataset?.action;
       if (action === "message") {
         inboxStore.openChannel(user?.id!);
         return;
@@ -270,6 +271,13 @@ const Actions = ({
     },
     { signal },
   );
+  console.log(el);
+  createUserContextMenuHandler({
+    mode: "click",
+    data: { details },
+    el,
+    signal,
+  });
 
   storeEmitter.on(
     "friend:request",
@@ -289,6 +297,7 @@ const ActionButton = (props: {
   label?: string;
   alert?: boolean;
   action: string;
+  userId?: string;
 }) => {
   return (
     <Button
@@ -297,6 +306,7 @@ const ActionButton = (props: {
       label={props.label}
       icon={props.icon}
       alert={props.alert}
+      data-user-id={props.userId}
     />
   );
 };

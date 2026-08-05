@@ -1,6 +1,8 @@
 import { t } from "@lingui/core/macro";
 
 import { h } from "../h";
+import { accountStore } from "../store/accountStore";
+import { inboxStore } from "../store/inboxStore";
 import { messageStore } from "../store/messageStore";
 import { serverMemberStore } from "../store/serverMemberStore";
 import { serverStore } from "../store/serverStore";
@@ -13,8 +15,15 @@ import { ContextMenu } from "./ContextMenu";
 import { createEditServerRolesModal } from "./EditServerRolesModal";
 import { createKickMemberModal } from "./KickMemberModal";
 
-export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
+export const createUserContextMenuHandler = (opts: {
+  el?: HTMLElement;
+  data?: Record<string, any>;
+  signal: AbortSignal;
+  mode?: "contextmenu" | "click";
+}) => {
   ContextMenu.createHandler({
+    mode: opts.mode,
+    el: opts.el,
     signal: opts.signal,
     selector: "[data-user-id]",
     attr: "userId",
@@ -25,6 +34,7 @@ export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
       member: serverMemberStore.serverMembers
         .get(serverStore.currentServerId!)
         ?.get(userId),
+      ...opts.data,
     }),
     renderMenu: ({ id, x, y }) => <UserContextMenu x={x} y={y} userId={id} />,
     onAction: (actionId, { id: userId, data }) => {
@@ -38,6 +48,7 @@ export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
           navigator.clipboard.writeText(userId);
           break;
         case "copy_object":
+          console.log("Copied Object to clipboard", data);
           navigator.clipboard.writeText(JSON.stringify(data));
           break;
         case "kick":
@@ -49,6 +60,9 @@ export const createUserContextMenuHandler = (opts: { signal: AbortSignal }) => {
         case "edit_roles":
           createEditServerRolesModal({ userId, username });
           break;
+        case "message": {
+          inboxStore.openChannel(userId);
+        }
       }
     },
   });
@@ -72,7 +86,7 @@ const UserContextMenu = (props: { x: string; y: string; userId: string }) => {
   const isTargetInServer = !!targetMember;
   const selfMember = serverMemberStore.currentMember(server?.id!);
 
-  const isSelf = props.userId === selfMember?.userId;
+  const isSelf = props.userId === accountStore.currentUser?.id;
 
   const isSelfCreator = server?.createdById === selfMember?.userId;
   const targetIsCreator = server?.createdById === targetMember?.userId;
@@ -108,6 +122,10 @@ const UserContextMenu = (props: { x: string; y: string; userId: string }) => {
           <ContextMenu.Icon name="article_person" />
         )}
         <ContextMenu.Label>{t`View Profile`}</ContextMenu.Label>
+      </ContextMenu.Item>
+      <ContextMenu.Item id="message">
+        <ContextMenu.Icon name={isSelf ? "book" : "mail"} />
+        <ContextMenu.Label>{isSelf ? t`Notes` : t`Message`}</ContextMenu.Label>
       </ContextMenu.Item>
       {canEditRoles && (
         <ContextMenu.Item id="edit_roles">
