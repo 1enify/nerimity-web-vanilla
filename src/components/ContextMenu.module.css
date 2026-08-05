@@ -2,6 +2,10 @@
   .item {
     padding: 4px;
   }
+  .contextMenu {
+    width: 100%;
+    max-width: initial;
+  }
 }
 
 .contextMenu {
