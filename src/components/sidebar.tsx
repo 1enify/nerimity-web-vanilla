@@ -2,7 +2,13 @@ import morphdom from "morphdom";
 
 import { h } from "../h";
 import { accountStore } from "../store/accountStore";
+import { inboxStore } from "../store/inboxStore";
+import {
+  MessageMention,
+  messageMentionStore,
+} from "../store/messageMentionStore";
 import { Server, serverStore } from "../store/serverStore";
+import { userStore } from "../store/userStore";
 import type { RawServerFolder } from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
 import { HoverAnimator } from "../utils/HoverAnimator";
@@ -10,6 +16,7 @@ import { reconcile } from "../utils/html";
 import { getRecentServerChannelId } from "../utils/recentServerChannels";
 import { router } from "../utils/router";
 import { Avatar } from "./avatar";
+import { Drawer } from "./drawer";
 import { Icon } from "./icon";
 import { Item } from "./item";
 import { LogoMono } from "./LogoMono";
@@ -273,6 +280,7 @@ export const createSidebar = () => {
       <div class={style.sidebar}>
         <div class={style.scrollable}>
           {homeEl}
+          <MentionList signal={signal} />
           {serverListEl}
         </div>
         <div class={style.footer}>
@@ -341,6 +349,67 @@ const ProfileItem = (props: { signal: AbortSignal }) => {
   };
 
   storeEmitter.on("ws:authStateUpdate", rerender, signal);
+
+  return el;
+};
+
+const MentionItem = ({ mention }: { mention: MessageMention }) => {
+  const notifications = mention.count;
+
+  const user =
+    userStore.users.get(mention.mentionedBy.id) || mention.mentionedBy;
+
+  const inbox = inboxStore.inboxes.get(mention.channelId);
+
+  return (
+    <SidebarItem
+      class="mentionItem"
+      data-user-id={user.id}
+      alert={notifications}
+      title={user.username}
+      href={inbox ? `/app/inbox/${mention.channelId}` : undefined}
+    >
+      <Avatar size={42} user={user} imgClass="avatar" />
+    </SidebarItem>
+  );
+};
+
+const MentionList = (props: { signal: AbortSignal }) => {
+  const el = (<div></div>) as HTMLDivElement;
+
+  const rerender = () => {
+    const mentions = [...messageMentionStore.mentions.values()];
+    const dmMentions = mentions.filter((m) => !m.serverId);
+
+    reconcile({
+      values: dmMentions,
+      container: el,
+      dataAttr: "user-id",
+      valueId: "channelId",
+      create(item) {
+        return <MentionItem mention={item} />;
+      },
+    });
+  };
+
+  el.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target as HTMLDivElement;
+      const itemEl = target.closest(
+        ".mentionItem[data-user-id]",
+      ) as HTMLDivElement;
+      if (!itemEl) return;
+      const userId = itemEl.dataset.userId;
+      if (!userId) return;
+      inboxStore.openChannel(userId);
+      Drawer().updatePage({ page: 1 });
+    },
+    { signal: props.signal },
+  );
+  rerender();
+
+  storeEmitter.on("ws:authStateUpdate", rerender, props.signal);
 
   return el;
 };

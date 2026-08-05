@@ -10,6 +10,7 @@ const createRouter = () => {
         ?.attributes.getNamedItem("href")?.value;
 
       if (href) {
+        if (e.ctrlKey) return;
         e.preventDefault();
         navigate(href);
       }

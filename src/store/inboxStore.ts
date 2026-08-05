@@ -30,13 +30,15 @@ function createInboxStore() {
     for (let i = 0; i < newInboxes.length; i++) {
       const inbox = newInboxes[i]!;
       if (inbox.closed) continue;
-      userStore.addUser(inbox.recipient);
+      const user = userStore.addUser(inbox.recipient);
+      user.inboxChannelId = inbox.channelId;
       inboxes.set(inbox.channelId, new Inbox(inbox));
     }
   };
 
   const setInbox = (inbox: RawInbox) => {
-    userStore.addUser(inbox.recipient);
+    const user = userStore.addUser(inbox.recipient);
+    user.inboxChannelId = inbox.channelId;
     const newInbox = new Inbox(inbox);
     inboxes.set(inbox.channelId, newInbox);
     storeEmitter.emit("inbox:open", inbox);
@@ -44,6 +46,12 @@ function createInboxStore() {
   };
   const removeInbox = (channelId: string) => {
     const inbox = inboxes.get(channelId)!;
+
+    const user = userStore.users.get(inbox.recipientId);
+    if (user) {
+      user.inboxChannelId = undefined;
+    }
+
     inboxes.delete(channelId);
     storeEmitter.emit("inbox:close", inbox);
   };
@@ -71,12 +79,17 @@ function createInboxStore() {
 
   let dmOpening = false;
   const openChannel = async (userId: string) => {
-    if (dmOpening) return;
-    dmOpening = true;
-    const inbox = await inboxStore.loadInbox(userId).finally(() => {
-      dmOpening = false;
-    });
-    if (!inbox) return;
+    const user = userStore.users.get(userId);
+    let inbox = inboxes.get(user?.inboxChannelId!);
+    if (!inbox) {
+      if (dmOpening) return;
+      dmOpening = true;
+
+      inbox = await inboxStore.loadInbox(userId).finally(() => {
+        dmOpening = false;
+      });
+      if (!inbox) return;
+    }
     router.navigate(`/app/inbox/${inbox.channelId}`);
   };
 

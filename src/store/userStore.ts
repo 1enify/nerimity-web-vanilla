@@ -13,6 +13,7 @@ export class User {
   bot?: boolean;
   joinedAt: number;
   badges: number;
+  inboxChannelId?: string;
   constructor(data: RawUser) {
     this.id = data.id;
     this.username = data.username;
@@ -40,7 +41,10 @@ function createUserStore() {
         user.profile.clan = clanCache.get(serverId)!;
       }
     }
-    users.set(user.id, new User(user));
+    const newUser = new User(user);
+
+    users.set(user.id, newUser);
+    return newUser;
   };
 
   return { users, addUser };
