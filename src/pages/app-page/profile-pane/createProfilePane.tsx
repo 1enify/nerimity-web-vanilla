@@ -13,7 +13,11 @@ import { updateActivity, UserActivity } from "../../../components/UserActivity";
 import { UserPresence } from "../../../components/userPresence";
 import { Dynamic } from "../../../dynamic";
 import { h, Fragment } from "../../../h";
-import { addFriend, removeFriend } from "../../../services/friendService";
+import {
+  acceptFriend,
+  addFriend,
+  removeFriend,
+} from "../../../services/friendService";
 import {
   followUser,
   getUserDetails,
@@ -259,6 +263,9 @@ const Actions = ({
       }
       if (action === "remove_friend") {
         createRemoveFriendModal({ userId: user?.id! });
+      }
+      if (action === "accept_friend") {
+        acceptFriend({ userId: user?.id! });
       }
     },
     { signal },

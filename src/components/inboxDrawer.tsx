@@ -1,6 +1,7 @@
 import { ph, t } from "@lingui/core/macro";
 
 import { h, Fragment } from "../h";
+import { acceptFriend, removeFriend } from "../services/friendService";
 import { Channel, channelStore } from "../store/channelStore";
 import { Friend, friendStore } from "../store/friendStore";
 import { Inbox, inboxStore } from "../store/inboxStore";
@@ -483,11 +484,14 @@ const createInboxDrawer = () => {
         const actionEl = target.closest("[data-action]") as HTMLDivElement;
         const action = actionEl?.dataset.action as "req-cancel" | "req-accept";
         if (action) {
+          const userId = item.dataset.userId;
           e?.preventDefault();
           e.stopPropagation();
           if (action === "req-accept") {
+            acceptFriend({ userId: userId! });
           }
           if (action === "req-cancel") {
+            removeFriend(userId!);
           }
           return;
         }
