@@ -1,41 +1,42 @@
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@trans";
 
-import { Avatar } from "../../components/avatar";
-import { Banner } from "../../components/Banner";
-import { Button } from "../../components/button";
-import { Drawer } from "../../components/drawer";
-import { Icon } from "../../components/icon";
-import { Link } from "../../components/link";
-import { Markup } from "../../components/markup/markup";
-import { ServerClanItem } from "../../components/serverClanItem";
-import { updateActivity, UserActivity } from "../../components/UserActivity";
-import { UserPresence } from "../../components/userPresence";
-import { Dynamic } from "../../dynamic";
-import { h, Fragment } from "../../h";
-import { addFriend, removeFriend } from "../../services/friendService";
+import { Avatar } from "../../../components/avatar";
+import { Banner } from "../../../components/Banner";
+import { Button } from "../../../components/button";
+import { Drawer } from "../../../components/drawer";
+import { Icon } from "../../../components/icon";
+import { Link } from "../../../components/link";
+import { Markup } from "../../../components/markup/markup";
+import { ServerClanItem } from "../../../components/serverClanItem";
+import { updateActivity, UserActivity } from "../../../components/UserActivity";
+import { UserPresence } from "../../../components/userPresence";
+import { Dynamic } from "../../../dynamic";
+import { h, Fragment } from "../../../h";
+import { addFriend, removeFriend } from "../../../services/friendService";
 import {
   followUser,
   getUserDetails,
   unfollowUser,
   type UserDetails,
-} from "../../services/userService";
-import { accountStore } from "../../store/accountStore";
-import { Friend, friendStore } from "../../store/friendStore";
-import { inboxStore } from "../../store/inboxStore";
-import { serverStore } from "../../store/serverStore";
-import { userPresenceStore } from "../../store/userPresenceStore";
-import { User, userStore } from "../../store/userStore";
-import { FriendStatus } from "../../Types";
-import { hasBit } from "../../utils/bitwise";
-import { createWidthQuery } from "../../utils/createWidthQuery";
-import { formatTimestamp, getDaysAgo } from "../../utils/date";
-import { createEventEmitter, storeEmitter } from "../../utils/EventEmitter";
-import { FocusAnimator } from "../../utils/FocusAnimator";
-import { getFont } from "../../utils/font";
-import { getRecentServerChannelId } from "../../utils/recentServerChannels";
-import { router } from "../../utils/router";
-import { UserBadgeValues, type UserBadge } from "../../utils/UserBadgeFlag";
+} from "../../../services/userService";
+import { accountStore } from "../../../store/accountStore";
+import { Friend, friendStore } from "../../../store/friendStore";
+import { inboxStore } from "../../../store/inboxStore";
+import { serverStore } from "../../../store/serverStore";
+import { userPresenceStore } from "../../../store/userPresenceStore";
+import { User, userStore } from "../../../store/userStore";
+import { FriendStatus } from "../../../Types";
+import { hasBit } from "../../../utils/bitwise";
+import { createWidthQuery } from "../../../utils/createWidthQuery";
+import { formatTimestamp, getDaysAgo } from "../../../utils/date";
+import { createEventEmitter, storeEmitter } from "../../../utils/EventEmitter";
+import { FocusAnimator } from "../../../utils/FocusAnimator";
+import { getFont } from "../../../utils/font";
+import { getRecentServerChannelId } from "../../../utils/recentServerChannels";
+import { router } from "../../../utils/router";
+import { UserBadgeValues, type UserBadge } from "../../../utils/UserBadgeFlag";
+import { createRemoveFriendModal } from "./removeFriendModal";
 
 import style from "./createProfilePane.module.css";
 
@@ -153,7 +154,7 @@ const Actions = ({
       };
     if (sent)
       return {
-        action: "remove_friend",
+        action: "remove_sent",
         icon: "close",
         label: t`Remove Request`,
         alert: true,
@@ -253,8 +254,11 @@ const Actions = ({
           tag: user?.tag!,
         });
       }
-      if (action === "remove_friend") {
+      if (action === "remove_sent") {
         removeFriend(user?.id!);
+      }
+      if (action === "remove_friend") {
+        createRemoveFriendModal({ userId: user?.id! });
       }
     },
     { signal },

@@ -15,8 +15,8 @@ import { lazy, type LazyResult } from "../../utils/lazy";
 import { router } from "../../utils/router";
 import type createHomePane from "./createHomePane";
 import type createInboxChannelRoute from "./createInboxChannelRoute";
-import type createProfilePane from "./createProfilePane";
 import type createServerChannelRoute from "./createServerChannelRoute";
+import type createProfilePane from "./profile-pane/createProfilePane";
 
 import style from "./AppPage.module.css";
 const createMessagePane = lazy(
@@ -91,8 +91,9 @@ const createAppPage = () => {
         return;
       }
       const isStale = contentSource.capture();
-      const createProfilePaneRoute = (await import("./createProfilePane"))
-        .default;
+      const createProfilePaneRoute = (
+        await import("./profile-pane/createProfilePane")
+      ).default;
 
       if (isStale()) return;
       profilePane = createProfilePaneRoute(content);

@@ -330,18 +330,18 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:205
-#: src/pages/app-page/createProfilePane.tsx:124
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:126
 msgid "Follows You"
 msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/createProfilePane.tsx:295
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:319
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/createProfilePane.tsx:318
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:342
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -351,12 +351,12 @@ msgstr "Full Profile"
 
 #: src/components/miniProfile.tsx:258
 #: src/components/miniProfile.tsx:282
-#: src/pages/app-page/createProfilePane.tsx:204
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:206
 msgid "Notes"
 msgstr "Notes"
 
 #: src/components/miniProfile.tsx:258
-#: src/pages/app-page/createProfilePane.tsx:204
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:206
 msgid "Message"
 msgstr "Message"
 
@@ -423,49 +423,70 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/createProfilePane.tsx:146
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:148
 msgid "Unblock"
 msgstr "Unblock"
 
-#: src/pages/app-page/createProfilePane.tsx:151
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:153
 msgid "Accept Request"
 msgstr "Accept Request"
 
-#: src/pages/app-page/createProfilePane.tsx:157
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:159
 msgid "Remove Request"
 msgstr "Remove Request"
 
-#: src/pages/app-page/createProfilePane.tsx:164
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:166
 msgid "Remove Friend"
 msgstr "Remove Friend"
 
-#: src/pages/app-page/createProfilePane.tsx:167
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:169
 msgid "Add Friend"
 msgstr "Add Friend"
 
-#: src/pages/app-page/createProfilePane.tsx:187
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:189
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: src/pages/app-page/createProfilePane.tsx:197
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:199
 msgid "Follow"
 msgstr "Follow"
 
-#: src/pages/app-page/createProfilePane.tsx:429
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:453
 msgid "Bot Creator"
 msgstr "Bot Creator"
 
-#: src/pages/app-page/createProfilePane.tsx:452
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:476
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/createProfilePane.tsx:452
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:476
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/createProfilePane.tsx:527
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:551
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
+
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:24
+msgid "Are you sure you want to unfriend this user?"
+msgstr "Are you sure you want to unfriend this user?"
+
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:37
+msgid "Unfriend {username}?"
+msgstr "Unfriend {username}?"
+
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:45
+msgid "Don't Unfriend"
+msgstr "Don't Unfriend"
+
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:52
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:70
+msgid "Unfriend"
+msgstr "Unfriend"
+
+#: src/pages/app-page/profile-pane/removeFriendModal.tsx:66
+msgid "Unfriending..."
+msgstr "Unfriending..."
 
 #: src/store/accountStore.ts:105
 msgid "Invalid token."
