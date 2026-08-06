@@ -14,38 +14,43 @@ interface MentionProps {
   label?: string;
   icon?: string;
   monospace?: boolean;
+  [key: string]: any;
 }
 
-export const Mention = (props: MentionProps) => {
-  const text =
-    props.label ||
-    props.user?.username ||
-    props.channel?.name ||
-    props.role?.name;
+export const Mention = ({
+  user,
+  channel,
+  role,
+  label,
+  icon,
+  monospace,
+  ...rest
+}: MentionProps) => {
+  const text = label || user?.username || channel?.name || role?.name;
 
   let url = "";
-  if (props.user) {
-    url = `/app/profile/${props.user.id}`;
+  if (user) {
+    url = `/app/profile/${user.id}`;
   }
-  if (props.channel) {
-    url = `/app/servers/${props.channel.serverId!}/${props.channel.id}`;
+  if (channel) {
+    url = `/app/servers/${channel.serverId!}/${channel.id}`;
   }
 
-  const color = resolveGradient(props.role?.hexColor);
+  const color = resolveGradient(role?.hexColor);
 
   return h(
     url ? Link : "span",
-    { class: style.mention, href: url },
+    { ...rest, class: style.mention, href: url },
     <>
-      {props.user && <Avatar user={props.user} size={16} />}
-      {props.icon && <Icon name={props.icon} class={style.icon} />}
+      {user && <Avatar user={user} size={16} />}
+      {icon && <Icon name={icon} class={style.icon} />}
       {color ? (
         <GradientText color={color} class={["text", style.roleText]}>
           <Icon name="alternate_email" class={[style.icon, style.role]} />
           {text}
         </GradientText>
       ) : (
-        <span class={["text", props.monospace && style.monospace]}>{text}</span>
+        <span class={["text", monospace && style.monospace]}>{text}</span>
       )}
     </>,
   );

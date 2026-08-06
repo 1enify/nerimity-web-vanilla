@@ -308,3 +308,49 @@ export function getDaysAgo(timestamp: number) {
     return t`Error`;
   }
 }
+
+type RelativeMode = "instant" | "duration" | "none";
+
+/**
+ * Formats a timestamp as a relative offset to the current time.
+ */
+export function formatTimestampRelative(
+  timestamp: number,
+  mode?: RelativeMode,
+) {
+  try {
+    const now = Temporal.Now.zonedDateTimeISO();
+    const start = Temporal.Instant.fromEpochMilliseconds(
+      Math.round(timestamp),
+    ).toZonedDateTimeISO(now.timeZoneId);
+    let elapsed = start.until(now, {
+      largestUnit: "years",
+    });
+
+    const inFuture = elapsed.sign == -1;
+    if (inFuture) {
+      elapsed = elapsed.negated();
+    }
+    const rounded = roundDuration(elapsed, inFuture ? now : start, {
+      useWeeks: true,
+    });
+
+    if (rounded.secondsOnly && rounded.duration.seconds < 1) {
+      return t`now`;
+    }
+
+    const duration = formatters.duration.long.format(rounded.duration);
+    if (mode === "none") {
+      return duration;
+    } else if (mode === "duration") {
+      return t`for ${duration}`;
+    } else if (inFuture) {
+      return t`in ${duration}`;
+    } else {
+      return t`${duration} ago`;
+    }
+  } catch (e) {
+    console.warn(e);
+    return t`Error`;
+  }
+}

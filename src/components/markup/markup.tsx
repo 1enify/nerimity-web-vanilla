@@ -24,6 +24,10 @@ import {
   QuoteMessageHidden,
   QuoteMessageInvalid,
 } from "./QuoteMessage";
+import {
+  handleTimestampMarkupEvents,
+  TimestampMarkup,
+} from "./TimestampMarkup";
 
 import style from "./markup.module.css";
 
@@ -189,7 +193,7 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
         break;
       }
       ctx.textCount += expr.length;
-      return <span>timestamp</span>;
+      return <TimestampMarkup type={type} timestamp={stamp * 1000} />;
     }
     case "ruby": {
       const output: Node[] = [];
@@ -437,6 +441,7 @@ export function handleMarkupEvents(opts: {
 }) {
   const { el, onCheckboxChange, signal } = opts;
 
+  handleTimestampMarkupEvents({ el, signal });
   el.addEventListener(
     "click",
     (event) => {

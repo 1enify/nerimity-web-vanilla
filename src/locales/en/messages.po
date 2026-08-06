@@ -169,23 +169,23 @@ msgstr "Profile"
 msgid "Home"
 msgstr "Home"
 
-#: src/components/inboxDrawer.tsx:315
+#: src/components/inboxDrawer.tsx:318
 msgid "Requests - {count}"
 msgstr "Requests - {count}"
 
-#: src/components/inboxDrawer.tsx:318
+#: src/components/inboxDrawer.tsx:321
 msgid "Online - {count}"
 msgstr "Online - {count}"
 
-#: src/components/inboxDrawer.tsx:321
+#: src/components/inboxDrawer.tsx:324
 msgid "Offline - {count}"
 msgstr "Offline - {count}"
 
-#: src/components/inboxDrawer.tsx:388
+#: src/components/inboxDrawer.tsx:391
 msgid "Inbox"
 msgstr "Inbox"
 
-#: src/components/inboxDrawer.tsx:394
+#: src/components/inboxDrawer.tsx:397
 msgid "Friends"
 msgstr "Friends"
 
@@ -349,12 +349,12 @@ msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:336
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:335
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:359
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:358
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -453,19 +453,19 @@ msgstr "Unfollow"
 msgid "Follow"
 msgstr "Follow"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:470
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:469
 msgid "Bot Creator"
 msgstr "Bot Creator"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:493
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:492
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:493
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:492
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:568
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:567
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
@@ -696,6 +696,7 @@ msgstr "Expires in {hours}h"
 #: src/utils/date.ts:255
 #: src/utils/date.ts:292
 #: src/utils/date.ts:308
+#: src/utils/date.ts:354
 msgid "Error"
 msgstr "Error"
 
@@ -706,3 +707,19 @@ msgstr "Yesterday at {time}"
 #: src/utils/date.ts:288
 msgid "{date} at {time}"
 msgstr "{date} at {time}"
+
+#: src/utils/date.ts:339
+msgid "now"
+msgstr "now"
+
+#: src/utils/date.ts:346
+msgid "for {duration}"
+msgstr "for {duration}"
+
+#: src/utils/date.ts:348
+msgid "in {duration}"
+msgstr "in {duration}"
+
+#: src/utils/date.ts:350
+msgid "{duration} ago"
+msgstr "{duration} ago"
