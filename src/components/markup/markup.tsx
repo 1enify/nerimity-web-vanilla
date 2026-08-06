@@ -13,6 +13,7 @@ import { serverRoleStore } from "../../store/serverRoleStore";
 import { serverStore } from "../../store/serverStore";
 import { userStore } from "../../store/userStore";
 import { shortcodeToUnicode, unicodeToShortcode } from "../../utils/emojis";
+import { Timezones } from "../../utils/Timezones";
 import { Checkbox } from "../checkbox";
 import { Icon } from "../icon";
 import { CodeBlock } from "./CodeBlock";
@@ -85,6 +86,8 @@ const markupCheckbox = new WeakMap<
   HTMLElement,
   { message: Message; entity: Entity }
 >();
+
+const TimeOffsetRegex = /^[+-]\d{4}$/;
 
 function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
   const type = entity.params.type;
@@ -183,8 +186,14 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
       break;
     }
     case "to": {
+      const isValidTimezone = Timezones.includes(expr);
+      const isValidRegex = TimeOffsetRegex.test(expr);
+      if (!isValidTimezone && !isValidRegex) {
+        break;
+      }
       ctx.textCount += expr.length;
-      return <span>timestamp</span>;
+
+      return <TimestampMarkup type={type} timestamp={expr} />;
     }
     case "tr": {
       const stamp = parseInt(expr);

@@ -293,6 +293,20 @@ export function formatTimestamp(timestampMs: number, seconds = false) {
   }
 }
 
+export function formatTimestampOffset(offset: string | number) {
+  try {
+    const datetime = Temporal.Now.zonedDateTimeISO(String(offset)).round({
+      smallestUnit: "second",
+      roundingMode: "floor",
+    });
+    return formatters.datetime.seconds.format(
+      datetime.toPlainTime() as unknown as Date,
+    );
+  } catch {
+    return t`Invalid Timezone.`;
+  }
+}
+
 export function getDaysAgo(timestamp: number) {
   try {
     const now = Temporal.Now.zonedDateTimeISO();

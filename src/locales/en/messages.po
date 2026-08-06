@@ -695,8 +695,8 @@ msgstr "Expires in {hours}h"
 #: src/utils/date.ts:135
 #: src/utils/date.ts:255
 #: src/utils/date.ts:292
-#: src/utils/date.ts:308
-#: src/utils/date.ts:354
+#: src/utils/date.ts:322
+#: src/utils/date.ts:368
 msgid "Error"
 msgstr "Error"
 
@@ -708,18 +708,22 @@ msgstr "Yesterday at {time}"
 msgid "{date} at {time}"
 msgstr "{date} at {time}"
 
-#: src/utils/date.ts:339
+#: src/utils/date.ts:306
+msgid "Invalid Timezone."
+msgstr "Invalid Timezone."
+
+#: src/utils/date.ts:353
 msgid "now"
 msgstr "now"
 
-#: src/utils/date.ts:346
+#: src/utils/date.ts:360
 msgid "for {duration}"
 msgstr "for {duration}"
 
-#: src/utils/date.ts:348
+#: src/utils/date.ts:362
 msgid "in {duration}"
 msgstr "in {duration}"
 
-#: src/utils/date.ts:350
+#: src/utils/date.ts:364
 msgid "{duration} ago"
 msgstr "{duration} ago"
