@@ -271,7 +271,6 @@ const Actions = ({
     },
     { signal },
   );
-  console.log(el);
   createUserContextMenuHandler({
     mode: "click",
     data: { details },

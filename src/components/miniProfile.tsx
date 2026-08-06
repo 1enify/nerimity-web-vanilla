@@ -780,8 +780,6 @@ const createCustomStatusModal = () => {
         default:
           break;
       }
-
-      console.log(action);
     },
     { signal },
   );

@@ -2,6 +2,7 @@ import morphdom from "morphdom";
 
 import { h } from "../h";
 import { accountStore } from "../store/accountStore";
+import { channelStore } from "../store/channelStore";
 import { inboxStore } from "../store/inboxStore";
 import {
   MessageMention,
@@ -365,7 +366,9 @@ const MentionItem = ({ mention }: { mention: MessageMention }) => {
     <SidebarItem
       class="mentionItem"
       data-user-id={user.id}
+      data-channel-id={mention.channelId}
       alert={notifications}
+      selected={channelStore.currentChannelId === mention.channelId}
       title={user.username}
       href={inbox ? `/app/inbox/${mention.channelId}` : undefined}
     >
@@ -377,17 +380,21 @@ const MentionItem = ({ mention }: { mention: MessageMention }) => {
 const MentionList = (props: { signal: AbortSignal }) => {
   const el = (<div></div>) as HTMLDivElement;
 
-  const rerender = () => {
+  const rerender = (channelId?: string) => {
     const mentions = [...messageMentionStore.mentions.values()];
     const dmMentions = mentions.filter((m) => !m.serverId);
 
     reconcile({
       values: dmMentions,
       container: el,
-      dataAttr: "user-id",
+      dataAttr: "channel-id",
       valueId: "channelId",
       create(item) {
         return <MentionItem mention={item} />;
+      },
+      shouldRecreate(_, item) {
+        if (!channelId) return false;
+        return channelId === item.channelId;
       },
     });
   };
@@ -409,7 +416,20 @@ const MentionList = (props: { signal: AbortSignal }) => {
   );
   rerender();
 
-  storeEmitter.on("ws:authStateUpdate", rerender, props.signal);
+  storeEmitter.on(
+    "channel:notify_update",
+    (event) => {
+      if (event.serverId) return;
+      rerender(event.channelId);
+    },
+    props.signal,
+  );
+  storeEmitter.on("ws:authStateUpdate", () => rerender(), props.signal);
+  storeEmitter.on(
+    "mention:dm_update",
+    (e) => rerender(e.channelId),
+    props.signal,
+  );
 
   return el;
 };
