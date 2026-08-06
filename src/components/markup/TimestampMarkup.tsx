@@ -1,5 +1,6 @@
 import { h } from "../../h";
 import {
+  formatTimestamp,
   formatTimestampOffset,
   formatTimestampRelative,
 } from "../../utils/date";
@@ -21,6 +22,15 @@ export const TimestampMarkup = (props: {
       data-timestamp={props.timestamp}
       label=""
       icon="schedule"
+      title={
+        props.type === "tr"
+          ? formatTimestamp(
+              typeof props.timestamp === "string"
+                ? parseInt(props.timestamp!)
+                : props.timestamp,
+            )
+          : undefined
+      }
     />
   ) as HTMLDivElement;
   updateItem(itemEl);
