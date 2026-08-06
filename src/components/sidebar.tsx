@@ -3,6 +3,7 @@ import morphdom from "morphdom";
 import { h } from "../h";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
+import { friendStore } from "../store/friendStore";
 import { inboxStore } from "../store/inboxStore";
 import {
   MessageMention,
@@ -10,7 +11,7 @@ import {
 } from "../store/messageMentionStore";
 import { Server, serverStore } from "../store/serverStore";
 import { userStore } from "../store/userStore";
-import type { RawServerFolder } from "../Types";
+import { FriendStatus, type RawServerFolder } from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { reconcile } from "../utils/html";
@@ -178,14 +179,6 @@ export const createSidebar = () => {
   const { signal } = abortController;
   let serverListEl = (<div class={style.serverList}></div>) as HTMLElement;
 
-  let homeEl = (
-    <SidebarItem class={style.homeItem} title="Home" href="/app">
-      <div class={style.logoContainer}>
-        <LogoMono />
-      </div>
-    </SidebarItem>
-  ) as HTMLElement;
-
   const renderList = (opts?: { id?: string; forceRecreate?: boolean }) => {
     const servers = serverStore
       .orderedServers()
@@ -209,14 +202,6 @@ export const createSidebar = () => {
       },
     });
   };
-
-  router.createMatchListener(
-    "/app",
-    (match) => {
-      homeEl.setAttribute("data-selected", match ? "true" : "false");
-    },
-    { signal },
-  );
 
   storeEmitter.on(
     "recent_server_update",
@@ -280,7 +265,7 @@ export const createSidebar = () => {
     containerEl = (
       <div class={style.sidebar}>
         <div class={style.scrollable}>
-          {homeEl}
+          <HomeItem signal={signal} />
           <MentionList signal={signal} />
           {serverListEl}
         </div>
@@ -327,7 +312,6 @@ export const createSidebar = () => {
     containerEl?.remove();
     containerEl = null;
     hoverAnimator = null;
-    (homeEl as any) = null;
   };
 
   return {
@@ -429,6 +413,50 @@ const MentionList = (props: { signal: AbortSignal }) => {
     "mention:dm_update",
     (e) => rerender(e.channelId),
     props.signal,
+  );
+
+  return el;
+};
+
+const HomeItem = (props: { signal: AbortSignal }) => {
+  const match = router.match("/app{/inbox/*}?");
+
+  const createEl = () => {
+    const count = [...friendStore.friends.values()].filter(
+      (f) => f.status === FriendStatus.PENDING,
+    ).length;
+
+    return (
+      <SidebarItem
+        selected={!!match}
+        alert={count}
+        class={style.homeItem}
+        title="Home"
+        href="/app"
+      >
+        <div class={style.logoContainer}>
+          <LogoMono />
+        </div>
+      </SidebarItem>
+    ) as HTMLDivElement;
+  };
+  let el = createEl();
+
+  const rerender = () => {
+    const nextEl = createEl();
+    el.replaceWith(nextEl);
+    el = nextEl;
+  };
+
+  storeEmitter.on("friend:request", rerender, props.signal);
+  storeEmitter.on("ws:authStateUpdate", rerender, props.signal);
+
+  router.createMatchListener(
+    "/app{/inbox/*}?",
+    (match) => {
+      el?.setAttribute("data-selected", match ? "true" : "false");
+    },
+    { signal: props.signal },
   );
 
   return el;
