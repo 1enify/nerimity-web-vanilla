@@ -6,7 +6,8 @@
   .friendsTitle {
     margin-left: 8px;
     color: var(--text-muted);
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: bold;
     &.hide {
       display: none;
     }
@@ -82,7 +83,8 @@
   cursor: pointer;
   transition: 0.1s;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: bold;
   gap: 6px;
   &:hover {
     color: white;
