@@ -1,5 +1,4 @@
 import { t } from "@lingui/core/macro";
-import morphdom from "morphdom";
 
 import { h, Fragment } from "../h";
 import { accountStore } from "../store/accountStore";
@@ -9,15 +8,13 @@ import { serverStore } from "../store/serverStore";
 import { userStore } from "../store/userStore";
 import { storeEmitter } from "../utils/EventEmitter";
 import { router } from "../utils/router";
-import { Avatar } from "./avatar";
 import { Button } from "./button";
-import { CdnIcon } from "./cdnIcon";
 import { Drawer } from "./drawer";
-import { Icon } from "./icon";
+import { createPillUpdater, Pill } from "./Pill";
 
 import style from "./appHeader.module.css";
 
-const Pill = () => {
+const AppPill = () => {
   const server = serverStore.servers.get(serverStore.currentServerId!);
   const channel = channelStore.channels.get(channelStore.currentChannelId!);
   const inbox = inboxStore.inboxes.get(channelStore.currentChannelId!);
@@ -26,7 +23,6 @@ const Pill = () => {
   const authError = accountStore.authError;
   const authenticated = accountStore.authenticated;
   const isProfilePage = router.match("/app/profile/:id");
-  const isServerChannel = !!(server && channel);
 
   const getLabel = () => {
     if (!authenticated) return accountStore.connectionState();
@@ -46,24 +42,15 @@ const Pill = () => {
   const icon = getIcon();
 
   return (
-    <div class={style.pill}>
-      {icon ? (
-        <Icon
-          name={icon}
-          class={[
-            style.icon,
-            !authenticated && style.warn,
-            !!authError && style.error,
-          ]}
-        />
-      ) : (
-        <Avatar size={24} server={server} user={user} />
-      )}
-      {authenticated && isServerChannel ? (
-        <CdnIcon channel={channel} size={14} class={style.channelIcon} />
-      ) : null}
-      <div class={style.label}>{label}</div>
-    </div>
+    <Pill
+      server={server}
+      user={user}
+      channel={channel}
+      label={label}
+      icon={icon}
+      warn={!authenticated}
+      error={!!authError}
+    />
   );
 };
 
@@ -82,7 +69,7 @@ export const createAppHeader = () => {
     <header class={style.header}>
       {leftDrawerButton}
       <div class={style.details}>
-        <Pill />
+        <AppPill />
       </div>
       {rightDrawerButton}
     </header>
@@ -111,45 +98,7 @@ export const createAppHeader = () => {
     { signal },
   );
 
-  let pendingAnim: Animation | null = null;
-  const updatePill = () => {
-    const pillEl = headerContainer.querySelector(
-      `.${style.pill}`,
-    ) as HTMLElement;
-
-    const oldWidth = pillEl.getBoundingClientRect().width;
-    const oldHTML = pillEl.innerHTML;
-
-    morphdom(pillEl, <Pill />);
-
-    if (pillEl.innerHTML === oldHTML) return;
-
-    pendingAnim?.cancel();
-    pendingAnim = null;
-
-    const newLabelEl = pillEl.querySelector("." + style.label) as HTMLElement;
-    const newWidth = pillEl.getBoundingClientRect().width;
-
-    if (oldWidth !== newWidth) {
-      newLabelEl.style.textOverflow = "clip";
-      pillEl.animate([{ width: `${oldWidth}px` }, { width: `${newWidth}px` }], {
-        duration: 200,
-        easing: "ease",
-        fill: "none",
-      }).onfinish = () => {
-        newLabelEl.removeAttribute("style");
-      };
-    }
-
-    pendingAnim = newLabelEl.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration: 260,
-      easing: "ease",
-      fill: "forwards",
-    });
-    pendingAnim.onfinish = () => {
-      pendingAnim = null;
-    };
-  };
+  const updatePill = createPillUpdater(() => headerContainer, AppPill);
 
   storeEmitter.on("ws:authStateUpdate", updatePill, signal);
   storeEmitter.on("ws:connectStateUpdate", updatePill, signal);
