@@ -15,6 +15,16 @@
   white-space: nowrap;
   font-size: 12px;
   gap: 6px;
+  .channelIconOuter {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-max);
+    background-color: var(--gray-800);
+  }
   .channelIcon {
     background-color: transparent;
   }

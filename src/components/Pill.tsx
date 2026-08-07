@@ -37,11 +37,13 @@ export const Pill = ({
           name={icon}
           class={[style.icon, warn && style.warn, error && style.error]}
         />
-      ) : (
+      ) : !isServerChannel ? (
         <Avatar size={24} server={server} user={user} />
-      )}
+      ) : null}
       {isServerChannel ? (
-        <CdnIcon channel={channel} size={14} class={style.channelIcon} />
+        <div class={style.channelIconOuter}>
+          <CdnIcon channel={channel} size={14} class={style.channelIcon} />
+        </div>
       ) : null}
       <div class={style.label}>{label}</div>
       {suffix}
