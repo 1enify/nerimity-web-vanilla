@@ -463,10 +463,14 @@ const memberItem = (cat: Categorized) => {
 
     return (
       <div class={style.roleItemContainer} data-role-header-id={role.id}>
-        {role.icon ? <CdnIcon role={role} size={14} /> : null}
-        <span class={style.roleName}>
-          {role?.name} - {cat.count}
-        </span>
+        <div class={style.roleInnerContainer} data-has-icon={!!role.icon}>
+          {role.icon ? (
+            <CdnIcon class={style.roleIcon} role={role} size={14} />
+          ) : null}
+          <span class={style.roleName}>
+            {role?.name} ~ {cat.count}
+          </span>
+        </div>
       </div>
     );
   }

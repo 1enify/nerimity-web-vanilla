@@ -15,10 +15,10 @@
   flex-shrink: 0;
   height: 44px;
   padding: 6px 6px;
-  gap: 8px;
 
+  border-radius: var(--radius-max);
+  gap: 8px;
   &:hover {
-    border-radius: var(--radius-8);
     background-color: var(--gray-800);
   }
 
@@ -50,12 +50,31 @@
   display: flex;
   align-items: center;
   height: 40px;
-  margin-right: 2px;
-  margin-left: 2px;
-  gap: 8px;
-  .roleName {
-    color: var(--text-muted);
-    font-size: 14px;
+  .roleInnerContainer {
+    display: flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 2px;
+    padding-right: 6px;
+
+    padding-left: 6px;
+    margin-right: 2px;
+    margin-left: 2px;
+    border-radius: var(--radius-max);
+    background-color: var(--gray-850);
+    gap: 4px;
+    &[data-has-icon="true"] {
+      padding-left: 4px;
+    }
+    .roleIcon {
+      background-color: transparent;
+    }
+
+    .roleName {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: bold;
+    }
   }
 }
 

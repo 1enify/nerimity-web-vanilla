@@ -126,7 +126,8 @@
   justify-content: center;
   min-width: 0;
   padding: 4px;
-  border-radius: var(--radius-4);
+  padding-right: 6px;
+  border-radius: var(--radius-max);
   color: var(--gray-200);
   background-color: var(--gray-800);
   user-select: none;

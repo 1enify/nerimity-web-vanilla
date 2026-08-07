@@ -51,6 +51,7 @@
   &.categoryItem {
     margin-top: 16px;
     margin-bottom: 2px;
+    font-weight: bold;
     &:first-child {
       margin-top: 0;
     }
