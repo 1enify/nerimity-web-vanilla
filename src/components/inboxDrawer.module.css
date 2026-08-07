@@ -18,6 +18,8 @@
   margin: 8px 4px;
   margin-bottom: 12px;
   margin-left: 8px;
+  border-radius: var(--radius-max);
+  background: var(--gray-800);
   gap: 4px;
 }
 
@@ -73,24 +75,22 @@
   flex: 1;
   justify-content: center;
   padding: 6px 8px;
-  border: solid 1px var(--gray-700);
+  border: none;
   border-radius: var(--radius-max);
   color: var(--gray-300);
-  background: var(--gray-900);
+  background: transparent;
   cursor: pointer;
   transition: 0.1s;
   text-align: center;
   font-size: 14px;
   gap: 6px;
   &:hover {
-    border-color: var(--gray-600);
     color: white;
-    background: var(--gray-800);
+    background: var(--gray-700);
   }
   &[data-selected="true"] {
-    border-color: var(--primary-color);
     color: white;
-    background: var(--primary-dark);
+    background: var(--primary-color);
   }
   .icon {
     font-size: 16px;
