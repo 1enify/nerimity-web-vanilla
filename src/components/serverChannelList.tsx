@@ -7,13 +7,47 @@ import { HoverAnimator } from "../utils/HoverAnimator";
 import { reconcile } from "../utils/html";
 import { CdnIcon } from "./cdnIcon";
 import { Drawer } from "./drawer";
+import { Icon } from "./icon";
 import { Item } from "./item";
 import { NotificationPill } from "./NotificationPill";
+import { createPillUpdater, Pill } from "./Pill";
 
 import style from "./serverChannelList.module.css";
 
+const HeaderPill = () => {
+  const server = serverStore.currentServer();
+  return (
+    <Pill
+      server={server}
+      label={server?.name}
+      suffix={
+        server?.verified ? (
+          <Icon name="verified" class={style.verifiedIcon} />
+        ) : undefined
+      }
+    />
+  );
+};
+
 export const createServerChannelList = () => {
-  let containerEl: HTMLElement | null = null;
+  let channelListEl = (
+    <div class={style.serverChannelList}></div>
+  ) as HTMLDivElement;
+
+  let containerEl = (
+    <div class={style.outerContainer}>
+      <div class={style.headerBackdrop}></div>
+      <div class={[style.container, "scrollbarHover"]}>
+        <div class={style.header}>
+          <HeaderPill />
+        </div>
+
+        {channelListEl}
+      </div>
+    </div>
+  ) as HTMLDivElement;
+  const updatePill = createPillUpdater(() => containerEl, HeaderPill);
+
   let hoverAnimator: HoverAnimator | null = null;
   const abortController = new AbortController();
   const { signal } = abortController;
@@ -24,15 +58,15 @@ export const createServerChannelList = () => {
   }) => {
     const serverChannels = serverStore.currentChannelsSorted.value() || [];
 
-    if (!containerEl) return;
+    if (!channelListEl) return;
 
     if (!serverChannels.length) {
-      containerEl.replaceChildren();
+      channelListEl.replaceChildren();
       return;
     }
 
     reconcile({
-      container: containerEl,
+      container: channelListEl,
       dataAttr: "channel-id",
       values: serverChannels,
       valueId: "id",
@@ -73,17 +107,16 @@ export const createServerChannelList = () => {
     "navigate:channelId",
     () => {
       channelItemHelper.updateSelected(
-        containerEl!,
+        channelListEl!,
         channelStore.currentChannelId!,
       );
     },
     signal,
   );
+  storeEmitter.on("ws:authStateUpdate", updatePill, signal);
+  storeEmitter.on("navigate:serverId", updatePill, signal);
 
   const render = () => {
-    containerEl = (
-      <div class={[style.serverChannelList, "scrollbarHover"]}></div>
-    ) as unknown as HTMLElement;
     hoverAnimator = new HoverAnimator(containerEl, [
       {
         trigger: `.${style.channelItem}:not(.${style.categoryItem})`,
@@ -97,7 +130,7 @@ export const createServerChannelList = () => {
       { trigger: `.${style.categoryItem}`, image: ".channelIcon img" },
     ]);
 
-    containerEl.addEventListener(
+    channelListEl.addEventListener(
       "click",
       (e) => {
         const target = e.target as HTMLElement;
@@ -116,8 +149,11 @@ export const createServerChannelList = () => {
   const destroy = () => {
     abortController.abort();
     hoverAnimator?.destroy();
+    channelListEl.remove();
+    (channelListEl as any) = null;
+
     containerEl?.remove();
-    containerEl = null;
+    (containerEl as any) = null;
   };
 
   return {

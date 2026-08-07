@@ -18,6 +18,7 @@ export default defineConfig({
     devRerenderHighlighter(),
     googleFontsLocal({
       icons: [
+        "verified",
         "heart_broken",
         "group_add",
         "person_add_disabled",

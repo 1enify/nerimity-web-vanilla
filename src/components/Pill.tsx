@@ -18,6 +18,7 @@ export const Pill = ({
   user,
   channel,
   label,
+  suffix,
 }: {
   warn?: boolean;
   error?: boolean;
@@ -26,6 +27,7 @@ export const Pill = ({
   user?: User | null;
   channel?: Channel;
   label?: string;
+  suffix?: any;
 }) => {
   const isServerChannel = !!channel?.serverId;
   return (
@@ -42,6 +44,7 @@ export const Pill = ({
         <CdnIcon channel={channel} size={14} class={style.channelIcon} />
       ) : null}
       <div class={style.label}>{label}</div>
+      {suffix}
     </div>
   );
 };

@@ -90,6 +90,7 @@ export interface RawServer {
   serverId: string;
   order?: number;
   customEmojis?: RawCustomEmoji[];
+  verified?: boolean;
 }
 export interface RawUser {
   id: string;

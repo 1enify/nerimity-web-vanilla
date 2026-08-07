@@ -37,6 +37,7 @@ export class Server {
   defaultRoleId: string;
   createdById: string;
   createdAt: number;
+  verified?: boolean;
   botCommands?: RawBotCommand[];
   /**
    * @description if true, server members are not loaded yet.
@@ -52,6 +53,7 @@ export class Server {
     this.createdById = data.createdById;
     this.createdAt = data.createdAt;
     this.banner = data.banner;
+    this.verified = data.verified;
   }
   getOrLoadBotCommands() {
     return getBotCommandsQueue.add(async () => {

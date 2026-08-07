@@ -44,6 +44,7 @@ export function QuoteMessage(props: QuoteProps) {
         class={style.markup}
         text={props.quote.content || ""}
         message={props.quote as Message}
+        isQuote
       />
       {imageAttachment && (
         <ImageEmbed
@@ -58,9 +59,9 @@ export function QuoteMessage(props: QuoteProps) {
 }
 
 export function QuoteMessageInvalid() {
-  return <div class="quoteContainer">{t`Invalid Quote`}</div>;
+  return <div class={style.invalidQuote}>{t`Invalid Quote`}</div>;
 }
 
 export function QuoteMessageHidden() {
-  return <span class="hiddenQuote">{t`Hidden Quote`}</span>;
+  return <span class={style.invalidQuote}>{t`Hidden Quote`}</span>;
 }

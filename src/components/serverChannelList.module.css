@@ -1,11 +1,46 @@
+.outerContainer {
+  position: relative;
+  height: 100%;
+}
+.container {
+  height: 100%;
+  padding-left: 4px;
+}
+
+.header {
+  position: sticky;
+  z-index: 11111;
+  top: 0;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding-right: 2px;
+  padding-left: 2px;
+
+  .verifiedIcon {
+    color: var(--primary-color);
+    font-size: 12px;
+  }
+}
+.headerBackdrop {
+  position: absolute;
+
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 50px;
+
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+
 .serverChannelList {
-  --padding-right: 2px;
   display: flex;
   flex: 1;
   flex-direction: column;
   flex-shrink: 0;
   height: 100%;
-  padding-left: 6px;
   gap: 2px;
 }
 
@@ -16,6 +51,9 @@
   &.categoryItem {
     margin-top: 16px;
     margin-bottom: 2px;
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   .itemLabel {

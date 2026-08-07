@@ -146,7 +146,7 @@ function transformCustomEntity(entity: CustomEntity, ctx: RenderContext) {
         return <QuoteMessageHidden />;
       }
 
-      const quote = message?.quotedMessages.find((m) => m.id === expr);
+      const quote = message?.quotedMessages?.find((m) => m.id === expr);
 
       if (!quote) {
         return <QuoteMessageInvalid />;
