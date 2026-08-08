@@ -113,6 +113,7 @@ msgstr "Clear local settings"
 
 #: src/components/LogoutModal.tsx:40
 #: src/components/LogoutModal.tsx:53
+#: src/components/createAuthErrorModal.tsx:46
 #: src/components/miniProfile.tsx:289
 msgid "Logout"
 msgstr "Logout"
@@ -160,14 +161,79 @@ msgstr "Copy ID"
 msgid "Copy Object"
 msgstr "Copy Object"
 
-#: src/components/appHeader.tsx:35
+#: src/components/appHeader.tsx:31
 #: src/components/miniProfile.tsx:275
 msgid "Profile"
 msgstr "Profile"
 
-#: src/components/appHeader.tsx:35
+#: src/components/appHeader.tsx:31
 msgid "Home"
 msgstr "Home"
+
+#: src/components/createAuthErrorModal.tsx:23
+msgid "Suspended"
+msgstr "Suspended"
+
+#: src/components/createAuthErrorModal.tsx:24
+msgid "IP Banned"
+msgstr "IP Banned"
+
+#: src/components/createAuthErrorModal.tsx:25
+msgid "Authentication Error"
+msgstr "Authentication Error"
+
+#: src/components/createAuthErrorModal.tsx:29
+msgid "Token not provided."
+msgstr "Token not provided."
+
+#: src/components/createAuthErrorModal.tsx:30
+msgid "You are suspended."
+msgstr "You are suspended."
+
+#: src/components/createAuthErrorModal.tsx:47
+#: src/components/createAuthErrorModal.tsx:52
+msgid "Dismiss"
+msgstr "Dismiss"
+
+#: src/components/createAuthErrorModal.tsx:53
+#: src/pages/LoginPage.tsx:23
+#: src/pages/LoginPage.tsx:58
+msgid "Login"
+msgstr "Login"
+
+#: src/components/createAuthErrorModal.tsx:70
+#: src/components/createAuthErrorModal.tsx:103
+msgid "<0>Expires: </0><1>{date}</1>"
+msgstr "<0>Expires: </0><1>{date}</1>"
+
+#: src/components/createAuthErrorModal.tsx:74
+#: src/components/createAuthErrorModal.tsx:107
+msgid "Never"
+msgstr "Never"
+
+#: src/components/createAuthErrorModal.tsx:81
+msgid "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
+msgstr "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
+
+#: src/components/createAuthErrorModal.tsx:93
+msgid "<0>Reason: </0><1>{reason}</1>"
+msgstr "<0>Reason: </0><1>{reason}</1>"
+
+#: src/components/createAuthErrorModal.tsx:97
+msgid "Violating the Terms of Servie."
+msgstr "Violating the Terms of Servie."
+
+#: src/components/createAuthErrorModal.tsx:113
+msgid "<0>By: </0><1>{username}</1>"
+msgstr "<0>By: </0><1>{username}</1>"
+
+#: src/components/createAuthErrorModal.tsx:117
+msgid "Not Provided"
+msgstr "Not Provided"
+
+#: src/components/createAuthErrorModal.tsx:125
+msgid "Your account and data will be deleted in 15 days."
+msgstr "Your account and data will be deleted in 15 days."
 
 #: src/components/inboxDrawer.tsx:318
 msgid "Requests - {count}"
@@ -189,11 +255,11 @@ msgstr "Inbox"
 msgid "Friends"
 msgstr "Friends"
 
-#: src/components/markup/QuoteMessage.tsx:61
+#: src/components/markup/QuoteMessage.tsx:62
 msgid "Invalid Quote"
 msgstr "Invalid Quote"
 
-#: src/components/markup/QuoteMessage.tsx:65
+#: src/components/markup/QuoteMessage.tsx:66
 msgid "Hidden Quote"
 msgstr "Hidden Quote"
 
@@ -412,11 +478,6 @@ msgstr "Email"
 msgid "Password"
 msgstr "Password"
 
-#: src/pages/LoginPage.tsx:23
-#: src/pages/LoginPage.tsx:58
-msgid "Login"
-msgstr "Login"
-
 #: src/pages/LoginPage.tsx:30
 msgid "Login to continue"
 msgstr "Login to continue"
@@ -490,23 +551,23 @@ msgstr "Unfriend"
 msgid "Unfriending..."
 msgstr "Unfriending..."
 
-#: src/store/accountStore.ts:105
+#: src/store/accountStore.ts:116
 msgid "Invalid token."
 msgstr "Invalid token."
 
-#: src/store/accountStore.ts:109
+#: src/store/accountStore.ts:120
 msgid "Authentication error."
 msgstr "Authentication error."
 
-#: src/store/accountStore.ts:113
+#: src/store/accountStore.ts:124
 msgid "Authenticating..."
 msgstr "Authenticating..."
 
-#: src/store/accountStore.ts:116
+#: src/store/accountStore.ts:127
 msgid "Connecting..."
 msgstr "Connecting..."
 
-#: src/store/accountStore.ts:118
+#: src/store/accountStore.ts:129
 msgid "Connected!"
 msgstr "Connected!"
 

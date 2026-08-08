@@ -18,6 +18,17 @@ function createAccountStore() {
   let authenticated = false;
   let authError: {
     message: string;
+    data?:
+      | {
+          type: "suspend";
+          reason: string;
+          expire: number;
+          by: { username: string };
+        }
+      | {
+          type: "ip-ban";
+          expire: number;
+        };
   } | null = null;
 
   let currentUser: CurrentUser | null = null;

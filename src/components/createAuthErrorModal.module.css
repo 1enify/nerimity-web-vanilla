@@ -1,0 +1,17 @@
+.extraContainer {
+  margin-top: 8px;
+}
+.extra {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dim {
+  color: var(--gray-400);
+  font-weight: bold;
+}
+
+.notice {
+  margin-top: 12px;
+  color: var(--gray-300);
+}

@@ -1,5 +1,6 @@
 // TODO: On server join event, if its a bot, flush bot commands cache for that server.
 
+import { createAuthErrorModal } from "../components/createAuthErrorModal";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { friendStore } from "../store/friendStore";
@@ -76,6 +77,7 @@ export const socketEventHandler = (event: string, payload: any) => {
 function onAuthError(payload: any) {
   console.error("Auth Error", payload);
   accountStore.setAuthError(payload);
+  createAuthErrorModal();
 }
 
 function onAuthenticated(payload: any) {
