@@ -113,7 +113,7 @@ msgstr "Clear local settings"
 
 #: src/components/LogoutModal.tsx:40
 #: src/components/LogoutModal.tsx:53
-#: src/components/createAuthErrorModal.tsx:46
+#: src/components/createAuthErrorModal.tsx:53
 #: src/components/miniProfile.tsx:289
 msgid "Logout"
 msgstr "Logout"
@@ -170,68 +170,68 @@ msgstr "Profile"
 msgid "Home"
 msgstr "Home"
 
-#: src/components/createAuthErrorModal.tsx:23
+#: src/components/createAuthErrorModal.tsx:24
 msgid "Suspended"
 msgstr "Suspended"
 
-#: src/components/createAuthErrorModal.tsx:24
+#: src/components/createAuthErrorModal.tsx:25
 msgid "IP Banned"
 msgstr "IP Banned"
 
-#: src/components/createAuthErrorModal.tsx:25
+#: src/components/createAuthErrorModal.tsx:26
 msgid "Authentication Error"
 msgstr "Authentication Error"
 
-#: src/components/createAuthErrorModal.tsx:29
+#: src/components/createAuthErrorModal.tsx:30
 msgid "Token not provided."
 msgstr "Token not provided."
 
-#: src/components/createAuthErrorModal.tsx:30
+#: src/components/createAuthErrorModal.tsx:31
 msgid "You are suspended."
 msgstr "You are suspended."
 
-#: src/components/createAuthErrorModal.tsx:47
-#: src/components/createAuthErrorModal.tsx:52
+#: src/components/createAuthErrorModal.tsx:55
+#: src/components/createAuthErrorModal.tsx:60
 msgid "Dismiss"
 msgstr "Dismiss"
 
-#: src/components/createAuthErrorModal.tsx:53
+#: src/components/createAuthErrorModal.tsx:65
 #: src/pages/LoginPage.tsx:23
 #: src/pages/LoginPage.tsx:58
 msgid "Login"
 msgstr "Login"
 
-#: src/components/createAuthErrorModal.tsx:70
-#: src/components/createAuthErrorModal.tsx:103
+#: src/components/createAuthErrorModal.tsx:82
+#: src/components/createAuthErrorModal.tsx:115
 msgid "<0>Expires: </0><1>{date}</1>"
 msgstr "<0>Expires: </0><1>{date}</1>"
 
-#: src/components/createAuthErrorModal.tsx:74
-#: src/components/createAuthErrorModal.tsx:107
+#: src/components/createAuthErrorModal.tsx:86
+#: src/components/createAuthErrorModal.tsx:119
 msgid "Never"
 msgstr "Never"
 
-#: src/components/createAuthErrorModal.tsx:81
+#: src/components/createAuthErrorModal.tsx:93
 msgid "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
 msgstr "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
 
-#: src/components/createAuthErrorModal.tsx:93
+#: src/components/createAuthErrorModal.tsx:105
 msgid "<0>Reason: </0><1>{reason}</1>"
 msgstr "<0>Reason: </0><1>{reason}</1>"
 
-#: src/components/createAuthErrorModal.tsx:97
+#: src/components/createAuthErrorModal.tsx:109
 msgid "Violating the Terms of Servie."
 msgstr "Violating the Terms of Servie."
 
-#: src/components/createAuthErrorModal.tsx:113
+#: src/components/createAuthErrorModal.tsx:125
 msgid "<0>By: </0><1>{username}</1>"
 msgstr "<0>By: </0><1>{username}</1>"
 
-#: src/components/createAuthErrorModal.tsx:117
+#: src/components/createAuthErrorModal.tsx:129
 msgid "Not Provided"
 msgstr "Not Provided"
 
-#: src/components/createAuthErrorModal.tsx:125
+#: src/components/createAuthErrorModal.tsx:137
 msgid "Your account and data will be deleted in 15 days."
 msgstr "Your account and data will be deleted in 15 days."
 
