@@ -1,6 +1,10 @@
 import { t } from "@lingui/core/macro";
 
-import type { RawServerFolder, RawUserNotificationSettings } from "../Types";
+import type {
+  RawNotice,
+  RawServerFolder,
+  RawUserNotificationSettings,
+} from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
 import { channelStore } from "./channelStore";
 import { serverStore } from "./serverStore";
@@ -11,6 +15,7 @@ export const accountStore = createAccountStore();
 type CurrentUser = User & {
   orderedServerIds: string[];
   serverFolders: RawServerFolder[];
+  notices: RawNotice[];
 };
 
 function createAccountStore() {

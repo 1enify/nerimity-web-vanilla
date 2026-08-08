@@ -67,9 +67,14 @@ const Root = (props: {
     </div>
   );
 };
-const Header = (props: { label: string; icon?: string; alert?: boolean }) => {
+const Header = (props: {
+  label: string;
+  icon?: string;
+  alert?: boolean;
+  warn?: boolean;
+}) => {
   return (
-    <div class={style.header} data-alert={props.alert}>
+    <div class={style.header} data-alert={props.alert} data-warn={props.warn}>
       {props.icon && <Icon class={style.icon} name={props.icon} />}
       <span class={style.label}>{props.label}</span>
       <Button class={style.closeButton} icon="close" hoverBorder alert />

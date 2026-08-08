@@ -105,6 +105,15 @@ export interface RawUser {
   badges: number;
 }
 
+export interface RawNotice {
+  id: string;
+  type: 0;
+  title: null;
+  content: string;
+  createdAt: number;
+  createdBy: { username: string };
+}
+
 export interface RawUserPresence {
   status: number;
   userId: string;

@@ -13,6 +13,7 @@ interface ButtonProps {
   primary?: boolean;
   href?: string;
   alert?: boolean;
+  warn?: boolean;
   component?: any;
   [key: string]: any;
 }
@@ -22,6 +23,7 @@ export const Button = (props: ButtonProps) => {
     hoverBorder,
     component,
     alert,
+    warn,
     primary,
     label,
     icon,
@@ -37,6 +39,7 @@ export const Button = (props: ButtonProps) => {
         hoverBorder && style.hoverBorder,
         primary && style.primary,
         alert && style.alert,
+        warn && style.warn,
         "button",
       ]}
       {...rest}

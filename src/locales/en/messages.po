@@ -192,6 +192,7 @@ msgstr "You are suspended."
 
 #: src/components/createAuthErrorModal.tsx:55
 #: src/components/createAuthErrorModal.tsx:60
+#: src/components/createWarnModal.tsx:89
 msgid "Dismiss"
 msgstr "Dismiss"
 
@@ -216,18 +217,22 @@ msgid "Someone with the same IP has been suspended from Nerimity. Your account i
 msgstr "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
 
 #: src/components/createAuthErrorModal.tsx:105
+#: src/components/createWarnModal.tsx:40
 msgid "<0>Reason: </0><1>{reason}</1>"
 msgstr "<0>Reason: </0><1>{reason}</1>"
 
 #: src/components/createAuthErrorModal.tsx:109
+#: src/components/createWarnModal.tsx:44
 msgid "Violating the Terms of Servie."
 msgstr "Violating the Terms of Servie."
 
 #: src/components/createAuthErrorModal.tsx:125
+#: src/components/createWarnModal.tsx:51
 msgid "<0>By: </0><1>{username}</1>"
 msgstr "<0>By: </0><1>{username}</1>"
 
 #: src/components/createAuthErrorModal.tsx:129
+#: src/components/createWarnModal.tsx:55
 msgid "Not Provided"
 msgstr "Not Provided"
 
@@ -235,17 +240,33 @@ msgstr "Not Provided"
 msgid "Your account and data will be deleted in 15 days."
 msgstr "Your account and data will be deleted in 15 days."
 
+#: src/components/createWarnModal.tsx:15
+msgid "Warning"
+msgstr "Warning"
+
+#: src/components/createWarnModal.tsx:17
+msgid "You have been warned."
+msgstr "You have been warned."
+
+#: src/components/createWarnModal.tsx:62
+msgid "if you continue with this behavior, your account will be suspended."
+msgstr "if you continue with this behavior, your account will be suspended."
+
+#: src/components/createWarnModal.tsx:88
+msgid "Dismiss ~ {countdown}"
+msgstr "Dismiss ~ {countdown}"
+
 #: src/components/inboxDrawer.tsx:318
-msgid "Requests - {count}"
-msgstr "Requests - {count}"
+msgid "Requests ~ {count}"
+msgstr "Requests ~ {count}"
 
 #: src/components/inboxDrawer.tsx:321
-msgid "Online - {count}"
-msgstr "Online - {count}"
+msgid "Online ~ {count}"
+msgstr "Online ~ {count}"
 
 #: src/components/inboxDrawer.tsx:324
-msgid "Offline - {count}"
-msgstr "Offline - {count}"
+msgid "Offline ~ {count}"
+msgstr "Offline ~ {count}"
 
 #: src/components/inboxDrawer.tsx:391
 msgid "Inbox"
@@ -551,23 +572,23 @@ msgstr "Unfriend"
 msgid "Unfriending..."
 msgstr "Unfriending..."
 
-#: src/store/accountStore.ts:116
+#: src/store/accountStore.ts:121
 msgid "Invalid token."
 msgstr "Invalid token."
 
-#: src/store/accountStore.ts:120
+#: src/store/accountStore.ts:125
 msgid "Authentication error."
 msgstr "Authentication error."
 
-#: src/store/accountStore.ts:124
+#: src/store/accountStore.ts:129
 msgid "Authenticating..."
 msgstr "Authenticating..."
 
-#: src/store/accountStore.ts:127
+#: src/store/accountStore.ts:132
 msgid "Connecting..."
 msgstr "Connecting..."
 
-#: src/store/accountStore.ts:129
+#: src/store/accountStore.ts:134
 msgid "Connected!"
 msgstr "Connected!"
 

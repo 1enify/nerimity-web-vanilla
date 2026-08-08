@@ -315,13 +315,13 @@ const createFriendsList = () => {
     const offline = categorizedFriends.value().offline;
 
     requestsTitle.classList.toggle(style.hide!, requests.length === 0);
-    requestsTitle.textContent = t`Requests - ${ph({ count: requests.length })}`;
+    requestsTitle.textContent = t`Requests ~ ${ph({ count: requests.length })}`;
 
     onlineTitle.classList.toggle(style.hide!, online.length === 0);
-    onlineTitle.textContent = t`Online - ${ph({ count: online.length })}`;
+    onlineTitle.textContent = t`Online ~ ${ph({ count: online.length })}`;
 
     offlineTitle.classList.toggle(style.hide!, offline.length === 0);
-    offlineTitle.textContent = t`Offline - ${ph({ count: offline.length })}`;
+    offlineTitle.textContent = t`Offline ~ ${ph({ count: offline.length })}`;
 
     const reconciler = (container: HTMLElement, values: FriendItem[]) =>
       reconcile({

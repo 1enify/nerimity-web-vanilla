@@ -36,6 +36,23 @@
       color: var(--text-color);
     }
   }
+  &.warn {
+    &.primary {
+      background-color: var(--warn-color);
+      .label {
+        color: var(--text-color);
+      }
+      .icon {
+        color: var(--text-color);
+      }
+    }
+    .label {
+      color: var(--warn-color);
+    }
+    .icon {
+      color: var(--warn-color);
+    }
+  }
   &.alert {
     &.primary {
       background-color: var(--alert-color);

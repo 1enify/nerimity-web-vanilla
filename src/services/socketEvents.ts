@@ -1,6 +1,7 @@
 // TODO: On server join event, if its a bot, flush bot commands cache for that server.
 
 import { createAuthErrorModal } from "../components/createAuthErrorModal";
+import { createWarnModalModal } from "../components/createWarnModal";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { friendStore } from "../store/friendStore";
@@ -98,6 +99,7 @@ function onAuthenticated(payload: any) {
   channelStore.notificationsMemo.rerun();
   serverStore.notificationsMemo.rerun();
   accountStore.setAuthenticated(true);
+  createWarnModalModal();
 }
 
 // function onServerChannelUpdated  (payload: any){
