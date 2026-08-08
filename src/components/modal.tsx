@@ -30,6 +30,7 @@ const isTopModal = (entry: { destroy: () => void }) =>
 const Root = (props: {
   children: any;
   pos?: { x: string; y: string; anchor?: ModalAnchor };
+  ignoreBgClick?: boolean;
 }) => {
   const anchorOffsetX = () => {
     const a = props.pos?.anchor ?? "top-left";
@@ -53,6 +54,7 @@ const Root = (props: {
         class={[style.modalRoot, "modalRoot", props.pos && style.hasPos]}
         data-x={props.pos?.x}
         data-y={props.pos?.y}
+        data-ignore-bg-click={props.ignoreBgClick}
         style={{
           "--x": props.pos?.x,
           "--y": props.pos?.y,
@@ -609,7 +611,11 @@ export const createModal = (
   backdrop.addEventListener(
     "click",
     (e) => {
-      if (e.currentTarget === e.target) {
+      const ignoreBgClick = (e.target as HTMLElement).querySelector(
+        '[data-ignore-bg-click="true"]',
+      );
+
+      if (!ignoreBgClick && e.currentTarget === e.target) {
         const movedX = Math.abs(e.clientX - downX);
         const movedY = Math.abs(e.clientY - downY);
         if (movedX > 10 || movedY > 10) return;

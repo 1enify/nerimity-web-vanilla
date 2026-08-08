@@ -34,7 +34,7 @@ const AuthErrorModal = () => {
   })();
 
   return (
-    <Modal.Root>
+    <Modal.Root ignoreBgClick>
       <Modal.Header icon="error" alert label={label} />
       <Modal.Body width="300px">
         <div class={style.main}>{main}</div>
