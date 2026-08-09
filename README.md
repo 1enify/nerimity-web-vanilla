@@ -8,7 +8,7 @@ live: https://vanilla.nerimity.com
 - [ ] `user:authenticate_error`
 - [ ] `user:updatedSelf`
 - [ ] `user:updated`
-- [ ] `user:notice_created`
+- [x] `user:notice_created`
 
 - [ ] `user:connection_added`
 - [ ] `user:connection_removed`

@@ -77,3 +77,10 @@ export async function unfollowUser(userId: string) {
     useToken: true,
   });
 }
+
+export async function dismissNotice(noticeId: string) {
+  return request(`/users/notices/${noticeId}`, {
+    method: "DELETE",
+    useToken: true,
+  });
+}

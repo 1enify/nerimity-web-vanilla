@@ -1,7 +1,7 @@
 // TODO: On server join event, if its a bot, flush bot commands cache for that server.
 
 import { createAuthErrorModal } from "../components/createAuthErrorModal";
-import { createWarnModalModal } from "../components/createWarnModal";
+import { createWarnModal } from "../components/createWarnModal";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { friendStore } from "../store/friendStore";
@@ -19,6 +19,7 @@ import {
   type RawFriend,
   type RawInbox,
   type RawMessage,
+  type RawNotice,
   type RawServerMember,
   type RawServerRole,
   type RawUserNotificationSettings,
@@ -36,6 +37,7 @@ const handlers: Record<string, (payload: any) => void> = {
   "user:authenticated": onAuthenticated,
   "user:authenticate_error": onAuthError,
   "user:presence_update": onUserPresenceUpdate,
+  "user:notice_created": onNoticeCreated,
   "message:created": onMessageCreated,
   "message:deleted": onMessageDeleted,
   "message:updated": onMessageUpdated,
@@ -99,7 +101,7 @@ function onAuthenticated(payload: any) {
   channelStore.notificationsMemo.rerun();
   serverStore.notificationsMemo.rerun();
   accountStore.setAuthenticated(true);
-  createWarnModalModal();
+  createWarnModal();
 }
 
 // function onServerChannelUpdated  (payload: any){
@@ -319,4 +321,9 @@ function onFriendRequestAccept(payload: { friendId: string }) {
 
 function onFriendRemove(payload: { friendId: string }) {
   friendStore.remove(payload.friendId);
+}
+
+function onNoticeCreated(payload: RawNotice) {
+  accountStore.currentUser?.notices.push(payload);
+  createWarnModal();
 }

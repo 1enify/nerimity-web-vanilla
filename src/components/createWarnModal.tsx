@@ -2,6 +2,7 @@ import { ph, t } from "@lingui/core/macro";
 import { Trans } from "@trans";
 
 import { h } from "../h";
+import { dismissNotice } from "../services/userService";
 import { accountStore } from "../store/accountStore";
 import type { RawNotice } from "../Types";
 import { Button } from "./button";
@@ -66,7 +67,7 @@ const Body = ({ notice }: { notice: RawNotice }) => {
 
 let controller: AbortController | undefined = undefined;
 
-export const createWarnModalModal = () => {
+export const createWarnModal = () => {
   controller?.abort();
   const notice = accountStore.currentUser?.notices[0];
   if (!notice) return;
@@ -108,12 +109,21 @@ export const createWarnModalModal = () => {
 
   modalEl.addEventListener(
     "click",
-    (event) => {
+    async (event) => {
       if (countdown !== 0) return;
       const target = event.target as HTMLDivElement;
       const actionEl = target.closest("[data-action]") as HTMLDivElement;
       const action = actionEl?.dataset?.action;
-      if (action === "dismiss") return controller?.abort();
+      if (action === "dismiss") {
+        const currentUser = accountStore.currentUser;
+        if (currentUser?.notices) {
+          currentUser.notices = currentUser.notices.filter(
+            (n) => n.id !== notice.id,
+          );
+        }
+        createWarnModal();
+        dismissNotice(notice.id);
+      }
     },
     { signal },
   );
