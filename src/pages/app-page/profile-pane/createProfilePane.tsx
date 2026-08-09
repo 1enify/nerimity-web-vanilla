@@ -94,7 +94,6 @@ const Content = (opts: {
       <div class={[style.section, style.detailsSection]}>
         <NameAndTag details={userDetails} user={user} />
         {presenceContainer}
-        <Badges user={user} />
         <Stats details={userDetails} signal={signal} />
 
         {userDetails?.profile?.bio && (
@@ -390,40 +389,6 @@ const BadgeItem = (props: { badge: UserBadge }) => {
     </div>
   );
 };
-
-const Badges = (props: { user: User }) => {
-  const enabledBadges = UserBadgeValues.filter((b) =>
-    hasBit(props.user.badges, b.bit),
-  );
-
-  if (!enabledBadges.length) return null;
-  let earnedBadges: UserBadge[] = [];
-  let otherBadges: UserBadge[] = [];
-
-  for (let i = 0; i < enabledBadges.length; i++) {
-    const badge = enabledBadges[i]!;
-    if (badge.type === "earned") {
-      earnedBadges.push(badge);
-    } else {
-      otherBadges.push(badge);
-    }
-  }
-
-  const showSeparator = !!(earnedBadges.length && otherBadges.length);
-
-  return (
-    <div class={style.badgesContainer}>
-      {earnedBadges.map((b) => (
-        <BadgeItem badge={b} />
-      ))}
-      {showSeparator && <div class={style.separator} />}
-      {otherBadges.map((b) => (
-        <BadgeItem badge={b} />
-      ))}
-    </div>
-  );
-};
-
 const Sidebar = (opts: {
   mobile?: boolean;
   userDetails?: UserDetails;
@@ -441,6 +406,7 @@ const Sidebar = (opts: {
     <div class={style.sidebar}>
       <SidebarJoined user={opts.user} signal={signal} />
       {bot && <SidebarBotCreator details={opts.userDetails!} />}
+      <SidebarBadges user={opts.user} signal={signal} />
       <SidebarActivity user={opts.user} signal={signal} />
       {!isCurrentUser && (
         <>
@@ -583,6 +549,46 @@ const SidebarJoined = (opts: { user?: User; signal: AbortSignal }) => {
 
   return el;
 };
+
+const SidebarBadges = (props: { user?: User; signal: AbortSignal }) => {
+  const enabledBadges = UserBadgeValues.filter((b) =>
+    hasBit(props.user?.badges, b.bit),
+  );
+
+  let earnedBadges: UserBadge[] = [];
+  let Badges: UserBadge[] = [];
+  if (!enabledBadges.length) return null;
+
+  for (let i = 0; i < enabledBadges.length; i++) {
+    const badge = enabledBadges[i]!;
+    if (badge.type === "earned") {
+      earnedBadges.push(badge);
+    } else {
+      Badges.push(badge);
+    }
+  }
+
+  const showSeparator = !!(earnedBadges.length && Badges.length);
+
+  return (
+    <div class={style.sidebarItem}>
+      <div class={style.title}>
+        <Icon name="social_leaderboard" class={style.icon} />
+        {t`Badges`}
+      </div>
+      <div class={style.badgesContainer}>
+        {earnedBadges.map((b) => (
+          <BadgeItem badge={b} />
+        ))}
+        {showSeparator && <div class={style.separator} />}
+        {Badges.map((b) => (
+          <BadgeItem badge={b} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
   let activitiesContainer = (
     <div class={style.activities}></div>
