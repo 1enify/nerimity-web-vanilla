@@ -21,6 +21,7 @@ export const Fonts: Font[] = [
     class: "font-pixelify-sans",
     import: () => import("@fontsource/pixelify-sans/latin-400.css"),
     scale: 1,
+    lineHeight: 1.25,
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const Fonts: Font[] = [
     class: "font-ibm-plex-mono",
     import: () => import("@fontsource/ibm-plex-mono/latin-400.css"),
     scale: 0.9,
+    lineHeight: 1.25,
   },
   {
     id: 4,
@@ -43,6 +45,7 @@ export const Fonts: Font[] = [
     class: "font-dancing-script",
     import: () => import("@fontsource/dancing-script/latin-400.css"),
     scale: 1,
+    lineHeight: 1.25,
   },
   {
     id: 5,
@@ -50,6 +53,7 @@ export const Fonts: Font[] = [
     class: "font-mochiy-pop-one",
     import: () => import("@fontsource/mochiy-pop-one/latin-400.css"),
     scale: 0.8,
+    lineHeight: 1.25,
   },
   {
     id: 6,
@@ -57,6 +61,7 @@ export const Fonts: Font[] = [
     class: "font-grandstander",
     import: () => import("@fontsource/grandstander/latin-400.css"),
     scale: 1.2,
+    lineHeight: 1.25,
   },
   {
     id: 7,
@@ -64,6 +69,7 @@ export const Fonts: Font[] = [
     class: "font-sora",
     import: () => import("@fontsource/sora/latin-400.css"),
     scale: 0.9,
+    lineHeight: 1.25,
   },
   {
     id: 8,
@@ -71,6 +77,7 @@ export const Fonts: Font[] = [
     class: "font-roboto-slab",
     import: () => import("@fontsource/roboto-slab/latin-400.css"),
     scale: 0.9,
+    lineHeight: 1.25,
   },
   {
     id: 9,
@@ -78,6 +85,7 @@ export const Fonts: Font[] = [
     class: "font-finger-paint",
     import: () => import("@fontsource/finger-paint/latin-400.css"),
     scale: 1,
+    lineHeight: 1.25,
   },
 ];
 
