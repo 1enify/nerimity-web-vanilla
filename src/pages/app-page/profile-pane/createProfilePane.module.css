@@ -72,10 +72,6 @@
     .tag {
       opacity: 0.6;
     }
-    .badges {
-      display: inline-flex;
-      gap: 2px;
-    }
     .clan {
       margin-left: 6px;
     }
@@ -227,7 +223,8 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 6px;
+  margin-inline-start: 8px;
+  padding-bottom: 8px;
   gap: 6px;
   .separator {
     width: 4px;
@@ -240,6 +237,8 @@
     align-items: center;
     padding-right: 6px;
     padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     border-radius: var(--radius-max);
     color: var(--gray-800);
     cursor: pointer;
@@ -251,6 +250,7 @@
     }
     .icon {
       font-size: 12px;
+      color: var(--gray-800);
     }
   }
 }

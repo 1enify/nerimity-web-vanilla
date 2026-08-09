@@ -551,6 +551,10 @@ msgstr "Mutual Servers"
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:528
+msgid "Badges"
+msgstr "Badges"
+
 #: src/pages/app-page/profile-pane/removeFriendModal.tsx:24
 msgid "Are you sure you want to unfriend this user?"
 msgstr "Are you sure you want to unfriend this user?"

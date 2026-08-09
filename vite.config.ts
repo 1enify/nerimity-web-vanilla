@@ -39,6 +39,7 @@ export default defineConfig({
         "group",
         "save",
         "calendar_month",
+        "social_leaderboard",
         "keyboard_return",
         "bar_chart",
         "settings",
