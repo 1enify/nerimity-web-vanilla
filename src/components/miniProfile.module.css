@@ -4,7 +4,7 @@
   }
 }
 
-:global(#portal .modalRoot .modalBody.scrollbarHover, ) {
+:global(#portal .modalRoot .modalBody.scrollbarHover) {
   &:has(.miniProfile) {
     overflow-y: hidden;
     padding: 0;
@@ -162,7 +162,6 @@
   }
 }
 
-
 .section.customStatusOption {
   flex-direction: row;
   min-height: 48px;
@@ -171,7 +170,7 @@
   cursor: pointer;
   user-select: none;
   gap: 6px;
-  
+
   &:hover {
     background-color: var(--gray-800);
     .setCustomStatus,
@@ -190,7 +189,6 @@
     line-height: 1.8;
     font-size: 12px;
   }
-
 }
 .section.presenceOption {
   flex-direction: row;
@@ -204,7 +202,7 @@
   .userPresence {
     flex: 1;
     gap: 4px;
-    :global(.text)  {
+    :global(.text) {
       font-size: 12px;
     }
   }
@@ -216,7 +214,6 @@
   border-radius: var(--radius-max);
   background-color: var(--color);
 }
-
 
 .customStatusPreview {
   padding: 6px;
