@@ -129,13 +129,13 @@ msgstr "View Profile"
 #: src/components/UserContextMenu.tsx:128
 #: src/components/miniProfile.tsx:258
 #: src/components/miniProfile.tsx:282
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:211
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:210
 msgid "Notes"
 msgstr "Notes"
 
 #: src/components/UserContextMenu.tsx:128
 #: src/components/miniProfile.tsx:258
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:211
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:210
 msgid "Message"
 msgstr "Message"
 
@@ -192,7 +192,7 @@ msgstr "You are suspended."
 
 #: src/components/createAuthErrorModal.tsx:55
 #: src/components/createAuthErrorModal.tsx:60
-#: src/components/createWarnModal.tsx:89
+#: src/components/createWarnModal.tsx:90
 msgid "Dismiss"
 msgstr "Dismiss"
 
@@ -217,22 +217,22 @@ msgid "Someone with the same IP has been suspended from Nerimity. Your account i
 msgstr "Someone with the same IP has been suspended from Nerimity. Your account is not affected."
 
 #: src/components/createAuthErrorModal.tsx:105
-#: src/components/createWarnModal.tsx:40
+#: src/components/createWarnModal.tsx:41
 msgid "<0>Reason: </0><1>{reason}</1>"
 msgstr "<0>Reason: </0><1>{reason}</1>"
 
 #: src/components/createAuthErrorModal.tsx:109
-#: src/components/createWarnModal.tsx:44
+#: src/components/createWarnModal.tsx:45
 msgid "Violating the Terms of Servie."
 msgstr "Violating the Terms of Servie."
 
 #: src/components/createAuthErrorModal.tsx:125
-#: src/components/createWarnModal.tsx:51
+#: src/components/createWarnModal.tsx:52
 msgid "<0>By: </0><1>{username}</1>"
 msgstr "<0>By: </0><1>{username}</1>"
 
 #: src/components/createAuthErrorModal.tsx:129
-#: src/components/createWarnModal.tsx:55
+#: src/components/createWarnModal.tsx:56
 msgid "Not Provided"
 msgstr "Not Provided"
 
@@ -240,19 +240,19 @@ msgstr "Not Provided"
 msgid "Your account and data will be deleted in 15 days."
 msgstr "Your account and data will be deleted in 15 days."
 
-#: src/components/createWarnModal.tsx:15
+#: src/components/createWarnModal.tsx:16
 msgid "Warning"
 msgstr "Warning"
 
-#: src/components/createWarnModal.tsx:17
+#: src/components/createWarnModal.tsx:18
 msgid "You have been warned."
 msgstr "You have been warned."
 
-#: src/components/createWarnModal.tsx:62
+#: src/components/createWarnModal.tsx:63
 msgid "if you continue with this behavior, your account will be suspended."
 msgstr "if you continue with this behavior, your account will be suspended."
 
-#: src/components/createWarnModal.tsx:88
+#: src/components/createWarnModal.tsx:89
 msgid "Dismiss ~ {countdown}"
 msgstr "Dismiss ~ {countdown}"
 
@@ -430,18 +430,18 @@ msgid "{0} users are typing..."
 msgstr "{0} users are typing..."
 
 #: src/components/miniProfile.tsx:205
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:131
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:130
 msgid "Follows You"
 msgstr "Follows You"
 
 #. placeholder {0}: followers || 0
 #: src/components/miniProfile.tsx:213
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:335
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:334
 msgid "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 msgstr "{0, plural, =0 {<0>No</0> Followers} one {<1>#</1> Follower} other {<2>#</2> Followers}}"
 
 #: src/components/miniProfile.tsx:236
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:358
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:357
 msgid "<0>{following}</0> Following"
 msgstr "<0>{following}</0> Following"
 
@@ -507,51 +507,51 @@ msgstr "Login to continue"
 msgid "Logging in..."
 msgstr "Logging in..."
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:153
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:152
 msgid "Unblock"
 msgstr "Unblock"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:158
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:157
 msgid "Accept Request"
 msgstr "Accept Request"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:164
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:163
 msgid "Remove Request"
 msgstr "Remove Request"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:171
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:170
 msgid "Remove Friend"
 msgstr "Remove Friend"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:174
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:173
 msgid "Add Friend"
 msgstr "Add Friend"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:194
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:193
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:204
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:203
 msgid "Follow"
 msgstr "Follow"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:469
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:435
 msgid "Bot Creator"
 msgstr "Bot Creator"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:492
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:458
 msgid "Mutual Friends"
 msgstr "Mutual Friends"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:492
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:458
 msgid "Mutual Servers"
 msgstr "Mutual Servers"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:567
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:533
 msgid "Joined Nerimity"
 msgstr "Joined Nerimity"
 
-#: src/pages/app-page/profile-pane/createProfilePane.tsx:528
+#: src/pages/app-page/profile-pane/createProfilePane.tsx:577
 msgid "Badges"
 msgstr "Badges"
 

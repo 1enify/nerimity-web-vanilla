@@ -14,7 +14,11 @@ import { createUserContextMenuHandler } from "../../../components/UserContextMen
 import { UserPresence } from "../../../components/userPresence";
 import { Dynamic } from "../../../dynamic";
 import { h, Fragment } from "../../../h";
-import { acceptFriend, addFriend, removeFriend } from "../../../services/friendService";
+import {
+  acceptFriend,
+  addFriend,
+  removeFriend,
+} from "../../../services/friendService";
 import {
   followUser,
   getUserDetails,
@@ -48,7 +52,11 @@ export const emitter = createEventEmitter<{
   follow_state_changed: null;
 }>();
 
-const Content = (opts: { userDetails?: UserDetails; user?: User; mobile: boolean }) => {
+const Content = (opts: {
+  userDetails?: UserDetails;
+  user?: User;
+  mobile: boolean;
+}) => {
   const { userDetails, user } = opts;
   contentAbortController?.abort();
   contentAbortController = new AbortController();
@@ -60,7 +68,9 @@ const Content = (opts: { userDetails?: UserDetails; user?: User; mobile: boolean
   const presenceContainer = (<div></div>) as HTMLDivElement;
 
   const renderPresence = () =>
-    presenceContainer.replaceChildren(<UserPresence showOffline userId={user.id} hideActivity />);
+    presenceContainer.replaceChildren(
+      <UserPresence showOffline userId={user.id} hideActivity />,
+    );
   renderPresence();
 
   storeEmitter.on(
@@ -97,7 +107,13 @@ const Content = (opts: { userDetails?: UserDetails; user?: User; mobile: boolean
   );
 };
 
-const NameAndTag = ({ user, details }: { user: User; details?: UserDetails }) => {
+const NameAndTag = ({
+  user,
+  details,
+}: {
+  user: User;
+  details?: UserDetails;
+}) => {
   const font = getFont(user?.profile?.font || details?.profile?.font);
 
   return (
@@ -110,7 +126,9 @@ const NameAndTag = ({ user, details }: { user: User; details?: UserDetails }) =>
             <ServerClanItem clan={details?.profile?.clan} />
           </span>
         )}
-        {details?.followsYou && <span class={style.followsYou}>{t`Follows You`}</span>}
+        {details?.followsYou && (
+          <span class={style.followsYou}>{t`Follows You`}</span>
+        )}
       </span>
     </div>
   );
@@ -168,11 +186,23 @@ const Actions = ({
       <>
         <div class={style.actionsInner}>
           {details && isFollowing && (
-            <ActionButton action="unfollow" alert icon="do_not_disturb_on" label={t`Unfollow`} />
+            <ActionButton
+              action="unfollow"
+              alert
+              icon="do_not_disturb_on"
+              label={t`Unfollow`}
+            />
           )}
-          {accountStore.authenticated && !isFollowing && !isCurrent && details && (
-            <ActionButton action="follow" icon="add_circle" label={t`Follow`} />
-          )}
+          {accountStore.authenticated &&
+            !isFollowing &&
+            !isCurrent &&
+            details && (
+              <ActionButton
+                action="follow"
+                icon="add_circle"
+                label={t`Follow`}
+              />
+            )}
           {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
           <ActionButton
             action="message"
@@ -279,7 +309,13 @@ const ActionButton = (props: {
   );
 };
 
-const Stats = ({ details, signal }: { details?: UserDetails; signal: AbortSignal }) => {
+const Stats = ({
+  details,
+  signal,
+}: {
+  details?: UserDetails;
+  signal: AbortSignal;
+}) => {
   const el = (<div class={style.stats}></div>) as HTMLDivElement;
 
   const rerender = () => {
@@ -353,7 +389,11 @@ const BadgeItem = (props: { badge: UserBadge }) => {
     </div>
   );
 };
-const Sidebar = (opts: { mobile?: boolean; userDetails?: UserDetails; user?: User }) => {
+const Sidebar = (opts: {
+  mobile?: boolean;
+  userDetails?: UserDetails;
+  user?: User;
+}) => {
   sidebarAbortController?.abort();
   sidebarAbortController = new AbortController();
   const { signal } = sidebarAbortController;
@@ -433,7 +473,8 @@ const MutualList = (opts: {
     itemsEl.replaceChildren(
       <>
         {!collapsed && opts.friendIds?.map((id) => <MutualItem userId={id} />)}
-        {!collapsed && opts.serverIds?.map((id) => <MutualItem serverId={id} />)}
+        {!collapsed &&
+          opts.serverIds?.map((id) => <MutualItem serverId={id} />)}
       </>,
     );
   };
@@ -451,7 +492,11 @@ const MutualList = (opts: {
   return el;
 };
 
-const MutualItem = (props: { userId?: string; serverId?: string; user?: User }) => {
+const MutualItem = (props: {
+  userId?: string;
+  serverId?: string;
+  user?: User;
+}) => {
   const user = userStore.users.get(props.userId!) || props.user;
   const server = serverStore.servers.get(props.serverId!);
   if (!user && !server) return null;
@@ -494,7 +539,9 @@ const SidebarJoined = (opts: { user?: User; signal: AbortSignal }) => {
   const toggle = () => {
     const joinedAt = opts.user?.joinedAt || 0;
     fullDate = !fullDate;
-    infoEl.replaceChildren(fullDate ? formatTimestamp(joinedAt) : getDaysAgo(joinedAt));
+    infoEl.replaceChildren(
+      fullDate ? formatTimestamp(joinedAt) : getDaysAgo(joinedAt),
+    );
   };
   toggle();
 
@@ -504,7 +551,9 @@ const SidebarJoined = (opts: { user?: User; signal: AbortSignal }) => {
 };
 
 const SidebarBadges = (props: { user?: User; signal: AbortSignal }) => {
-  const enabledBadges = UserBadgeValues.filter((b) => hasBit(props.user?.badges, b.bit));
+  const enabledBadges = UserBadgeValues.filter((b) =>
+    hasBit(props.user?.badges, b.bit),
+  );
 
   let earnedBadges: UserBadge[] = [];
   let Badges: UserBadge[] = [];
@@ -541,7 +590,9 @@ const SidebarBadges = (props: { user?: User; signal: AbortSignal }) => {
 };
 
 const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
-  let activitiesContainer = (<div class={style.activities}></div>) as HTMLDivElement;
+  let activitiesContainer = (
+    <div class={style.activities}></div>
+  ) as HTMLDivElement;
 
   const rerender = () => {
     const presence = userPresenceStore.presences.get(props.user?.id!);
@@ -644,7 +695,11 @@ const createProfilePane = (content: HTMLElement) => {
 
   storeEmitter.on("ws:authStateUpdate", rerender, signal);
 
-  router.createMatchListener<{ userId: string }>("/app/profile/:userId", fetchUser, { signal });
+  router.createMatchListener<{ userId: string }>(
+    "/app/profile/:userId",
+    fetchUser,
+    { signal },
+  );
 
   widthQuery.onModeChange(rerender, signal);
 
