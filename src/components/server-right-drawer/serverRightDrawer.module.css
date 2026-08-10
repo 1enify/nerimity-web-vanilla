@@ -1,0 +1,120 @@
+.memberListContainer {
+  --padding-right: 2px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 6px;
+}
+
+.memberItemContainer {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  flex-shrink: 0;
+  height: 44px;
+  padding: 6px 6px;
+
+  border-radius: var(--radius-max);
+  gap: 8px;
+  &:hover {
+    background-color: var(--gray-800);
+  }
+
+  .memberInfo {
+    display: inline-flex;
+    overflow: hidden;
+    align-items: center;
+    flex: 1;
+    gap: 4px;
+  }
+
+  .memberName {
+    overflow: hidden;
+    flex-shrink: 1;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .info {
+    display: flex;
+    overflow: hidden;
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+.roleItemContainer {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  .roleInnerContainer {
+    display: flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 2px;
+    padding-right: 6px;
+
+    padding-left: 6px;
+    margin-right: 2px;
+    margin-left: 2px;
+    border-radius: var(--radius-max);
+    background-color: var(--gray-850);
+    gap: 4px;
+    &[data-has-icon="true"] {
+      padding-left: 4px;
+    }
+    .roleIcon {
+      background-color: transparent;
+    }
+
+    .roleName {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+}
+
+.bannerContainer {
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: var(--radius-6);
+}
+
+.tabs {
+  display: flex;
+  align-self: center;
+  margin: 8px 4px;
+  margin-left: 8px;
+  border-radius: var(--radius-max);
+  background-color: var(--gray-800);
+  gap: 4px;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  border: none;
+  border-radius: var(--radius-max);
+  color: var(--gray-400);
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  gap: 4px;
+  &:hover {
+    color: var(--text-color);
+    background-color: var(--gray-700);
+  }
+  &[data-active="true"] {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+  }
+  .icon {
+    font-size: 16px;
+  }
+}

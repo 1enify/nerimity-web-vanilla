@@ -1,32 +1,31 @@
 import { t } from "@lingui/core/macro";
 
-import { h } from "../h";
-import { channelStore } from "../store/channelStore";
-import { ServerMember, serverMemberStore } from "../store/serverMemberStore";
-import { ServerRole, serverRoleStore } from "../store/serverRoleStore";
-import { serverStore } from "../store/serverStore";
-import { userPresenceStore } from "../store/userPresenceStore";
-import { userStore } from "../store/userStore";
-import { hasBit } from "../utils/bitwise";
-import { ChannelPermissionFlag } from "../utils/channelPermissionFlag";
-import { resolveGradient } from "../utils/color";
-import { storeEmitter } from "../utils/EventEmitter";
-import { getFont } from "../utils/font";
-import { HoverAnimator } from "../utils/HoverAnimator";
-import { ManualMemo } from "../utils/memo";
-import { RolePermissionFlag } from "../utils/RolePermissionFlag";
-import { Avatar } from "./avatar";
-import { Banner } from "./Banner";
-import { CdnIcon } from "./cdnIcon";
-import { Drawer } from "./drawer";
-import { GradientText } from "./gradientText";
-import { Icon } from "./icon";
-import { Link } from "./link";
-import { ServerClanItem } from "./serverClanItem";
-import { UserPresence } from "./userPresence";
-import { createVirtualList } from "./virtualList";
+import { h } from "../../h";
+import { channelStore } from "../../store/channelStore";
+import { ServerMember, serverMemberStore } from "../../store/serverMemberStore";
+import { ServerRole, serverRoleStore } from "../../store/serverRoleStore";
+import { serverStore } from "../../store/serverStore";
+import { userPresenceStore } from "../../store/userPresenceStore";
+import { userStore } from "../../store/userStore";
+import { hasBit } from "../../utils/bitwise";
+import { ChannelPermissionFlag } from "../../utils/channelPermissionFlag";
+import { resolveGradient } from "../../utils/color";
+import { storeEmitter } from "../../utils/EventEmitter";
+import { getFont } from "../../utils/font";
+import { HoverAnimator } from "../../utils/HoverAnimator";
+import { ManualMemo } from "../../utils/memo";
+import { RolePermissionFlag } from "../../utils/RolePermissionFlag";
+import { Avatar } from "../avatar";
+import { Banner } from "../Banner";
+import { CdnIcon } from "../cdnIcon";
+import { Drawer } from "../drawer";
+import { GradientText } from "../gradientText";
+import { Link } from "../link";
+import { ServerClanItem } from "../serverClanItem";
+import { UserPresence } from "../userPresence";
+import { createVirtualList } from "../virtualList";
 
-import style from "./serverMemberList.module.css";
+import style from "./serverInfoDrawer.module.css";
 
 const CategoryType = {
   role: 0,
@@ -109,37 +108,21 @@ const roleOrder = () => {
   return { sorted, order };
 };
 
-const Tab = (props: { title?: string; icon: string }) => {
-  return (
-    <button class={style.tab}>
-      <Icon class={style.icon} name={props.icon} />
-      <div class={style.title}>{props.title}</div>
-    </button>
-  );
-};
-
-const Tabs = () => {
-  return (
-    <div class={style.tabs}>
-      <Tab icon="info" title={t`Info`} />
-      <Tab icon="attach_file" title={t`Files`} />
-      <Tab icon="search" title={t`Search`} />
-    </div>
-  );
-};
-
-export const createServerMemberList = () => {
+export const createServerInfoDrawer = (props: {
+  containerEl: HTMLDivElement;
+}) => {
   let membersListEl = (<div class={style.membersList}></div>) as HTMLDivElement;
   let bannerContainerEl = (
     <div class={style.bannerContainer}></div>
   ) as HTMLDivElement;
-  let containerEl = (
-    <div class={[style.memberListContainer, "scrollbarHover"]}>
-      <Tabs />
+
+  let infoContainerEl = (
+    <div class={style.memberListContainer}>
       {bannerContainerEl}
       {membersListEl}
     </div>
   ) as HTMLDivElement;
+
   let hoverAnimator: HoverAnimator | null = null;
   const ac = new AbortController();
   const { signal } = ac;
@@ -295,7 +278,7 @@ export const createServerMemberList = () => {
 
   let vt: ReturnType<typeof createVirtualList> | null = null;
   const renderList = () => {
-    if (!containerEl) return;
+    if (!infoContainerEl) return;
 
     if (vt) {
       vt.updateItems();
@@ -308,7 +291,7 @@ export const createServerMemberList = () => {
         [CategoryType.role]: { height: 40 },
         [CategoryType.member]: { height: 44 },
       },
-      parentEl: containerEl,
+      parentEl: props.containerEl,
       renderItem: memberItem,
     });
 
@@ -410,9 +393,9 @@ export const createServerMemberList = () => {
   const render = () => {
     renderList();
     rerenderBanner();
-    return containerEl;
+    return infoContainerEl;
   };
-  hoverAnimator = new HoverAnimator(containerEl, [
+  hoverAnimator = new HoverAnimator(infoContainerEl, [
     { trigger: `.${style.memberItemContainer}`, image: ".clanIcon img" },
     {
       trigger: `.${style.memberItemContainer}`,
@@ -435,8 +418,8 @@ export const createServerMemberList = () => {
     vt?.destroy();
     hoverAnimator?.destroy();
 
-    containerEl.remove();
-    (containerEl as any) = null;
+    infoContainerEl.remove();
+    (infoContainerEl as any) = null;
 
     membersListEl.remove();
     (membersListEl as any) = null;

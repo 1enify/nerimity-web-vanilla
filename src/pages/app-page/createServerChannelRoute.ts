@@ -1,6 +1,6 @@
 import { Drawer } from "../../components/drawer";
+import { createServerMemberList } from "../../components/server-right-drawer/serverRightDrawer";
 import { createServerChannelList } from "../../components/serverChannelList";
-import { createServerMemberList } from "../../components/serverMemberList";
 import { serverStore } from "../../store/serverStore";
 import { storeEmitter } from "../../utils/EventEmitter";
 
