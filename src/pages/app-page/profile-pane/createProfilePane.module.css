@@ -224,7 +224,7 @@
   align-items: center;
   flex-wrap: wrap;
   padding-bottom: 8px;
-  margin-inline-start: 8px;
+  margin-inline: 8px;
   gap: 6px;
   .separator {
     width: 4px;
