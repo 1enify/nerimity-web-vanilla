@@ -20,6 +20,7 @@ import { Banner } from "./Banner";
 import { CdnIcon } from "./cdnIcon";
 import { Drawer } from "./drawer";
 import { GradientText } from "./gradientText";
+import { Icon } from "./icon";
 import { Link } from "./link";
 import { ServerClanItem } from "./serverClanItem";
 import { UserPresence } from "./userPresence";
@@ -108,6 +109,25 @@ const roleOrder = () => {
   return { sorted, order };
 };
 
+const Tab = (props: { title?: string; icon: string }) => {
+  return (
+    <button class={style.tab}>
+      <Icon class={style.icon} name={props.icon} />
+      <div class={style.title}>{props.title}</div>
+    </button>
+  );
+};
+
+const Tabs = () => {
+  return (
+    <div class={style.tabs}>
+      <Tab icon="info" title={t`Info`} />
+      <Tab icon="attach_file" title={t`Files`} />
+      <Tab icon="search" title={t`Search`} />
+    </div>
+  );
+};
+
 export const createServerMemberList = () => {
   let membersListEl = (<div class={style.membersList}></div>) as HTMLDivElement;
   let bannerContainerEl = (
@@ -115,6 +135,7 @@ export const createServerMemberList = () => {
   ) as HTMLDivElement;
   let containerEl = (
     <div class={[style.memberListContainer, "scrollbarHover"]}>
+      <Tabs />
       {bannerContainerEl}
       {membersListEl}
     </div>
