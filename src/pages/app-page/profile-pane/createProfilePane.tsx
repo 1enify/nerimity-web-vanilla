@@ -42,6 +42,7 @@ import { getRecentServerChannelId } from "../../../utils/recentServerChannels";
 import { router } from "../../../utils/router";
 import { UserBadgeValues, type UserBadge } from "../../../utils/UserBadgeFlag";
 import { createRemoveFriendModal } from "./removeFriendModal";
+import { isMobileWidth } from "../../../config";
 
 import style from "./createProfilePane.module.css";
 
@@ -207,7 +208,7 @@ const Actions = ({
           <ActionButton
             action="message"
             icon={isCurrent ? "book" : "mail"}
-            label={isCurrent ? t`Notes` : t`Message`}
+            label={isMobileWidth() ? "" : (isCurrent ? t`Notes` : t`Message`)}
           />
           <ActionButton userId={user?.id!} action="more" icon="more_horiz" />
         </div>
