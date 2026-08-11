@@ -2,6 +2,7 @@ import { h, Fragment } from "../../h";
 import { getAttachments } from "../../services/channelService";
 import { channelStore } from "../../store/channelStore";
 import type { FullAttachment } from "../../Types";
+import { fullDate } from "../../utils/date";
 import { buildImageUrl } from "../../utils/image";
 import { Icon } from "../icon";
 import { Link } from "../link";
@@ -37,23 +38,42 @@ export const createFilesDrawer = () => {
     <div class={style.container}></div>
   ) as HTMLDivElement;
 
-  let attachments: FullAttachment[] | null = null;
-
   const render = () => {
     return filesContainerEl;
   };
 
   const loadAttachments = async () => {
     const channelId = channelStore.currentChannelId!;
-    const [newAttachments] = await getAttachments(channelId);
+    const [attachments] = await getAttachments(channelId);
 
-    attachments = newAttachments;
     if (!attachments) return;
+
+    const categorized: FullAttachment[][] = [];
+    let index = -1;
+
+    for (let i = 0; i < attachments.length; i++) {
+      const attachment = attachments[i]!;
+      if (isNewDay(attachment, attachments[i - 1])) {
+        index++;
+        categorized[index] = [];
+      }
+      categorized[index]?.push(attachment);
+    }
 
     filesContainerEl.replaceChildren(
       <>
-        {attachments.map((attach) => (
-          <AttachmentItem attachment={attach} />
+        {categorized.map((category) => (
+          <div class={style.category}>
+            <div class={style.marker}>
+              <span>{fullDate(category[0]?.createdAt || 0)}</span>
+              <div class={style.line} />
+            </div>
+            <div class={style.categoryItems}>
+              {category.map((attach) => (
+                <AttachmentItem attachment={attach} />
+              ))}
+            </div>
+          </div>
         ))}
       </>,
     );
@@ -62,7 +82,6 @@ export const createFilesDrawer = () => {
   loadAttachments();
 
   const destroy = () => {
-    attachments = null;
     filesContainerEl.remove();
     (filesContainerEl as any) = null;
   };
@@ -71,4 +90,14 @@ export const createFilesDrawer = () => {
     destroy,
     render,
   };
+};
+
+const MS_PER_DAY = 86400000;
+const TZ_OFFSET = new Date().getTimezoneOffset() * 60000;
+
+const dayNumber = (ts: number) => Math.floor((ts - TZ_OFFSET) / MS_PER_DAY);
+
+const isNewDay = (attach: FullAttachment, prev?: FullAttachment) => {
+  if (!prev) return true;
+  return dayNumber(attach.createdAt) !== dayNumber(prev.createdAt);
 };
