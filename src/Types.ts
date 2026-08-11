@@ -256,6 +256,23 @@ export interface RawMessageEmbed {
   domain: string;
 }
 
+export interface FullAttachment {
+  id: string;
+  channelId: null | string;
+  createdAt: number;
+  duration: null | number;
+  expireAt: null | number;
+  fileId: null | string;
+  filesize: number;
+  height: null | number;
+  width: null | number;
+  messageId: null | string;
+  mime: string;
+  path: string;
+  postId: null | string;
+  provider: "local" | "google_drive";
+  serverId: null | string;
+}
 export interface Attachment {
   id: string;
   path?: string;

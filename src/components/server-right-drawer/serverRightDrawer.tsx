@@ -1,7 +1,9 @@
 import { t } from "@lingui/core/macro";
 
 import { h } from "../../h";
+import { storeEmitter } from "../../utils/EventEmitter";
 import { Icon } from "../icon";
+import { createFilesDrawer } from "./ServerFilesDrawer";
 import { createServerInfoDrawer } from "./ServerInfoDrawer";
 
 import style from "./serverRightDrawer.module.css";
@@ -52,6 +54,10 @@ export const createServerMemberList = () => {
       currentTabContent = createServerInfoDrawer({ containerEl });
       innerContainerEl.replaceChildren(currentTabContent.render());
     }
+    if (currentTab === "files") {
+      currentTabContent = createFilesDrawer();
+      innerContainerEl.replaceChildren(currentTabContent.render());
+    }
     const tabs = tabsEl.querySelectorAll(`[data-id]`);
     tabs.forEach((t) => {
       const target = t as HTMLDivElement;
@@ -77,6 +83,15 @@ export const createServerMemberList = () => {
   const render = () => {
     return containerEl;
   };
+
+  storeEmitter.on(
+    "navigate:channelId",
+    () => {
+      currentTab = "info";
+      updateTab();
+    },
+    signal,
+  );
 
   const destroy = () => {
     ac.abort();
