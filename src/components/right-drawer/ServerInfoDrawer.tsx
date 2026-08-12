@@ -25,7 +25,7 @@ import { ServerClanItem } from "../serverClanItem";
 import { UserPresence } from "../userPresence";
 import { createVirtualList } from "../virtualList";
 
-import style from "./serverInfoDrawer.module.css";
+import style from "./ServerInfoDrawer.module.css";
 
 const CategoryType = {
   role: 0,
