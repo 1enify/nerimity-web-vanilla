@@ -93,11 +93,11 @@ function createServerStore() {
     }
   };
 
-  const updateLastSeenServerChannel = (channelId: string) => {
+  const updateLastSeenServerChannel = (channelId: string, seenAt?: number) => {
     const channel = channelStore.channels.get(channelId);
     lastSeenChannelIds.set(
       channelId,
-      (channel?.lastMessagedAt || Date.now()) + 100,
+      seenAt || (channel?.lastMessagedAt || Date.now()) + 1,
     );
     delete channelStore.notificationsMemo.value()[channelId];
     serverStore.notificationsMemo.rerun();

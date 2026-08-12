@@ -14,6 +14,7 @@ import { serverStore } from "../store/serverStore";
 import { userPresenceStore } from "../store/userPresenceStore";
 import {
   FriendStatus,
+  MessageType,
   type RawChannel,
   type RawCustomEmoji,
   type RawFriend,
@@ -124,13 +125,22 @@ function onMessageCreated(payload: { message: RawMessage; socketId?: string }) {
   const isMentioned = payload.message.mentions?.find(
     (m) => m.id === currentUserId,
   );
+
+  const isSystemMessage = payload.message.type !== MessageType.CONTENT;
+
   const notificationBefore = !channel
     ? false
     : channelStore.hasNotification(channel);
 
-  if (!createdByMe) {
-    channelStore.updateLastMessagedAt(message.channelId, message.createdAt);
+  if (!isSystemMessage && createdByMe) {
+    serverStore.updateLastSeenServerChannel(
+      message.channelId,
+      message.createdAt + 1,
+    );
+  }
 
+  channelStore.updateLastMessagedAt(message.channelId, message.createdAt);
+  if (!createdByMe) {
     if (isDmMessage || isMentioned) {
       const mention = messageMentionStore.incrementMention({
         channelId: message.channelId,
