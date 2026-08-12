@@ -185,10 +185,10 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
   );
 
   const scrollToMessage = async (force = false) => {
-    Drawer().updatePage({ page: 1 });
     const messageId = query().messageId;
     const channelId = channelStore.currentChannelId!;
     if (!messageId) return;
+    Drawer().updatePage({ page: 1 });
     let animate = true;
     if (document.hasFocus()) {
       router.navigate(location.pathname, { replace: true });
