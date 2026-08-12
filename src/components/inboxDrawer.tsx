@@ -20,7 +20,6 @@ import { ManualMemo } from "../utils/memo";
 import { router } from "../utils/router";
 import { Avatar } from "./avatar";
 import { Button } from "./button";
-import { Drawer } from "./drawer";
 import { Icon } from "./icon";
 import { Item } from "./item";
 import { Link } from "./link";
@@ -499,7 +498,6 @@ const createInboxDrawer = () => {
           return;
         }
 
-        Drawer().updatePage({ page: 1 });
         const channel = channelStore.channels.get(channelId!);
         if (channel) return;
         const userId = item.dataset.userId;

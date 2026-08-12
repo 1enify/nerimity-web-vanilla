@@ -18,7 +18,6 @@ import { reconcile } from "../utils/html";
 import { getRecentServerChannelId } from "../utils/recentServerChannels";
 import { router } from "../utils/router";
 import { Avatar } from "./avatar";
-import { Drawer } from "./drawer";
 import { Icon } from "./icon";
 import { Item } from "./item";
 import { LogoMono } from "./LogoMono";
@@ -394,7 +393,6 @@ const MentionList = (props: { signal: AbortSignal }) => {
       const userId = itemEl.dataset.userId;
       if (!userId) return;
       inboxStore.openChannel(userId);
-      Drawer().updatePage({ page: 1 });
     },
     { signal: props.signal },
   );
