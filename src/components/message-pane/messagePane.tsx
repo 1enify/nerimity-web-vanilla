@@ -34,7 +34,6 @@ import style from "./messagePane.module.css";
 const SCROLLED_BOTTOM_THRESHOLD = 50;
 
 const createMessagePane = () => {
-  Drawer().updatePage({ page: 1 });
   const abortController = new AbortController();
   const { signal } = abortController;
   let chatbar = createChatbar();
@@ -260,7 +259,6 @@ const createMessagePane = () => {
   storeEmitter.on(
     "navigate:channelId",
     () => {
-      Drawer().updatePage({ page: 1 });
       if (serverStore.currentServerId && channelStore.currentChannelId) {
         setRecentServerChannel(
           serverStore.currentServerId,

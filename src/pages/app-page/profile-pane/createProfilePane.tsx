@@ -637,7 +637,6 @@ const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
 };
 
 const createProfilePane = (content: HTMLElement) => {
-  Drawer().updatePage({ page: 1 });
   const abortController = new AbortController();
   const { signal } = abortController;
 

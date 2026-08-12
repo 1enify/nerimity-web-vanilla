@@ -6,6 +6,7 @@ import { storeEmitter } from "../utils/EventEmitter";
 import { HoverAnimator } from "../utils/HoverAnimator";
 import { reconcile } from "../utils/html";
 import { CdnIcon } from "./cdnIcon";
+import { Drawer } from "./drawer";
 import { Icon } from "./icon";
 import { Item } from "./item";
 import { NotificationPill } from "./NotificationPill";
@@ -128,6 +129,17 @@ export const createServerChannelList = () => {
       },
       { trigger: `.${style.categoryItem}`, image: ".channelIcon img" },
     ]);
+
+    channelListEl.addEventListener(
+      "click",
+      (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest(`.${style.channelItem}`)) {
+          Drawer().updatePage({ page: 1 });
+        }
+      },
+      { signal },
+    );
 
     renderList();
 
