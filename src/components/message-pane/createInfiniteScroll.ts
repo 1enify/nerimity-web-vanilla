@@ -4,6 +4,7 @@ import { messageStore } from "../../store/messageStore";
 import { debounce } from "../../utils/debounce";
 import { createIntersectionObserver } from "../../utils/observer";
 import { router } from "../../utils/router";
+import { Drawer } from "../drawer";
 
 interface InfiniteScrollParams {
   el: HTMLDivElement;
@@ -184,6 +185,7 @@ export const createInfiniteScroll = (params: InfiniteScrollParams) => {
   );
 
   const scrollToMessage = async (force = false) => {
+    Drawer().updatePage({ page: 1 });
     const messageId = query().messageId;
     const channelId = channelStore.currentChannelId!;
     if (!messageId) return;
