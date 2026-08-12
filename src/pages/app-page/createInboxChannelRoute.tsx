@@ -1,66 +1,63 @@
 import { Drawer } from "../../components/drawer";
 import createInboxDrawer from "../../components/inboxDrawer";
-import { MiniProfile } from "../../components/miniProfile";
-import { h } from "../../h";
-import { accountStore } from "../../store/accountStore";
-import { channelStore } from "../../store/channelStore";
-import { inboxStore } from "../../store/inboxStore";
-import { storeEmitter } from "../../utils/EventEmitter";
-
-import style from "./createInboxChannelRoute.module.css";
+import { createRightDrawer } from "../../components/right-drawer/RightDrawer";
 
 const createInboxChannelRoute = (leftDrawer: HTMLElement) => {
   const abortController = new AbortController();
-  const { signal } = abortController;
 
   const inboxDrawer = createInboxDrawer();
+  const rightDrawer = createRightDrawer();
+
   let drawer = Drawer();
 
   leftDrawer.replaceChildren(inboxDrawer.render());
 
   let miniProfileAbortController = new AbortController();
-  const renderRightDrawer = () => {
-    miniProfileAbortController.abort();
-    miniProfileAbortController = new AbortController();
-    if (!accountStore.authenticated) return;
-    const inbox = inboxStore.inboxes.get(channelStore.currentChannelId!);
+  drawer.rightDrawer.replaceChildren(rightDrawer.render());
 
-    const recipientId = inbox?.recipientId;
-    if (!recipientId) return;
+  // const renderRightDrawer = () => {
+  //   miniProfileAbortController.abort();
+  //   miniProfileAbortController = new AbortController();
+  //   if (!accountStore.authenticated) return;
+  //   const inbox = inboxStore.inboxes.get(channelStore.currentChannelId!);
 
-    drawer.rightDrawer.replaceChildren(
-      <MiniProfile
-        animationMode="hover"
-        abort={miniProfileAbortController}
-        class={style.miniProfileDrawer}
-        userId={recipientId}
-      />,
-    );
-  };
+  //   const recipientId = inbox?.recipientId;
+  //   if (!recipientId) return;
 
-  renderRightDrawer();
+  //   drawer.rightDrawer.replaceChildren(
+  //     <MiniProfile
+  //       animationMode="hover"
+  //       abort={miniProfileAbortController}
+  //       class={style.miniProfileDrawer}
+  //       userId={recipientId}
+  //     />,
+  //   );
+  // };
 
-  storeEmitter.on(
-    "navigate:channelId",
-    () => {
-      renderRightDrawer();
-    },
-    signal,
-  );
-  storeEmitter.on(
-    "ws:authStateUpdate",
-    (state) => {
-      if (!state) return;
-      renderRightDrawer();
-    },
-    signal,
-  );
+  // renderRightDrawer();
+
+  // storeEmitter.on(
+  //   "navigate:channelId",
+  //   () => {
+  //     renderRightDrawer();
+  //   },
+  //   signal,
+  // );
+  // storeEmitter.on(
+  //   "ws:authStateUpdate",
+  //   (state) => {
+  //     if (!state) return;
+  //     renderRightDrawer();
+  //   },
+  //   signal,
+  // );
 
   const destroy = () => {
     miniProfileAbortController.abort();
     drawer.rightDrawer.replaceChildren();
     abortController.abort();
     inboxDrawer.destroy();
+    rightDrawer.destroy();
     (leftDrawer as any) = null;
     (drawer as any) = null;
   };

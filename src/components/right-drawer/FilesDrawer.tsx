@@ -7,7 +7,7 @@ import { buildImageUrl } from "../../utils/image";
 import { Icon } from "../icon";
 import { Link } from "../link";
 
-import style from "./ServerFilesDrawer.module.css";
+import style from "./FilesDrawer.module.css";
 
 const AttachmentItem = (props: { attachment: FullAttachment }) => {
   const isImage = !!props.attachment.width || !!props.attachment.height;

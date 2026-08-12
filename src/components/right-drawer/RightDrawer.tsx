@@ -1,12 +1,14 @@
 import { t } from "@lingui/core/macro";
 
 import { h } from "../../h";
+import { serverStore } from "../../store/serverStore";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { Icon } from "../icon";
-import { createFilesDrawer } from "./ServerFilesDrawer";
+import { createFilesDrawer } from "./FilesDrawer";
+import { createInboxInfoDrawer } from "./InboxInfoDrawer";
 import { createServerInfoDrawer } from "./ServerInfoDrawer";
 
-import style from "./serverRightDrawer.module.css";
+import style from "./RightDrawer.module.css";
 
 const Tab = (props: { id: string; title?: string; icon: string }) => {
   return (
@@ -29,7 +31,7 @@ const Tabs = () => {
 
 type Tab = "info" | "files" | "search";
 
-export const createServerMemberList = () => {
+export const createRightDrawer = () => {
   let currentTabContent: undefined | ReturnType<typeof createServerInfoDrawer> =
     undefined;
 
@@ -51,7 +53,9 @@ export const createServerMemberList = () => {
     currentTabContent = undefined;
 
     if (currentTab === "info") {
-      currentTabContent = createServerInfoDrawer({ containerEl });
+      currentTabContent = serverStore.currentServerId
+        ? createServerInfoDrawer({ containerEl })
+        : createInboxInfoDrawer();
       innerContainerEl.replaceChildren(currentTabContent.render());
     }
     if (currentTab === "files") {
