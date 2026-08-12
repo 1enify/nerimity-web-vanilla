@@ -8,6 +8,7 @@ import {
 } from "../Types";
 import { createTokenSource } from "../utils/createTokenSource";
 import { storeEmitter } from "../utils/EventEmitter";
+import { updateFavicon } from "../utils/favicon";
 import { fileToDimensions, isImage, isMoreThan12MB } from "../utils/file";
 import { ManualMemo } from "../utils/memo";
 import { accountStore } from "./accountStore";
@@ -379,3 +380,13 @@ function createChannelStore() {
     updateSelectedBotCommand,
   };
 }
+
+const sig = new AbortController().signal;
+
+const handleEvent = () => {
+  updateFavicon(!!accountStore.hasNotifications());
+};
+
+storeEmitter.on("mention:dm_update", handleEvent, sig);
+storeEmitter.on("channel:notify_update", handleEvent, sig);
+storeEmitter.on("noti_settings:update", handleEvent, sig);
