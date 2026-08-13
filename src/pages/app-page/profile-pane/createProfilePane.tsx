@@ -113,11 +113,15 @@ const Content = (opts: {
 };
 
 const Bio = ({ userDetails }: { userDetails?: UserDetails }) => {
+  const bio = userDetails?.profile?.bio
+
+  if (!bio) return 
+
   return (
     <div class={[style.section, style.bioSection]}>
       {userDetails?.profile?.bio && (
         <div class={style.bio}>
-          <Markup text={userDetails?.profile?.bio} />
+          <Markup text={bio} />
         </div>
       )}
     </div>
