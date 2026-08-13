@@ -340,7 +340,7 @@ export const MiniProfile = (props: {
       </>
     );
   };
-  const miniProfileEl = (
+  let miniProfileEl = (
     <div class={[style.miniProfile, props.class]}></div>
   ) as HTMLDivElement;
 
@@ -399,6 +399,9 @@ export const MiniProfile = (props: {
     () => {
       focusAnimator.destroy();
       contentAbort?.abort();
+
+      miniProfileEl.remove();
+      (miniProfileEl as any) = null;
     },
     { once: true },
   );
