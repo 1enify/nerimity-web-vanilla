@@ -42,7 +42,6 @@ import { getRecentServerChannelId } from "../../../utils/recentServerChannels";
 import { router } from "../../../utils/router";
 import { UserBadgeValues, type UserBadge } from "../../../utils/UserBadgeFlag";
 import { createRemoveFriendModal } from "./removeFriendModal";
-import { isMobileWidth } from "../../../config";
 
 import style from "./createProfilePane.module.css";
 
@@ -114,11 +113,15 @@ const Content = (opts: {
 };
 
 const Bio = ({ userDetails }: { userDetails?: UserDetails }) => {
+  const bio = userDetails?.profile?.bio
+
+  if (bio == null) return 
+
   return (
     <div class={[style.section, style.bioSection]}>
       {userDetails?.profile?.bio && (
         <div class={style.bio}>
-          <Markup text={userDetails?.profile?.bio} />
+          <Markup text={bio} />
         </div>
       )}
     </div>
@@ -229,7 +232,7 @@ const Actions = ({
           <ActionButton
             action="message"
             icon={isCurrent ? "book" : "mail"}
-            label={isMobileWidth() ? "" : (isCurrent ? t`Notes` : t`Message`)}
+            label={isCurrent ? t`Notes` : t`Message`}
           />
           <ActionButton userId={user?.id!} action="more" icon="more_horiz" />
         </div>
