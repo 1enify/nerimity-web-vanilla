@@ -33,6 +33,7 @@ import { Banner } from "./Banner";
 import { Button } from "./button";
 import { CdnIcon } from "./cdnIcon";
 import { ContextMenu } from "./ContextMenu";
+import { Drawer } from "./drawer";
 import { createEditServerRolesModal } from "./EditServerRolesModal";
 import { GradientText } from "./gradientText";
 import { Icon } from "./icon";
@@ -435,6 +436,8 @@ export const MiniProfile = (props: {
         if (!button) return;
         if (button.dataset.action === "message") {
           inboxStore.openChannel(props.userId);
+          Drawer().updatePage({ page: 1 });
+
           props.abort.abort();
         }
         if (button.dataset.action === "logout") {

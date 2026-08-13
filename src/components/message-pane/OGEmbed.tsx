@@ -52,7 +52,7 @@ export const OGEmbed = (props: OGEmbedProps) => {
         <ImageEmbed
           class={style.largeImage}
           maxWidth={478}
-          horizPadding={90}
+          horizPadding={94}
           embed={props.embed}
           container={props.container}
         />

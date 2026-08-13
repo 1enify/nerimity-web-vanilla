@@ -248,8 +248,7 @@ const MessageEmbeds = (props: {
   const embed = props.message.embed;
 
   const imageAttachment =
-    attachment?.width != undefined &&
-    attachment?.mime?.startsWith("image/") == true;
+    attachment?.width || attachment?.mime?.startsWith("image/") == true;
 
   const attachmentProperty = props.message.attachmentProperty;
 

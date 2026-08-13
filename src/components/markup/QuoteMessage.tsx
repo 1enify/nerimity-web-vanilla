@@ -34,8 +34,7 @@ export function QuoteMessage(props: QuoteProps) {
   const attachment = props.quote.attachments?.[0];
 
   const imageAttachment =
-    attachment?.width != undefined &&
-    attachment?.mime?.startsWith("image/") == true;
+    attachment?.width || attachment?.mime?.startsWith("image/") == true;
 
   return (
     <div class={style.quoteContainer}>

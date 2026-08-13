@@ -4,10 +4,13 @@ import "./i18n";
 import "./style.css";
 import type createAppPage from "./pages/app-page/AppPage";
 import { createTokenSource } from "./utils/createTokenSource";
+import { updateFavicon } from "./utils/favicon";
 import { getLocalItem } from "./utils/localStorage";
 import { portalElement } from "./utils/portal";
 import { router, type MatchResult } from "./utils/router";
 import { userAgent } from "./utils/userAgent";
+
+updateFavicon();
 
 (async () => {
   if (!globalThis.URLPattern) {

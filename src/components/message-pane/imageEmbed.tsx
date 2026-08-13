@@ -7,6 +7,8 @@ import { Skeleton } from "../skeleton";
 
 import style from "./imageEmbed.module.css";
 
+let DefaultHorizPadding = 74;
+
 export const ImageEmbed = (props: {
   attachment?: LocalAttachment;
   embed?: LocalEmbed;
@@ -57,7 +59,7 @@ export const ImageEmbed = (props: {
   ) as HTMLImageElement;
   if (cached) img.classList.add(style.loaded!);
   const maxWidth = clamp(
-    props.container.clientWidth - (props.horizPadding || 70),
+    props.container.offsetWidth - (props.horizPadding || DefaultHorizPadding),
     props.maxWidth || 600,
   );
 
@@ -110,7 +112,7 @@ export const ImageEmbed = (props: {
 export const createImageEmbedResizer = (logElement: HTMLDivElement) => {
   const onResize = throttle(() => {
     const imageEmbeds = logElement.querySelectorAll(`.${style.imageContainer}`);
-    let maxWidth = clamp(logElement.clientWidth - 70, 600);
+    let maxWidth = clamp(logElement.offsetWidth - DefaultHorizPadding, 600);
     const maxHeight = Math.max(logElement.clientHeight / 2, 200);
 
     for (let i = 0; i < imageEmbeds.length; i++) {
@@ -118,7 +120,7 @@ export const createImageEmbedResizer = (logElement: HTMLDivElement) => {
       const maxWidthOverride = parseInt(embedEl.dataset.maxWidth!);
       const horizPaddingOverride = parseInt(embedEl.dataset.horizPadding!);
       maxWidth = clamp(
-        logElement.clientWidth - (horizPaddingOverride || 70),
+        logElement.offsetWidth - (horizPaddingOverride || DefaultHorizPadding),
         maxWidthOverride || 600,
       );
 

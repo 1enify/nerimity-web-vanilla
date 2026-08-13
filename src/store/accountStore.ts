@@ -1,12 +1,15 @@
 import { t } from "@lingui/core/macro";
 
-import type {
-  RawNotice,
-  RawServerFolder,
-  RawUserNotificationSettings,
+import {
+  FriendStatus,
+  type RawNotice,
+  type RawServerFolder,
+  type RawUserNotificationSettings,
 } from "../Types";
 import { storeEmitter } from "../utils/EventEmitter";
 import { channelStore } from "./channelStore";
+import { friendStore } from "./friendStore";
+import { messageMentionStore } from "./messageMentionStore";
 import { serverStore } from "./serverStore";
 import { User } from "./userStore";
 
@@ -134,6 +137,26 @@ function createAccountStore() {
     return t`Connected!`;
   };
 
+  const hasNotifications = () => {
+    let mentionCount = 0;
+    messageMentionStore.mentions.forEach((m) => {
+      mentionCount += m.count;
+    });
+    if (mentionCount) return mentionCount;
+
+    friendStore.friends.forEach((f) => {
+      if (f.status === FriendStatus.PENDING) mentionCount++;
+    });
+    if (mentionCount) return mentionCount;
+
+    const hasNotification = Object.keys(
+      serverStore.notificationsMemo.value(),
+    ).length;
+
+    if (hasNotification) return true;
+    return false;
+  };
+
   return {
     get authenticated() {
       return authenticated;
@@ -158,5 +181,6 @@ function createAccountStore() {
     getCombinedNotification,
     connectionState,
     updateNotificationSetting,
+    hasNotifications,
   };
 }
