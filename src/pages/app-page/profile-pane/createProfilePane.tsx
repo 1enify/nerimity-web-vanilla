@@ -115,7 +115,7 @@ const Content = (opts: {
 const Bio = ({ userDetails }: { userDetails?: UserDetails }) => {
   const bio = userDetails?.profile?.bio
 
-  if (bio == null) return 
+  if (!bio) return 
 
   return (
     <div class={[style.section, style.bioSection]}>
