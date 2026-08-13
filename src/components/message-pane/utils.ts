@@ -147,7 +147,7 @@ const replaceEmojis = (text: string) =>
     if (emojiUnicode) return emojiUnicode;
 
     const customEmoji = customShortcodeToIds[emojiName];
-    if (customEmoji) return `[${customEmoji}]`;
+    if (customEmoji) return `[${customEmoji}:${emojiName}]`;
 
     return val;
   });
