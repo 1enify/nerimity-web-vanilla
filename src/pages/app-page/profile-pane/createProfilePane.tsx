@@ -90,19 +90,36 @@ const Content = (opts: {
       <div class={style.overlayInfo}>
         <Avatar user={user} size={128} />
       </div>
-      <Actions details={userDetails} user={opts.user} signal={signal} />
+      {!opts.mobile && (
+        <Actions details={userDetails} user={opts.user} signal={signal} />
+      )}
       <div class={[style.section, style.detailsSection]}>
         <NameAndTag details={userDetails} user={user} />
         {presenceContainer}
         <Stats details={userDetails} signal={signal} />
-
-        {userDetails?.profile?.bio && (
-          <div class={style.bio}>
-            <Markup text={userDetails?.profile?.bio} />
-          </div>
-        )}
       </div>
+      {opts.mobile && (
+        <Actions
+          mobile
+          details={userDetails}
+          user={opts.user}
+          signal={signal}
+        />
+      )}
+      <Bio userDetails={userDetails} />
       {opts.mobile && <Sidebar {...opts} mobile />}
+    </div>
+  );
+};
+
+const Bio = ({ userDetails }: { userDetails?: UserDetails }) => {
+  return (
+    <div class={[style.section, style.bioSection]}>
+      {userDetails?.profile?.bio && (
+        <div class={style.bio}>
+          <Markup text={userDetails?.profile?.bio} />
+        </div>
+      )}
     </div>
   );
 };
@@ -138,10 +155,12 @@ const Actions = ({
   user,
   details,
   signal,
+  mobile,
 }: {
   user?: User;
   details?: UserDetails;
   signal: AbortSignal;
+  mobile?: boolean;
 }) => {
   const getFriendButtonState = (friend?: Friend) => {
     const blocked = friend?.status === FriendStatus.BLOCKED;
@@ -173,7 +192,9 @@ const Actions = ({
     return { action: "add_friend", icon: "group_add", label: t`Add Friend` };
   };
 
-  const el = (<div class={style.actions}></div>) as HTMLDivElement;
+  const el = (
+    <div class={[style.actions, mobile && style.mobileActions]}></div>
+  ) as HTMLDivElement;
 
   const rerender = () => {
     const isFollowing = !!details?.user.followers.length;
