@@ -618,6 +618,7 @@ const SidebarActivity = (props: { user?: User; signal: AbortSignal }) => {
   const rerender = () => {
     const presence = userPresenceStore.presences.get(props.user?.id!);
     const activities = presence?.activities || [];
+    activitiesContainer.style.display = activities.length ? "flex" : "none";
     activitiesContainer.replaceChildren(
       ...activities.map((activity) => (
         <UserActivity
