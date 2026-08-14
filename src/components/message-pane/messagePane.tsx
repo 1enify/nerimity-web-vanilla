@@ -522,7 +522,10 @@ const createMessageContextMenuHandler = (opts: {
     signal: opts.signal,
     selector: "[data-message-id]",
     attr: "messageId",
-    shouldSkip: (target) => !!target.closest("[data-user-id]"),
+    shouldSkip: (target) => {
+      if (target.closest(".reactionItem")) return true;
+      return !!target.closest("[data-user-id]");
+    },
     resolveData: (messageId) =>
       messageStore.messages
         .get(channelStore.currentChannelId!)

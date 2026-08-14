@@ -85,7 +85,11 @@ const createHandler = <TData,>(config: ContextMenuHandlerConfig<TData>) => {
     config.mode ?? "contextmenu",
     (event) => {
       const target = event.target as HTMLElement;
-      if (config.shouldSkip?.(target)) return;
+      if (config.shouldSkip?.(target)) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
 
       const matchEl = target.closest(config.selector) as HTMLElement | null;
       if (!matchEl) return;
