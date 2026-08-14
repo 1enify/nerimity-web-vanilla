@@ -1,7 +1,11 @@
 import morphdom from "morphdom";
 
-import { h } from "../../h";
-import { addReaction, removeReaction } from "../../services/messageService";
+import { h, Fragment } from "../../h";
+import {
+  addReaction,
+  reactedUsers,
+  removeReaction,
+} from "../../services/messageService";
 import { channelStore } from "../../store/channelStore";
 import {
   Message,
@@ -10,9 +14,77 @@ import {
 } from "../../store/messageStore";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { FocusAnimator } from "../../utils/FocusAnimator";
+import { HoverHandler } from "../../utils/HoverHandler";
+import { portalElement } from "../../utils/portal";
+import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
 
 import style from "./MessageReactions.module.css";
+
+let popupAbortController: AbortController | undefined = undefined;
+const ReactionPopup = (props: {
+  target: HTMLDivElement;
+  messageId: string;
+}) => {
+  popupAbortController?.abort();
+  const controller = new AbortController();
+  popupAbortController = controller;
+  const rect = props.target.getBoundingClientRect();
+
+  const el = (
+    <div class={style.reactionPopup} style={{ display: "none" }}></div>
+  ) as HTMLDivElement;
+
+  const emojiId = props.target.dataset.reactionId;
+  const emojiName = props.target.dataset.reactionName!;
+  const count = parseInt(props.target.dataset.count!);
+
+  setTimeout(() => {
+    if (controller?.signal.aborted) return;
+
+    reactedUsers({
+      messageId: props.messageId,
+      channelId: channelStore.currentChannelId!,
+      limit: 5,
+      emojiId,
+      name: emojiName,
+    }).then(([reacted]) => {
+      if (controller?.signal.aborted) return;
+      const moreCount = count - 5;
+      el.replaceChildren(
+        <>
+          {reacted?.map((r) => (
+            <div class={style.reactUserItem}>
+              <Avatar user={r.user} size={18} />
+              {r.user.username}
+            </div>
+          ))}
+          {moreCount > 0 && <div class={style.more}>+ {moreCount}</div>}
+        </>,
+      );
+      el.style.display = "flex";
+      const elRect = el.getBoundingClientRect();
+      const margin = 8;
+
+      let top = rect.top - elRect.height - 4;
+      if (top < margin) {
+        top = rect.bottom + 4;
+      }
+
+      const pillCenter = rect.left + rect.width / 2;
+      let left = pillCenter - elRect.width / 2;
+
+      const maxLeft = window.innerWidth - elRect.width - margin;
+      left = Math.min(left, maxLeft);
+      left = Math.max(left, margin);
+
+      el.style.top = top + "px";
+      el.style.left = left + "px";
+    });
+  }, 500);
+
+  return el;
+};
 
 export const createMessageReactionHandler = (opts: {
   signal: AbortSignal;
@@ -26,6 +98,24 @@ export const createMessageReactionHandler = (opts: {
     },
     opts.signal,
   );
+
+  const hoverHandler = new HoverHandler(opts.logs, [
+    {
+      selector: ".reactionItem",
+      onHover(e) {
+        const messageEl = e.closest(`[data-message-id]`) as HTMLElement;
+        const messageId = messageEl?.dataset.messageId!;
+        if (!messageId) return;
+        portalElement().appendChild(
+          <ReactionPopup target={e as HTMLDivElement} messageId={messageId} />,
+        );
+      },
+      onBlur() {
+        portalElement().querySelector(`.${style.reactionPopup}`)?.remove();
+        popupAbortController?.abort();
+      },
+    },
+  ]);
 
   const reactionItemFocusAnimator = new FocusAnimator(
     opts.logs,
@@ -42,7 +132,8 @@ export const createMessageReactionHandler = (opts: {
         `.${style.messageReactions} .reactionItem`,
       ) as HTMLElement | null;
 
-      const id = reactionEl?.dataset.reactionId;
+      const id =
+        reactionEl?.dataset.reactionId || reactionEl?.dataset.reactionName;
       if (!id) return;
 
       const messages = messageStore.messages.get(
@@ -62,7 +153,9 @@ export const createMessageReactionHandler = (opts: {
       (reaction.reacted ? removeReaction : addReaction)(
         channelStore.currentChannelId!,
         messageId,
-        isUnicode ? { name: id } : { emojiId: id, name: reaction?.name },
+        isUnicode
+          ? { name: id, emojiId: null }
+          : { emojiId: id, name: reaction?.name },
       );
     },
     { signal: opts.signal },
@@ -71,6 +164,8 @@ export const createMessageReactionHandler = (opts: {
   opts.signal.addEventListener(
     "abort",
     () => {
+      popupAbortController?.abort();
+      hoverHandler.destroy();
       reactionItemFocusAnimator.destroy();
     },
     { once: true },
@@ -89,8 +184,14 @@ const updateMessageReaction = (
 
   reactionsEl.classList.toggle(style.hide!, !message.reactions?.length);
 
-  const id = reaction.emojiId || reaction.name;
-  const reactionEl = reactionsEl.querySelector(`[data-reaction-id="${id}"]`);
+  let reactionEl = reactionsEl.querySelector(
+    `[data-reaction-id="${reaction.emojiId}"]`,
+  );
+  if (!reactionEl) {
+    reactionEl = reactionsEl.querySelector(
+      `[data-reaction-name="${reaction.name}"]`,
+    );
+  }
 
   if (!reactionEl) {
     if (reaction.count > 0)
@@ -122,13 +223,13 @@ export const MessageReactions = (props: { message: Message }) => {
 };
 
 const ReactionItem = (props: { reaction: MessageReaction }) => {
-  const id = props.reaction.emojiId || props.reaction.name;
-
   return (
     <div
       class={[style.reactionItem, "reactionItem"]}
-      data-reaction-id={id}
+      data-reaction-id={props.reaction.emojiId}
+      data-reaction-name={props.reaction.name}
       data-reacted={props.reaction.reacted}
+      data-count={props.reaction.count}
       data-uni={!props.reaction.emojiId}
     >
       <CdnIcon

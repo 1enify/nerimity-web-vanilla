@@ -1,4 +1,4 @@
-import type { RawMessage } from "../Types";
+import type { RawMessage, RawUser } from "../Types";
 import { newQueue } from "../utils/queue";
 import { request } from "./request";
 
@@ -37,7 +37,7 @@ export const postMessage = async (channelId: string, body: PostMessageBody) => {
 };
 
 interface AddReactionBody {
-  emojiId?: string;
+  emojiId?: string | null;
   name?: string;
 }
 export const addReaction = async (
@@ -55,7 +55,7 @@ export const addReaction = async (
   );
 };
 interface RemoveReactionBody {
-  emojiId?: string;
+  emojiId?: string | null;
   name?: string;
 }
 export const removeReaction = async (
@@ -92,4 +92,29 @@ export const deleteMessage = async (channelId: string, messageId: string) => {
     useToken: true,
     method: "DELETE",
   });
+};
+
+export interface ReactedUser {
+  reactedAt: number;
+  user: RawUser;
+}
+export const reactedUsers = async (opts: {
+  channelId: string;
+  messageId: string;
+  name: string;
+  limit: number;
+  emojiId?: string;
+}) => {
+  return request<ReactedUser[]>(
+    `/channels/${opts.channelId}/messages/${opts.messageId}/reactions/users`,
+    {
+      useToken: true,
+      method: "GET",
+      params: {
+        name: opts.name,
+        limit: opts.limit,
+        emojiId: opts.emojiId,
+      },
+    },
+  );
 };
