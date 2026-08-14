@@ -51,7 +51,7 @@ export const createInboxInfoDrawer = () => {
   const destroy = () => {
     contentAbortController.abort();
     abortController.abort();
-    infoEl.remove();
+    infoEl?.remove();
     (infoEl as any) = null;
   };
   const render = () => infoEl;

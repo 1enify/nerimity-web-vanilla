@@ -108,6 +108,7 @@ function createAccountStore() {
   };
 
   const setAuthenticated = (newAuthenticated: boolean) => {
+    if (authenticated === newAuthenticated) return;
     authenticated = newAuthenticated;
     storeEmitter.emit("ws:authStateUpdate", authenticated);
   };

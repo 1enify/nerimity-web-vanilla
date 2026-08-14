@@ -90,6 +90,7 @@ const createAppPage = () => {
         profilePane = null;
         return;
       }
+      profilePane?.destroy();
       const isStale = contentSource.capture();
       const createProfilePaneRoute = (
         await import("./profile-pane/createProfilePane")

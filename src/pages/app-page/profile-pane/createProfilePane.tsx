@@ -113,7 +113,7 @@ const Content = (opts: {
 };
 
 const Bio = ({ userDetails }: { userDetails?: UserDetails }) => {
-  const bio = userDetails?.profile?.bio
+  const bio = userDetails?.profile?.bio;
 
   if (!bio) return null;
 
@@ -207,6 +207,7 @@ const Actions = ({
     const isCurrent = accountStore.currentUser?.id === user?.id;
     const bot = user?.bot;
     const friendButtonState = getFriendButtonState(friend);
+    const authenticated = accountStore.authenticated;
     el.replaceChildren(
       <>
         <div class={style.actionsInner}>
@@ -228,7 +229,9 @@ const Actions = ({
                 label={t`Follow`}
               />
             )}
-          {!bot && !isCurrent && <ActionButton {...friendButtonState} />}
+          {authenticated && !bot && !isCurrent && (
+            <ActionButton {...friendButtonState} />
+          )}
           <ActionButton
             action="message"
             icon={isCurrent ? "book" : "mail"}
@@ -433,7 +436,7 @@ const Sidebar = (opts: {
       {bot && <SidebarBotCreator details={opts.userDetails!} />}
       <SidebarBadges user={opts.user} signal={signal} />
       <SidebarActivity user={opts.user} signal={signal} />
-      {!isCurrentUser && (
+      {!isCurrentUser && accountStore.authenticated && (
         <>
           <MutualList
             friendIds={opts.userDetails?.mutualFriendIds}
@@ -720,13 +723,15 @@ const createProfilePane = (content: HTMLElement) => {
     focusAnim.trigger();
   };
 
-  storeEmitter.on("ws:authStateUpdate", rerender, signal);
+  userDetails = undefined;
+  localUser = undefined;
+  requestAnimationFrame(() => {
+    Drawer().content.classList.remove("showBg");
+    Drawer().content.style.removeProperty("--primary-color");
+  });
+  fetchUser();
 
-  router.createMatchListener<{ userId: string }>(
-    "/app/profile/:userId",
-    fetchUser,
-    { signal },
-  );
+  storeEmitter.on("ws:authStateUpdate", rerender, signal);
 
   widthQuery.onModeChange(rerender, signal);
 

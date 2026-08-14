@@ -102,8 +102,8 @@ export const createRightDrawer = () => {
     ac.abort();
     tabsEl?.remove();
     currentTabContent?.destroy();
-    innerContainerEl.remove();
-    containerEl.remove();
+    innerContainerEl?.remove();
+    containerEl?.remove();
 
     (tabsEl as any) = null;
     (innerContainerEl as any) = null;
