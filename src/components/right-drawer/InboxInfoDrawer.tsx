@@ -36,14 +36,9 @@ export const createInboxInfoDrawer = () => {
   };
 
   renderRightDrawer();
-
-  storeEmitter.on(
-    "navigate:channelId",
-    () => {
-      renderRightDrawer();
-    },
-    signal,
-  );
+  requestAnimationFrame(() => {
+    storeEmitter.on("navigate:channelId", renderRightDrawer, signal);
+  });
   storeEmitter.on(
     "ws:authStateUpdate",
     (state) => {

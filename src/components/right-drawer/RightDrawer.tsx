@@ -91,6 +91,7 @@ export const createRightDrawer = () => {
   storeEmitter.on(
     "navigate:channelId",
     () => {
+      if (currentTab === "info") return;
       currentTab = "info";
       updateTab();
     },
@@ -99,7 +100,7 @@ export const createRightDrawer = () => {
 
   const destroy = () => {
     ac.abort();
-    tabsEl.remove();
+    tabsEl?.remove();
     currentTabContent?.destroy();
     innerContainerEl.remove();
     containerEl.remove();

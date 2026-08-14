@@ -408,6 +408,7 @@ export const MiniProfile = (props: {
 
   if (cached?.userId !== props.userId) {
     getUserDetails({ userId: props.userId }).then(([newDetails]) => {
+      if (props.abort.signal.aborted) return;
       if (newDetails) {
         cached = {
           cachedAt: Date.now(),

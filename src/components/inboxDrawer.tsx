@@ -582,7 +582,7 @@ const createInboxDrawer = () => {
     containerEl?.remove();
     inboxList?.inboxListEl.remove();
     friendList?.inboxListEl.remove();
-    tabsEl.remove();
+    tabsEl?.remove();
     (containerEl as any) = null;
     (tabsEl as any) = null;
     inboxList = null;

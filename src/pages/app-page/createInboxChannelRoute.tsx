@@ -1,63 +1,57 @@
 import { Drawer } from "../../components/drawer";
 import createInboxDrawer from "../../components/inboxDrawer";
 import { createRightDrawer } from "../../components/right-drawer/RightDrawer";
+import { channelStore } from "../../store/channelStore";
+import { storeEmitter } from "../../utils/EventEmitter";
 
 const createInboxChannelRoute = (leftDrawer: HTMLElement) => {
   const abortController = new AbortController();
+  const { signal } = abortController;
 
   const inboxDrawer = createInboxDrawer();
-  const rightDrawer = createRightDrawer();
+  let rightDrawer: ReturnType<typeof createRightDrawer> | undefined = undefined;
 
   let drawer = Drawer();
 
   leftDrawer.replaceChildren(inboxDrawer.render());
 
   let miniProfileAbortController = new AbortController();
-  drawer.rightDrawer.replaceChildren(rightDrawer.render());
 
-  // const renderRightDrawer = () => {
-  //   miniProfileAbortController.abort();
-  //   miniProfileAbortController = new AbortController();
-  //   if (!accountStore.authenticated) return;
-  //   const inbox = inboxStore.inboxes.get(channelStore.currentChannelId!);
+  const renderRightDrawer = () => {
+    if (!channelStore.currentChannelId) {
+      rightDrawer?.destroy();
+      drawer.rightDrawer.replaceChildren();
+      return;
+    }
+    rightDrawer = createRightDrawer();
+    drawer.rightDrawer.replaceChildren(rightDrawer.render());
+  };
 
-  //   const recipientId = inbox?.recipientId;
-  //   if (!recipientId) return;
+  renderRightDrawer();
 
-  //   drawer.rightDrawer.replaceChildren(
-  //     <MiniProfile
-  //       animationMode="hover"
-  //       abort={miniProfileAbortController}
-  //       class={style.miniProfileDrawer}
-  //       userId={recipientId}
-  //     />,
-  //   );
-  // };
-
-  // renderRightDrawer();
-
-  // storeEmitter.on(
-  //   "navigate:channelId",
-  //   () => {
-  //     renderRightDrawer();
-  //   },
-  //   signal,
-  // );
-  // storeEmitter.on(
-  //   "ws:authStateUpdate",
-  //   (state) => {
-  //     if (!state) return;
-  //     renderRightDrawer();
-  //   },
-  //   signal,
-  // );
+  let prevChannelId = channelStore.currentChannelId;
+  storeEmitter.on(
+    "navigate:channelId",
+    () => {
+      const currentChannelId = channelStore.currentChannelId;
+      if (prevChannelId === null || currentChannelId === null) {
+        if (prevChannelId !== currentChannelId) {
+          renderRightDrawer();
+        }
+      }
+      prevChannelId = currentChannelId;
+    },
+    signal,
+  );
 
   const destroy = () => {
     miniProfileAbortController.abort();
     drawer.rightDrawer.replaceChildren();
     abortController.abort();
     inboxDrawer.destroy();
-    rightDrawer.destroy();
+
+    rightDrawer?.destroy();
+
     (leftDrawer as any) = null;
     (drawer as any) = null;
   };
