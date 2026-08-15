@@ -13,6 +13,7 @@ import { MessageType, type RawReplyMessage } from "../../Types";
 import { resolveGradient } from "../../utils/color";
 import { formatTimestamp, friendlyTimestamp, fullDate } from "../../utils/date";
 import { getFont } from "../../utils/font";
+import { inviteLinkRegex } from "../../utils/regex";
 import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
 import { GradientText } from "../gradientText";
@@ -23,6 +24,7 @@ import { ServerClanItem } from "../serverClanItem";
 import { FileEmbed } from "./FileEmbed";
 import { HtmlEmbed } from "./HtmlEmbed";
 import { ImageEmbed } from "./imageEmbed";
+import { InviteEmbed } from "./InviteEmbed";
 import { MessageReactions } from "./MessageReactions";
 import { OGEmbed } from "./OGEmbed";
 import { SystemMessage } from "./SystemMessage";
@@ -253,6 +255,12 @@ const MessageEmbeds = (props: {
   const attachmentProperty = props.message.attachmentProperty;
 
   const imageEmbed = embed?.type == "image" && embed?.imageHeight != null;
+
+  const inviteCode = props.message.content?.match(inviteLinkRegex)?.[1];
+
+  if (inviteCode) {
+    return <InviteEmbed code={inviteCode} />;
+  }
 
   if (
     (attachment && !imageAttachment) ||

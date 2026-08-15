@@ -14,6 +14,7 @@ interface ButtonProps {
   href?: string;
   alert?: boolean;
   warn?: boolean;
+  success?: boolean;
   component?: any;
   [key: string]: any;
 }
@@ -24,6 +25,7 @@ export const Button = (props: ButtonProps) => {
     component,
     alert,
     warn,
+    success,
     primary,
     label,
     icon,
@@ -40,6 +42,7 @@ export const Button = (props: ButtonProps) => {
         primary && style.primary,
         alert && style.alert,
         warn && style.warn,
+        success && style.success,
         "button",
       ]}
       {...rest}

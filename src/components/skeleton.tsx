@@ -18,3 +18,14 @@ export const Skeleton = (props: { class?: string; style?: any }) => (
     style={props.style}
   />
 );
+
+export const InviteSkeleton = () => (
+  <div class={[style.skeletonItem, style.invite]}>
+    <div class={style.avatarSkeleton} />
+    <div class={style.lines}>
+      <div class={style.line} style={{ width: "120px" }} />
+      <div class={style.line} style={{ width: "50%" }} />
+    </div>
+    <div class={style.buttonSkeleton} />
+  </div>
+);

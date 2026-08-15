@@ -1,4 +1,4 @@
-import type { RawBotCommand } from "../Types";
+import type { RawBotCommand, RawExploreItem, RawServer } from "../Types";
 import { request } from "./request";
 
 export const kickServerMember = async (opts: {
@@ -52,4 +52,19 @@ export const getServerCommands = async (serverId: string) => {
       method: "GET",
     },
   );
+};
+
+export type ServerWithMemberCount = RawServer & { memberCount: number };
+
+export const getServerDetailsByCode = async (code: string) => {
+  return request<ServerWithMemberCount>(`/servers/invites/${code}`, {
+    useToken: true,
+    method: "GET",
+  });
+};
+export const getServerDetailsByEmojiId = async (emojiId: string) => {
+  return request<RawExploreItem>(`/emojis/${emojiId}/server`, {
+    useToken: true,
+    method: "GET",
+  });
 };

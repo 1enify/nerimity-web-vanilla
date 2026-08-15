@@ -306,3 +306,31 @@ export interface RawUserNotificationSettings {
   serverId?: string;
   channelId?: string;
 }
+
+export interface RawExploreItem {
+  id: string;
+  serverId: string;
+  createdAt: number;
+  bumpedAt: number;
+  description: string;
+  bumpCount: number;
+  pinnedAt?: number;
+  lifetimeBumpCount: number;
+  server?: RawServer & {
+    _count: { serverMembers: number };
+    createdBy: RawUser;
+  };
+  botPermissions?: number;
+  botApplication?: {
+    id: string;
+    botUser: RawUser & {
+      online: boolean;
+      _count: {
+        servers: number;
+      };
+    };
+    creatorAccount: {
+      user: RawUser;
+    };
+  };
+}

@@ -17,7 +17,7 @@ import { Timezones } from "../../utils/Timezones";
 import { Checkbox } from "../checkbox";
 import { Icon } from "../icon";
 import { CodeBlock } from "./CodeBlock";
-import { Emoji } from "./Emoji";
+import { Emoji, handleMarkupEmojiClick } from "./Emoji";
 import { MarkupLink } from "./MarkupLink";
 import { Mention } from "./Mention";
 import {
@@ -449,6 +449,11 @@ export function handleMarkupEvents(opts: {
   signal: AbortSignal;
 }) {
   const { el, onCheckboxChange, signal } = opts;
+
+  handleMarkupEmojiClick({
+    el,
+    signal,
+  });
 
   handleTimestampMarkupEvents({ el, signal });
   el.addEventListener(

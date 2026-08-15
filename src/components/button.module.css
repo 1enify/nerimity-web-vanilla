@@ -53,6 +53,23 @@
       color: var(--warn-color);
     }
   }
+  &.success {
+    &.primary {
+      background-color: var(--success-color);
+      .label {
+        color: var(--text-color);
+      }
+      .icon {
+        color: var(--text-color);
+      }
+    }
+    .label {
+      color: var(--success-color);
+    }
+    .icon {
+      color: var(--success-color);
+    }
+  }
   &.alert {
     &.primary {
       background-color: var(--alert-color);

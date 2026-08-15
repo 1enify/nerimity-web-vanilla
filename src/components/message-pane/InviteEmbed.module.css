@@ -1,0 +1,66 @@
+.inviteEmbed {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 6px;
+  border-radius: var(--radius-8);
+  border-radius: var(--radius-max);
+  background-color: var(--gray-800);
+  place-self: start;
+
+  .icon {
+    color: var(--alert-color);
+    transform: scale(1.2);
+    font-size: 40px;
+  }
+  .full {
+    color: var(--text-color);
+  }
+}
+
+.errorMessage {
+  margin-right: 6px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  transition: 0.2s;
+  font-size: 14px;
+  gap: 6px;
+
+  .sub {
+    display: flex;
+    flex-wrap: wrap;
+    color: var(--gray-400);
+    font-size: 12px;
+    column-gap: 4px;
+  }
+
+  .button {
+    align-self: start;
+    flex-shrink: 0;
+    height: 100%;
+    padding: 0;
+    padding-right: 8px;
+    padding-left: 8px;
+    border: none;
+    border-radius: var(--radius-max);
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 12px;
+
+    text-decoration: none;
+    &:hover {
+      background-color: var(--gray-700);
+    }
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
