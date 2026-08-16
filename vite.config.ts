@@ -18,6 +18,8 @@ export default defineConfig({
     devRerenderHighlighter(),
     googleFontsLocal({
       icons: [
+        "add_reaction",
+        "add",
         "visibility",
         "search",
         "error",

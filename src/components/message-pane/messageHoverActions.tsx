@@ -1,6 +1,7 @@
 import morphdom from "morphdom";
 
 import { h } from "../../h";
+import { addReaction } from "../../services/messageService";
 import { accountStore } from "../../store/accountStore";
 import { channelStore } from "../../store/channelStore";
 import { messageStore } from "../../store/messageStore";
@@ -8,6 +9,7 @@ import { MessageType } from "../../Types";
 import { friendlyTimestamp } from "../../utils/date";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { Button } from "../button";
+import { createExpressionPicker } from "../ExpressionPicker";
 import { createDeleteMessageModal } from "./deleteMessageModal";
 import { canDeleteMessage } from "./utils";
 
@@ -37,6 +39,12 @@ const HoverActions = (props: {
           {friendlyTimestamp(message?.createdAt!)}
         </span>
       )}
+      <Button
+        class={style.button}
+        data-action="reaction"
+        icon="add_reaction"
+        hoverBorder
+      />
       <Button
         class={style.button}
         data-action="reply"
@@ -122,6 +130,27 @@ export const createMessageHoverActions = (opts: {
     channelStore.addReply(channelStore.currentChannelId!, message);
   };
 
+  const handleReactionClick = (buttonEl: HTMLElement) => {
+    const message = getMessage();
+    createExpressionPicker({
+      onEmojiPick(emoji, custom) {
+        addReaction(
+          message?.channelId!,
+          message?.id!,
+          emoji
+            ? { name: emoji.emoji, emojiId: null }
+            : {
+                emojiId: custom?.id,
+                name: custom?.name,
+                webp: custom?.webp,
+                gif: custom?.gif,
+              },
+        );
+      },
+      targetEl: buttonEl!,
+    });
+  };
+
   hoverActionEl.addEventListener(
     "click",
     (e) => {
@@ -136,6 +165,9 @@ export const createMessageHoverActions = (opts: {
       }
       if (action === "reply") {
         handleReplyMessage();
+      }
+      if (action === "reaction") {
+        handleReactionClick(button!);
       }
     },
     { signal: opts.signal },

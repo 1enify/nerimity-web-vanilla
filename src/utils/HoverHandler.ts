@@ -2,19 +2,19 @@ export class HoverHandler {
   private targets: Array<{
     trigger?: string;
     selector: string;
-    onHover?: (el: Element) => void;
-    onBlur?: (el: Element) => void;
+    onHover?: (el: HTMLElement) => void;
+    onBlur?: (el: HTMLElement) => void;
     crossAnimate?: {
       attr: string;
       targetRoot?: string;
       targetAttr?: string;
       target: string;
-      onHover?: (el: Element) => void;
-      onBlur?: (el: Element) => void;
+      onHover?: (el: HTMLElement) => void;
+      onBlur?: (el: HTMLElement) => void;
     };
   }>;
   private controller: AbortController;
-  private hoveredStates = new Map<number, Set<Element>>();
+  private hoveredStates = new Map<number, Set<HTMLElement>>();
   private container: HTMLElement;
   private mutationObserver: MutationObserver | null = null;
 
@@ -23,15 +23,15 @@ export class HoverHandler {
     targets: Array<{
       trigger?: string;
       selector: string;
-      onHover?: (el: Element) => void;
-      onBlur?: (el: Element) => void;
+      onHover?: (el: HTMLElement) => void;
+      onBlur?: (el: HTMLElement) => void;
       crossAnimate?: {
         attr: string;
         targetRoot?: string;
         targetAttr?: string;
         target: string;
-        onHover?: (el: Element) => void;
-        onBlur?: (el: Element) => void;
+        onHover?: (el: HTMLElement) => void;
+        onBlur?: (el: HTMLElement) => void;
       };
     }>,
   ) {
@@ -84,13 +84,15 @@ export class HoverHandler {
     for (let i = 0; i < this.targets.length; i++) {
       const { trigger, selector, onHover, onBlur, crossAnimate } =
         this.targets[i]!;
-      const root = trigger ? target.closest(trigger) : target.closest(selector);
+      const root = (
+        trigger ? target.closest(trigger) : target.closest(selector)
+      ) as HTMLElement | null;
       if (!root) continue;
       if (!hovered && relatedTarget && root.contains(relatedTarget)) continue;
 
       let ruleState = this.hoveredStates.get(i);
       if (!ruleState) {
-        ruleState = new Set<Element>();
+        ruleState = new Set<HTMLElement>();
         this.hoveredStates.set(i, ruleState);
       }
 
@@ -120,9 +122,9 @@ export class HoverHandler {
 
           crossRoots.forEach((cRoot) => {
             if (hovered) {
-              crossAnimate.onHover?.(cRoot);
+              crossAnimate.onHover?.(cRoot as HTMLElement);
             } else {
-              crossAnimate.onBlur?.(cRoot);
+              crossAnimate.onBlur?.(cRoot as HTMLElement);
             }
           });
         }
@@ -137,14 +139,14 @@ export class HoverHandler {
         for (let i = 0; i < removedNodes.length; i++) {
           const node = removedNodes[i];
           if (node && node.nodeType === Node.ELEMENT_NODE) {
-            this.checkRemovedElement(node as Element);
+            this.checkRemovedElement(node as HTMLElement);
           }
         }
       }
     }
   }
 
-  private checkRemovedElement(element: Element) {
+  private checkRemovedElement(element: HTMLElement) {
     for (let i = 0; i < this.targets.length; i++) {
       const { onBlur, crossAnimate } = this.targets[i]!;
       const ruleState = this.hoveredStates.get(i);
@@ -166,9 +168,9 @@ export class HoverHandler {
             ),
           );
           crossRoots.forEach((cRoot) => {
-            if (ruleState.has(cRoot)) {
-              ruleState.delete(cRoot);
-              crossAnimate.onBlur?.(cRoot);
+            if (ruleState.has(cRoot as HTMLElement)) {
+              ruleState.delete(cRoot as HTMLElement);
+              crossAnimate.onBlur?.(cRoot as HTMLElement);
             }
           });
         }
@@ -176,7 +178,7 @@ export class HoverHandler {
     }
 
     for (let i = 0; i < element.children.length; i++) {
-      this.checkRemovedElement(element.children[i]!);
+      this.checkRemovedElement(element.children[i]! as HTMLElement);
     }
   }
 

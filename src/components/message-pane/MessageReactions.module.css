@@ -12,6 +12,8 @@
 .reactionItem {
   display: flex;
   align-items: center;
+  justify-content: center;
+  order: 0;
   padding: 0 4px;
   padding-right: 8px;
   border: solid 1px var(--gray-800);
@@ -23,6 +25,13 @@
   gap: 4px;
   &:hover {
     border: solid 1px var(--primary-color);
+    .addIcon {
+      opacity: 1;
+    }
+  }
+  &:has(.addIcon) {
+    order: 9999;
+    padding: 0 6px;
   }
   &[data-reacted="true"] {
     border: solid 1px var(--primary-color);
@@ -30,6 +39,11 @@
   }
   .icon {
     background-color: transparent;
+  }
+  .addIcon {
+    opacity: 0.4;
+    transition: 0.2s;
+    font-size: 12px;
   }
 }
 

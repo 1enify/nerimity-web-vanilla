@@ -16,8 +16,11 @@ import { storeEmitter } from "../../utils/EventEmitter";
 import { FocusAnimator } from "../../utils/FocusAnimator";
 import { HoverHandler } from "../../utils/HoverHandler";
 import { portalElement } from "../../utils/portal";
+import { userAgent } from "../../utils/userAgent";
 import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
+import { createExpressionPicker } from "../ExpressionPicker";
+import { Icon } from "../icon";
 
 import style from "./MessageReactions.module.css";
 
@@ -106,6 +109,11 @@ export const createMessageReactionHandler = (opts: {
         const messageEl = e.closest(`[data-message-id]`) as HTMLElement;
         const messageId = messageEl?.dataset.messageId!;
         if (!messageId) return;
+
+        const emojiId = e.dataset.reactionId;
+        const emojiName = e.dataset.reactionName!;
+        if (!emojiId && !emojiName) return;
+
         portalElement().appendChild(
           <ReactionPopup target={e as HTMLDivElement} messageId={messageId} />,
         );
@@ -132,15 +140,35 @@ export const createMessageReactionHandler = (opts: {
         `.${style.messageReactions} .reactionItem`,
       ) as HTMLElement | null;
 
-      const id =
-        reactionEl?.dataset.reactionId || reactionEl?.dataset.reactionName;
-      if (!id) return;
-
       const messages = messageStore.messages.get(
         channelStore.currentChannelId!,
       );
       const message = messages?.find((m) => m.id === messageId);
       if (!message) return;
+
+      if (reactionEl?.dataset.addReaction) {
+        createExpressionPicker({
+          onEmojiPick(emoji, custom) {
+            addReaction(
+              message?.channelId!,
+              message?.id!,
+              emoji
+                ? { name: emoji.emoji, emojiId: null }
+                : {
+                    emojiId: custom?.id,
+                    name: custom?.name,
+                    webp: custom?.webp,
+                    gif: custom?.gif,
+                  },
+            );
+          },
+          targetEl: reactionEl,
+        });
+      }
+
+      const id =
+        reactionEl?.dataset.reactionId || reactionEl?.dataset.reactionName;
+      if (!id) return;
 
       const isUnicode = reactionEl?.dataset.uni;
 
@@ -218,6 +246,11 @@ export const MessageReactions = (props: { message: Message }) => {
       {props.message.reactions?.map((reaction) => (
         <ReactionItem reaction={reaction} />
       ))}
+      {!userAgent.mobile && (
+        <div data-add-reaction class={[style.reactionItem, "reactionItem"]}>
+          <Icon name="add_reaction" class={style.addIcon} />
+        </div>
+      )}
     </div>
   );
 };

@@ -39,6 +39,9 @@ export const postMessage = async (channelId: string, body: PostMessageBody) => {
 interface AddReactionBody {
   emojiId?: string | null;
   name?: string;
+
+  webp?: boolean;
+  gif?: boolean;
 }
 export const addReaction = async (
   channelId: string,
