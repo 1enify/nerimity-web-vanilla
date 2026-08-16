@@ -4,6 +4,7 @@
   padding-right: 4px;
   border-radius: var(--radius-5);
   background-color: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
   gap: 2px;
   .clanName {
     font-size: 12px;
@@ -16,4 +17,22 @@
       border-radius: var(--radius-4);
     }
   }
+}
+
+.detailsModal {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px;
+  gap: 12px;
+  :global(.inviteEmbed) {
+    place-self: initial;
+  }
+}
+.modalEmoji {
+  width: 60px;
+  height: 60px;
+  vertical-align: -0.4em;
+  object-fit: contain;
 }

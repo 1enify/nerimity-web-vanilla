@@ -42,7 +42,11 @@ const serverDetailsByEmoji = async (emojiId: string) => {
   }
 };
 
-export const InviteEmbed = (props: { code?: string; emojiId?: string }) => {
+export const InviteEmbed = (props: {
+  code?: string;
+  emojiId?: string;
+  clan?: boolean;
+}) => {
   const cacheId = props.code
     ? `invite/${props.code}`
     : props.emojiId
@@ -138,13 +142,17 @@ export const InviteEmbed = (props: { code?: string; emojiId?: string }) => {
   return el;
 };
 
-function InvalidInvite(props: { emojiId?: string }) {
+function InvalidInvite(props: { emojiId?: string; clan?: boolean }) {
   return (
     <div class={style.content}>
       <Icon class={style.icon} name="error" />
       <div class={style.details}>
         <div class={style.errorMessage}>
-          {props.emojiId ? t`Emoji from a private server` : t`Invalid Invite`}
+          {props.emojiId
+            ? t`Emoji from a private server.`
+            : props.clan
+              ? t`Clan from a private server.`
+              : t`Invalid Invite.`}
         </div>
       </div>
     </div>

@@ -299,25 +299,29 @@ msgstr "Embed not supported by your browser."
 #. placeholder {0}: inviteItem.memberCount
 #. placeholder {1}: inviteItem.memberCount.toLocaleString()
 #. placeholder {2}: inviteItem.memberCount.toLocaleString()
-#: src/components/message-pane/InviteEmbed.tsx:76
+#: src/components/message-pane/InviteEmbed.tsx:80
 msgid "{0, plural, =0 {<0>No</0> Members} one {<1>{1}</1> Member} other {<2>{2}</2> Members}}"
 msgstr "{0, plural, =0 {<0>No</0> Members} one {<1>{1}</1> Member} other {<2>{2}</2> Members}}"
 
-#: src/components/message-pane/InviteEmbed.tsx:109
+#: src/components/message-pane/InviteEmbed.tsx:113
 msgid "Visit"
 msgstr "Visit"
 
-#: src/components/message-pane/InviteEmbed.tsx:109
+#: src/components/message-pane/InviteEmbed.tsx:113
 msgid "Join"
 msgstr "Join"
 
-#: src/components/message-pane/InviteEmbed.tsx:147
-msgid "Emoji from a private server"
-msgstr "Emoji from a private server"
+#: src/components/message-pane/InviteEmbed.tsx:152
+msgid "Emoji from a private server."
+msgstr "Emoji from a private server."
 
-#: src/components/message-pane/InviteEmbed.tsx:147
-msgid "Invalid Invite"
-msgstr "Invalid Invite"
+#: src/components/message-pane/InviteEmbed.tsx:154
+msgid "Clan from a private server."
+msgstr "Clan from a private server."
+
+#: src/components/message-pane/InviteEmbed.tsx:155
+msgid "Invalid Invite."
+msgstr "Invalid Invite."
 
 #: src/components/message-pane/JumpToPresent.tsx:23
 #: src/components/message-pane/messageItem.tsx:113
@@ -533,6 +537,10 @@ msgstr "Search"
 #: src/store/userPresenceStore.ts:33
 msgid "Offline"
 msgstr "Offline"
+
+#: src/components/serverClanItem.tsx:47
+msgid "Server Clan"
+msgstr "Server Clan"
 
 #: src/pages/LoginPage.tsx:15
 msgid "Email"
