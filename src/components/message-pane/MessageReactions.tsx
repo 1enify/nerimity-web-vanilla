@@ -147,6 +147,7 @@ export const createMessageReactionHandler = (opts: {
 
       if (reactionEl?.dataset.addReaction) {
         createExpressionPicker({
+          tabs: [],
           onEmojiPick(emoji, custom) {
             addReaction(
               message?.channelId!,

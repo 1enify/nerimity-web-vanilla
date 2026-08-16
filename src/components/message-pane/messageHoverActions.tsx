@@ -133,6 +133,7 @@ export const createMessageHoverActions = (opts: {
   const handleReactionClick = (buttonEl: HTMLElement) => {
     const message = getMessage();
     createExpressionPicker({
+      tabs: [],
       onEmojiPick(emoji, custom) {
         addReaction(
           message?.channelId!,
