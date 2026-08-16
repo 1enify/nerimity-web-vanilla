@@ -439,8 +439,13 @@ const createMessagePane = () => {
     async () => {
       if (channelStore.currentChannelProperty()?.canLoadBottom) {
         await onBottomSkeletonIntersect(true, true);
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      } else {
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: "smooth",
+        });
       }
-      scrollContainer.scrollTop = scrollContainer.scrollHeight;
     },
     { signal },
   );
