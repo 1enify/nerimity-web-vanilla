@@ -46,7 +46,7 @@ export const createJumpToPresent = (opts: { signal: AbortSignal }) => {
   storeEmitter.on(
     "mention:dm_update",
     (event) => {
-      if (!scrolledBottom) return;
+      if (scrolledBottom) return;
       if (event.channelId !== channelStore.currentChannelId) return;
       updateButton();
     },
@@ -56,7 +56,7 @@ export const createJumpToPresent = (opts: { signal: AbortSignal }) => {
   storeEmitter.on(
     "channel:notify_update",
     (event) => {
-      if (!scrolledBottom) return;
+      if (scrolledBottom) return;
       if (event.channelId !== channelStore.currentChannelId) return;
       updateButton();
     },
