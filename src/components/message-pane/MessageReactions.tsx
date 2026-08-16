@@ -16,7 +16,6 @@ import { storeEmitter } from "../../utils/EventEmitter";
 import { FocusAnimator } from "../../utils/FocusAnimator";
 import { HoverHandler } from "../../utils/HoverHandler";
 import { portalElement } from "../../utils/portal";
-import { userAgent } from "../../utils/userAgent";
 import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
 import { createExpressionPicker } from "../ExpressionPicker";
@@ -246,11 +245,9 @@ export const MessageReactions = (props: { message: Message }) => {
       {props.message.reactions?.map((reaction) => (
         <ReactionItem reaction={reaction} />
       ))}
-      {!userAgent.mobile && (
-        <div data-add-reaction class={[style.reactionItem, "reactionItem"]}>
-          <Icon name="add_reaction" class={style.addIcon} />
-        </div>
-      )}
+      <div data-add-reaction class={[style.reactionItem, "reactionItem"]}>
+        <Icon name="add_reaction" class={style.addIcon} />
+      </div>
     </div>
   );
 };
