@@ -42,7 +42,7 @@ export const Mention = ({
     url ? Link : "span",
     { ...rest, class: style.mention, href: url },
     <>
-      {user && <Avatar user={user} size={16} />}
+      {user && <Avatar class={style.avatar} user={user} size={16} />}
       {icon && <Icon name={icon} class={style.icon} />}
       {color ? (
         <GradientText color={color} class={["text", style.roleText]}>

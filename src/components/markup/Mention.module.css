@@ -1,24 +1,23 @@
 .mention {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   padding: 2px 4px;
   padding-right: 6px;
   border-radius: var(--radius-max);
   color: var(--primary-color);
   background: var(--markup-mention-background-color);
-  vertical-align: middle;
   text-decoration: none;
 
   gap: 4px;
-
-  .monospace {
-    font-family: var(--font-mono);
-  }
   &:hover {
     background: var(--markup-mention-background-color-hover);
   }
   &a {
     cursor: pointer;
+  }
+
+  .monospace {
+    font-family: var(--font-mono);
   }
 
   .roleText {
@@ -27,7 +26,11 @@
     font-weight: 500;
     gap: 4px;
   }
+  .avatar {
+    align-self: center;
+  }
   .icon {
+    align-self: center;
     opacity: 0.8;
     color: var(--text-color);
     font-size: 16px;

@@ -1,0 +1,20 @@
+.notice {
+  display: flex;
+  flex-direction: column;
+
+  padding: 8px;
+  margin-top: 8px;
+  border-radius: var(--radius-12);
+  background-color: var(--gray-850);
+  gap: 4px;
+}
+
+.content {
+  font-size: 12px;
+}
+
+.title {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: bold;
+}

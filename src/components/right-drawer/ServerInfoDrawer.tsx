@@ -24,6 +24,7 @@ import { Link } from "../link";
 import { ServerClanItem } from "../serverClanItem";
 import { UserPresence } from "../userPresence";
 import { createVirtualList } from "../virtualList";
+import { DrawerChannelNotice } from "./DrawerChannelNotice";
 
 import style from "./ServerInfoDrawer.module.css";
 
@@ -111,6 +112,9 @@ const roleOrder = () => {
 export const createServerInfoDrawer = (props: {
   containerEl: HTMLDivElement;
 }) => {
+  const ac = new AbortController();
+  const { signal } = ac;
+
   let membersListEl = (<div class={style.membersList}></div>) as HTMLDivElement;
   let bannerContainerEl = (
     <div class={style.bannerContainer}></div>
@@ -119,13 +123,12 @@ export const createServerInfoDrawer = (props: {
   let infoContainerEl = (
     <div class={style.memberListContainer}>
       {bannerContainerEl}
+      <DrawerChannelNotice signal={signal} />
       {membersListEl}
     </div>
   ) as HTMLDivElement;
 
   let hoverAnimator: HoverAnimator | null = null;
-  const ac = new AbortController();
-  const { signal } = ac;
 
   const roleOrderMemoized = new ManualMemo(roleOrder);
   const visibleRoleIdsMemoized = new ManualMemo(visibleRoleIds);

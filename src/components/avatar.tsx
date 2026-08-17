@@ -11,6 +11,7 @@ interface AvatarProps {
     hexColor: string;
   } | null;
   server?: { avatar?: string; name: string; hexColor: string } | null;
+  class?: string;
 
   size:
     | 12
@@ -64,7 +65,7 @@ export const Avatar = (props: AvatarProps) => {
   const _firstLetter = firstLetter(props);
   return (
     <div
-      class={["avatar", style.avatar]}
+      class={["avatar", style.avatar, props.class]}
       style={{ "--size": props.size + "px" }}
     >
       {url ? (
