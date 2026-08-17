@@ -152,12 +152,12 @@ msgid "Kick Member"
 msgstr "Kick Member"
 
 #: src/components/UserContextMenu.tsx:152
-#: src/components/message-pane/messagePane.tsx:600
+#: src/components/message-pane/messagePane.tsx:610
 msgid "Copy ID"
 msgstr "Copy ID"
 
 #: src/components/UserContextMenu.tsx:156
-#: src/components/message-pane/messagePane.tsx:604
+#: src/components/message-pane/messagePane.tsx:614
 msgid "Copy Object"
 msgstr "Copy Object"
 
@@ -375,7 +375,7 @@ msgid "Are you sure you want to delete this message?"
 msgstr "Are you sure you want to delete this message?"
 
 #: src/components/message-pane/deleteMessageModal.tsx:40
-#: src/components/message-pane/messagePane.tsx:590
+#: src/components/message-pane/messagePane.tsx:600
 msgid "Delete Message"
 msgstr "Delete Message"
 
@@ -443,15 +443,15 @@ msgstr "Silent"
 msgid "Message was deleted."
 msgstr "Message was deleted."
 
-#: src/components/message-pane/messagePane.tsx:580
+#: src/components/message-pane/messagePane.tsx:590
 msgid "Edit Message"
 msgstr "Edit Message"
 
-#: src/components/message-pane/messagePane.tsx:585
+#: src/components/message-pane/messagePane.tsx:595
 msgid "Reply Message"
 msgstr "Reply Message"
 
-#: src/components/message-pane/messagePane.tsx:596
+#: src/components/message-pane/messagePane.tsx:606
 msgid "Copy Content"
 msgstr "Copy Content"
 
@@ -521,6 +521,10 @@ msgstr "Don't save"
 msgid "Save"
 msgstr "Save"
 
+#: src/components/right-drawer/DrawerChannelNotice.tsx:17
+msgid "Notice"
+msgstr "Notice"
+
 #: src/components/right-drawer/RightDrawer.tsx:25
 msgid "Info"
 msgstr "Info"
@@ -533,7 +537,7 @@ msgstr "Files"
 msgid "Search"
 msgstr "Search"
 
-#: src/components/right-drawer/ServerInfoDrawer.tsx:42
+#: src/components/right-drawer/ServerInfoDrawer.tsx:43
 #: src/store/userPresenceStore.ts:33
 msgid "Offline"
 msgstr "Offline"
