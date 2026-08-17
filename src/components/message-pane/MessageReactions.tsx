@@ -18,7 +18,7 @@ import { HoverHandler } from "../../utils/HoverHandler";
 import { portalElement } from "../../utils/portal";
 import { Avatar } from "../avatar";
 import { CdnIcon } from "../cdnIcon";
-import { createExpressionPicker } from "../ExpressionPicker";
+import { ExpressionPickerLazy } from "../ExpressionPickerLazy";
 import { Icon } from "../icon";
 
 import style from "./MessageReactions.module.css";
@@ -146,7 +146,7 @@ export const createMessageReactionHandler = (opts: {
       if (!message) return;
 
       if (reactionEl?.dataset.addReaction) {
-        createExpressionPicker({
+        ExpressionPickerLazy({
           tabs: [],
           onEmojiPick(emoji, custom) {
             addReaction(

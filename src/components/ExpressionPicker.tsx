@@ -10,7 +10,7 @@ import { createEmojiPicker } from "./EmojiPicker";
 
 import style from "./ExpressionPicker.module.css";
 
-interface ExpressionPickerProps {
+export interface ExpressionPickerProps {
   // onSelect: (expression: string) => void;
   targetEl: HTMLElement;
   anchorEl?: HTMLElement;

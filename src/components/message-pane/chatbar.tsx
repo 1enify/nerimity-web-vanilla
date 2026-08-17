@@ -12,7 +12,7 @@ import type { CustomEmoji, EmojiData } from "../../utils/emojis";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { userAgent } from "../../utils/userAgent";
 import { Button } from "../button";
-import { createExpressionPicker } from "../ExpressionPicker";
+import { ExpressionPickerLazy } from "../ExpressionPickerLazy";
 import { createFileInput } from "../FileInput";
 import { createTextareaHeightHandler, Input } from "../input";
 import { createAttachmentIndicator } from "./attachmentIndicator";
@@ -123,7 +123,7 @@ export const createChatbar = () => {
   };
 
   const handleEmojiClick = () => {
-    createExpressionPicker({
+    ExpressionPickerLazy({
       targetEl: emojiPickerButton,
       anchorEl: inputContainerEl,
       offset: { top: 4 },

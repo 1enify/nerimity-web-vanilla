@@ -1,7 +1,5 @@
 // TODO: On server join event, if its a bot, flush bot commands cache for that server.
 
-import { createAuthErrorModal } from "../components/createAuthErrorModal";
-import { createWarnModal } from "../components/createWarnModal";
 import { accountStore } from "../store/accountStore";
 import { channelStore } from "../store/channelStore";
 import { friendStore } from "../store/friendStore";
@@ -30,7 +28,6 @@ import {
   loadCustomEmojisFromServers,
 } from "../utils/emojis";
 import { storeEmitter } from "../utils/EventEmitter";
-import { decompressObject } from "../utils/zstd";
 import { socket } from "./socket";
 
 const handlers: Record<string, (payload: any) => void> = {
@@ -64,8 +61,9 @@ const handlers: Record<string, (payload: any) => void> = {
   "friend:removed": onFriendRemove,
 };
 
-export const socketEventHandler = (event: string, payload: any) => {
+export const socketEventHandler = async (event: string, payload: any) => {
   if (payload instanceof ArrayBuffer) {
+    const { decompressObject } = await import("../utils/zstd");
     payload = decompressObject(new Uint8Array(payload));
   }
 
@@ -78,9 +76,18 @@ export const socketEventHandler = (event: string, payload: any) => {
   handler(payload);
 };
 
-function onAuthError(payload: any) {
+const showWarnModal = async () => {
+  if (!accountStore.currentUser?.notices.length) return;
+  const { createWarnModal } = await import("../components/createWarnModal");
+
+  createWarnModal();
+};
+
+async function onAuthError(payload: any) {
   console.error("Auth Error", payload);
   accountStore.setAuthError(payload);
+  const { createAuthErrorModal } =
+    await import("../components/createAuthErrorModal");
   createAuthErrorModal();
 }
 
@@ -102,7 +109,8 @@ function onAuthenticated(payload: any) {
   channelStore.notificationsMemo.rerun();
   serverStore.notificationsMemo.rerun();
   accountStore.setAuthenticated(true);
-  createWarnModal();
+
+  showWarnModal();
 }
 
 // function onServerChannelUpdated  (payload: any){
@@ -335,5 +343,5 @@ function onFriendRemove(payload: { friendId: string }) {
 
 function onNoticeCreated(payload: RawNotice) {
   accountStore.currentUser?.notices.push(payload);
-  createWarnModal();
+  showWarnModal();
 }

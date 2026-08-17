@@ -9,7 +9,7 @@ import { MessageType } from "../../Types";
 import { friendlyTimestamp } from "../../utils/date";
 import { storeEmitter } from "../../utils/EventEmitter";
 import { Button } from "../button";
-import { createExpressionPicker } from "../ExpressionPicker";
+import { ExpressionPickerLazy } from "../ExpressionPickerLazy";
 import { createDeleteMessageModal } from "./deleteMessageModal";
 import { canDeleteMessage } from "./utils";
 
@@ -132,7 +132,7 @@ export const createMessageHoverActions = (opts: {
 
   const handleReactionClick = (buttonEl: HTMLElement) => {
     const message = getMessage();
-    createExpressionPicker({
+    ExpressionPickerLazy({
       tabs: [],
       onEmojiPick(emoji, custom) {
         addReaction(

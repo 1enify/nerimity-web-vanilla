@@ -13,6 +13,7 @@ export const handleImagePreviewModal = (opts: {
   signal: AbortSignal;
   selector: string;
 }) => {
+  if (opts.signal.aborted) return; // when lazy loading
   opts.root.addEventListener(
     "click",
     (e) => {
