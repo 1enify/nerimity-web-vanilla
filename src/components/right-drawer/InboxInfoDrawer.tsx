@@ -30,6 +30,7 @@ export const createInboxInfoDrawer = () => {
         animationMode="hover"
         abort={contentAbortController}
         class={style.miniProfileDrawer}
+        showChannelNotice
         userId={recipientId}
       />,
     );

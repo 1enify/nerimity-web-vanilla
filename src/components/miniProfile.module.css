@@ -83,16 +83,12 @@
     margin-left: 4px;
     border-radius: var(--radius-10);
     background-color: var(--gray-900);
-    gap: 4px;
+    gap: 12px;
     .title {
-      margin-top: 12px;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       color: var(--gray-400);
       font-size: 12px;
       font-weight: bold;
-      &:first-child {
-        margin-top: 0;
-      }
     }
   }
 }
@@ -109,7 +105,6 @@
 .activities {
   display: flex;
   flex-direction: column;
-  margin-top: 12px;
   gap: 8px;
 }
 
@@ -234,5 +229,18 @@
   margin-top: 6px;
   :global(.input) {
     padding: 10px;
+  }
+}
+
+.bio {
+  font-size: 12px;
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    font-size: 12px;
   }
 }

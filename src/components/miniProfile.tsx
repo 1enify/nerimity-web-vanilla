@@ -2,6 +2,7 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@trans";
 
 import { h, Fragment } from "../h";
+import { getOrCacheChannelNotice } from "../services/channelService";
 import {
   getUserDetails,
   updatePresence,
@@ -133,6 +134,7 @@ export const MiniProfile = (props: {
   abort: AbortController;
   animationMode: "hover" | "focus";
   options?: boolean;
+  showChannelNotice?: boolean;
 }) => {
   let contentAbort: AbortController | undefined;
   const Content = () => {
@@ -169,6 +171,10 @@ export const MiniProfile = (props: {
       },
       contentAbort.signal,
     );
+
+    let noticeEl = props.showChannelNotice
+      ? createNoticeSection({ signal: contentAbort.signal })
+      : null;
 
     let rolesEl = createRolesSection({
       userId: props.userId,
@@ -297,11 +303,12 @@ export const MiniProfile = (props: {
 
         {!props.options && (
           <div class={[style.section, "scrollbarHover"]}>
+            {noticeEl}
             {server && (
-              <>
+              <div>
                 <div class={style.title}>{t`Roles`}</div>
                 {rolesEl}
-              </>
+              </div>
             )}
 
             {!!presence?.activities?.length && (
@@ -312,28 +319,29 @@ export const MiniProfile = (props: {
                 />
               </>
             )}
-
-            <div class={style.title}>{t`Joined`}</div>
-            <div class={style.joined}>
-              <div class={style.joinedContainer}>
-                <img class={style.logo} src="/logo.png" />
-                <div>{friendlyTimestamp(user?.joinedAt || 0)}</div>
-              </div>
-              {member && (
+            <div>
+              <div class={style.title}>{t`Joined`}</div>
+              <div class={style.joined}>
                 <div class={style.joinedContainer}>
-                  <Avatar server={server} size={14} />
-                  <div>{friendlyTimestamp(member?.joinedAt || 0)}</div>
+                  <img class={style.logo} src="/logo.png" />
+                  <div>{friendlyTimestamp(user?.joinedAt || 0)}</div>
                 </div>
-              )}
+                {member && (
+                  <div class={style.joinedContainer}>
+                    <Avatar server={server} size={14} />
+                    <div>{friendlyTimestamp(member?.joinedAt || 0)}</div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {details?.profile?.bio?.trim() && (
-              <>
+              <div>
                 <div class={style.title}>{t`About Me`}</div>
                 <div>
-                  <Markup text={details?.profile?.bio} />
+                  <Markup class={style.bio} text={details?.profile?.bio} />
                 </div>
-              </>
+              </div>
             )}
           </div>
         )}
@@ -573,6 +581,32 @@ const createRolesSection = (opts: {
     opts.signal,
   );
   return rolesEl;
+};
+const createNoticeSection = (props: { signal: AbortSignal }) => {
+  const noticeContentEl = (<div class={style.content}></div>) as HTMLDivElement;
+
+  const el = (
+    <div style={{ display: "none" }} class={style.notice}>
+      <div class={style.title}>{t`Notice`}</div>
+      {noticeContentEl}
+    </div>
+  ) as HTMLDivElement;
+
+  const fetch = () => {
+    el.style.display = "none";
+    if (!accountStore.authenticated) return;
+    getOrCacheChannelNotice(channelStore.currentChannelId!).then((notice) => {
+      if (!notice) return;
+      noticeContentEl.replaceChildren(<Markup inline text={notice} />);
+      el.style.display = "flex";
+    });
+  };
+
+  storeEmitter.on("navigate:channelId", fetch, props.signal);
+  storeEmitter.on("ws:authStateUpdate", fetch, props.signal);
+  fetch();
+
+  return el;
 };
 
 const PresenceOption = (props: { signal: AbortSignal }) => {
